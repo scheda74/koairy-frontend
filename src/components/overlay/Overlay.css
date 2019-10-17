@@ -1,0 +1,10 @@
+.overlay-container {
+    width: 25%;
+    height: 45%;
+    position: absolute;
+    right: 10%;
+    margin: 5rem;
+    z-index: 500;
+    background-color: rgba(33, 33, 33, 0.75);
+    border-radius: 8px;
+}
