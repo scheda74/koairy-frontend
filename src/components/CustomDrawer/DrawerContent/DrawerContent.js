@@ -14,6 +14,7 @@ import Areas from './Areas/Areas';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 
 const useStyles = makeStyles(theme => ({
   drawerHeader: {
@@ -26,15 +27,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function subtractFromArea(areas, name, value) {
-  const changedAreaIndex = areas.findIndex(p => p.name === name);
-  const filtered = areas.filter(p => p.name !== name);
+  const filteredIndex = areas.findIndex(p => p.name !== name && p.value >= value);
+  console.log(filteredIndex)
+  if (filteredIndex === -1) {
+    return subtractFromArea(areas, name, value / 2);
+    // return areas;
+  }
+  areas[filteredIndex].value -= value;
+  return areas;
+}
 
-  filtered.forEach(area => {
-    const newVal = area.value - value;
-    area.value = newVal > 0 ? newVal : area.value;
-  });
-  filtered.push(areas[changedAreaIndex]);
-  return filtered;
+function calcWeightSum(weights) {
+  return weights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0);
 }
 
 export default function DrawerContent(props) {
@@ -73,22 +77,22 @@ export default function DrawerContent(props) {
   };
 
   const handleSrcWeightChange = (event, name) => {
-    if (event.target.value > 1) return;
+    if (event.target.value > 100) return;
     const areaIndex = state.srcWeights.findIndex(p => p.name === name);
     const areaWeight = {
       ...state.srcWeights[areaIndex]
     };
 
-    areaWeight.value = event.target.value;
+    areaWeight.value = event.target.value / 100.0;
 
     let weights = [...state.srcWeights];
     weights[areaIndex] = areaWeight;
 
-    const sum = weights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0);
+    const sum = calcWeightSum(weights);
     console.log("sum: " + sum);
 
     if (sum > 1) {
-      weights = subtractFromArea(weights, name, event.target.value / 10);
+      weights = subtractFromArea(weights, name, sum - 1);
       console.log(weights)
     }
 
@@ -96,16 +100,25 @@ export default function DrawerContent(props) {
   };
 
   const handleDstWeightChange = (event, name) => {
-    if (event.target.value > 1) return;
+    if (event.target.value > 100) return;
     const areaIndex = state.dstWeights.findIndex(p => p.name === name);
     const areaWeight = {
       ...state.dstWeights[areaIndex]
     };
 
-    areaWeight.value = event.target.value;
+    areaWeight.value = event.target.value / 100.0;
 
-    const weights = [...state.dstWeights];
+    let weights = [...state.dstWeights];
     weights[areaIndex] = areaWeight;
+
+    const sum = calcWeightSum(weights);
+    console.log("sum: " + sum);
+
+    if (sum > 1) {
+      weights = subtractFromArea(weights, name, sum - 1);
+      console.log(weights)
+    }
+
     setState({...state, dstWeights: weights })
   };
 
@@ -130,6 +143,9 @@ export default function DrawerContent(props) {
         <ExpansionPanelDetails>
           <Areas areas={state.srcWeights} handleWeightChange={handleSrcWeightChange} />
         </ExpansionPanelDetails>
+        <ExpansionPanelActions>
+          <Typography variant="overline">Sum: {parseInt(state.srcWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100)}</Typography>
+        </ExpansionPanelActions>
       </ExpansionPanel>
 
 
@@ -146,6 +162,9 @@ export default function DrawerContent(props) {
         <ExpansionPanelDetails>
           <Areas areas={state.dstWeights} handleWeightChange={handleDstWeightChange} />
         </ExpansionPanelDetails>
+        <ExpansionPanelActions>
+          <Typography variant="overline">Sum: {parseInt(state.dstWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100)}</Typography>
+        </ExpansionPanelActions>
       </ExpansionPanel>
 
 

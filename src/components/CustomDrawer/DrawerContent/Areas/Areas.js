@@ -33,7 +33,6 @@ function valueText(value) {
 export default function Areas(props) {
   const classes = useStyles();
 
-
   const sliders = props.areas.map(area => {
     const formattedName = area.name
       .replace(/_/g, ' ')
@@ -72,11 +71,11 @@ export default function Areas(props) {
 
         return <TextField
           className={classes.textField}
-          InputProps={ {inputProps: { min: "0", max: "1", step: "0.01" }} }
+          InputProps={ {inputProps: { min: "0", max: "100", step: "1" }} }
           key={area.name}
           id={area.name}
           helperText={formattedName}
-          value={area.value}
+          value={parseInt(area.value * 100).toString()}
           onChange={event => props.handleWeightChange(event, area.name)}
           type="number"
           margin="normal" />
