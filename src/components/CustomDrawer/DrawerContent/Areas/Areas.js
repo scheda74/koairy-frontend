@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -10,8 +11,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
+    // marginRight: theme.spacing(1),
+    margin: '2rem',
     width: '5rem'
   },
   sliderContainer: {
@@ -71,7 +73,10 @@ export default function Areas(props) {
 
         return <TextField
           className={classes.textField}
-          InputProps={ {inputProps: { min: "0", max: "100", step: "1" }} }
+          InputProps={{
+            endAdornment: <InputAdornment position="end">%</InputAdornment>,
+            inputProps: { min: "0", max: "100", step: "1" }
+          }}
           key={area.name}
           id={area.name}
           helperText={formattedName}

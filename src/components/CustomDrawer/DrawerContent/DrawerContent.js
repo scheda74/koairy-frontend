@@ -15,6 +15,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   drawerHeader: {
@@ -23,7 +25,10 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: 'flex-start',
-  }
+  },
+  input: {
+    display: 'none',
+  },
 }));
 
 function subtractFromArea(areas, name, value) {
@@ -122,6 +127,9 @@ export default function DrawerContent(props) {
     setState({...state, dstWeights: weights })
   };
 
+  const srcSum = parseInt(state.srcWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100);
+  const dstSum = parseInt(state.dstWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100);
+
   return (
     <div>
       <div className={classes.drawerHeader}>
@@ -144,7 +152,7 @@ export default function DrawerContent(props) {
           <Areas areas={state.srcWeights} handleWeightChange={handleSrcWeightChange} />
         </ExpansionPanelDetails>
         <ExpansionPanelActions>
-          <Typography variant="overline">Sum: {parseInt(state.srcWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100)}</Typography>
+          <Typography variant="overline">Sum: {srcSum} %</Typography>
         </ExpansionPanelActions>
       </ExpansionPanel>
 
@@ -163,30 +171,54 @@ export default function DrawerContent(props) {
           <Areas areas={state.dstWeights} handleWeightChange={handleDstWeightChange} />
         </ExpansionPanelDetails>
         <ExpansionPanelActions>
-          <Typography variant="overline">Sum: {parseInt(state.dstWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100)}</Typography>
+          <Typography variant="overline">Sum: {dstSum} %</Typography>
         </ExpansionPanelActions>
       </ExpansionPanel>
 
+      <Divider />
 
-      {/*<List>*/}
-        {/*{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (*/}
-          {/*<ListItem button key={text}>*/}
-            {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-            {/*<ListItemText primary={text} />*/}
-          {/*</ListItem>*/}
-        {/*))}*/}
-      {/*</List>*/}
+      <ExpansionPanel expanded={state.expanded === 'weatherPanel'} onChange={handlePanelChange('weatherPanel')}>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          <Typography className={classes.heading}>Meteorology</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
 
-      {/*<Divider />*/}
+        </ExpansionPanelDetails>
+        <ExpansionPanelActions>
+          <Typography variant="overline">Sum: {dstSum} %</Typography>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+      <Divider />
 
-      {/*<List>*/}
-        {/*{['All mail', 'Trash', 'Spam'].map((text, index) => (*/}
-          {/*<ListItem button key={text}>*/}
-            {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-            {/*<ListItemText primary={text} />*/}
-          {/*</ListItem>*/}
-        {/*))}*/}
-      {/*</List>*/}
+      {/*<ExpansionPanel>*/}
+        {/*<ExpansionPanelSummary>*/}
+          {/*<div>*/}
+            {/*<Typography variant="h6">Upload Road Network File</Typography>*/}
+            {/*<Typography variant="caption">Default: Kirchheim OSM</Typography>*/}
+          {/*</div>*/}
+          {/*<div>*/}
+            {/*<input*/}
+              {/*accept="application/*"*/}
+              {/*className={classes.input}*/}
+              {/*id="contained-button-file"*/}
+              {/*multiple*/}
+              {/*type="file"*/}
+            {/*/>*/}
+            {/*<label htmlFor="contained-button-file">*/}
+              {/*<Button variant="contained" component="span" className={classes.button}>*/}
+                {/*Choose*/}
+              {/*</Button>*/}
+            {/*</label>*/}
+          {/*</div>*/}
+        {/*</ExpansionPanelSummary>*/}
+      {/*</ExpansionPanel>*/}
+
+
+
     </div>
   );
 }

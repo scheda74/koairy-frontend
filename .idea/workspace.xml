@@ -28,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/CustomDrawer/DrawerContent/DrawerContent.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="162" column="87" selection-start-line="162" selection-start-column="87" selection-end-line="162" selection-end-column="87" />
+            <state relative-caret-position="262">
+              <caret line="207" column="14" lean-forward="true" selection-start-line="207" selection-start-column="14" selection-end-line="207" selection-end-column="14" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -73,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/CustomDrawer/DrawerContent/Areas/Areas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="75" column="24" lean-forward="true" selection-start-line="75" selection-start-column="24" selection-end-line="75" selection-end-column="24" />
+            <state relative-caret-position="-749">
+              <caret line="12" column="14" lean-forward="true" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -178,8 +178,8 @@
         <option value="$PROJECT_DIR$/src/container/Container.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/components/CustomDrawer/DrawerContent/DrawerContent.js" />
         <option value="$PROJECT_DIR$/src/components/CustomDrawer/DrawerContent/Areas/Areas.js" />
+        <option value="$PROJECT_DIR$/src/components/CustomDrawer/DrawerContent/DrawerContent.js" />
       </list>
     </option>
   </component>
@@ -220,30 +220,6 @@
               <item name="em-viz" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="em-viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="em-viz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="CustomDrawer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="em-viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="em-viz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="CustomDrawer" type="462c0819:PsiDirectoryNode" />
-              <item name="DrawerContent" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="em-viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="em-viz" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="CustomDrawer" type="462c0819:PsiDirectoryNode" />
-              <item name="DrawerContent" type="462c0819:PsiDirectoryNode" />
-              <item name="Areas" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="em-viz" type="b2602c69:ProjectViewProjectNode" />
@@ -306,12 +282,12 @@
       <workItem from="1569922359652" duration="19233000" />
       <workItem from="1570815232440" duration="1470000" />
       <workItem from="1571087547077" duration="6923000" />
-      <workItem from="1571306399999" duration="23203000" />
+      <workItem from="1571306399999" duration="24819000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50829000" />
+    <option name="totallyTimeSpent" value="52445000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="816" extended-state="0" />
@@ -561,20 +537,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/CustomDrawer/DrawerContent/DrawerContent.js">
+    <entry file="file://$PROJECT_DIR$/src/components/CustomDrawer/DrawerContent/Areas/Areas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="162" column="87" selection-start-line="162" selection-start-column="87" selection-end-line="162" selection-end-column="87" />
+        <state relative-caret-position="-749">
+          <caret line="12" column="14" lean-forward="true" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/CustomDrawer/DrawerContent/Areas/Areas.js">
+    <entry file="file://$PROJECT_DIR$/src/components/CustomDrawer/DrawerContent/DrawerContent.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="75" column="24" lean-forward="true" selection-start-line="75" selection-start-column="24" selection-end-line="75" selection-end-column="24" />
+        <state relative-caret-position="262">
+          <caret line="207" column="14" lean-forward="true" selection-start-line="207" selection-start-column="14" selection-end-line="207" selection-end-column="14" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
