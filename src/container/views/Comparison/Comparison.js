@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     height: '100%'
   },
   divider: {
-    border: 'solid 2px white'
+    border: 'solid 2px black'
   }
 }));
 

@@ -7,6 +7,7 @@ import {
   FETCH_STATISTICS,
   RECEIVE_STATISTICS
 } from './actionTypes';
+import { setSimulationParameter } from './simulationActions';
 
 const header = new Headers({
   'Content-Type': 'application/json',
@@ -28,7 +29,7 @@ export function requestEmissions(params) {
 }
 
 export function receiveEmissions(params, json) {
-  console.log(json);
+  // console.log(json);
   return {
     type: RECEIVE_EMISSIONS,
     params,
@@ -41,8 +42,9 @@ export function fetchEmissions(params) {
   return function(dispatch) {
 
     dispatch(requestEmissions(params));
+    // dispatch(setSimulationParameter(params));
 
-    return fetch('http://localhost:5000/get/caqi', { headers: header })
+    return fetch('http://localhost:5000/get/caqi', { headers: header, method: 'POST', body: params })
       .then(response => response.json(),
           error => console.log('An error occurred', error))
       .then(json => dispatch(receiveEmissions(params, json)))
@@ -52,7 +54,7 @@ export function fetchEmissions(params) {
 
 function shouldFetchEmissions(state, params) {
   const emissions = state.emissions.data;
-  console.log(emissions);
+  // console.log(emissions);
   if (!emissions) {
     return true
   } else if (emissions.isFetching) {

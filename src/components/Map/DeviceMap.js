@@ -7,18 +7,17 @@ import Overlay from './Overlay/Overlay';
 
 
 export class DeviceMap extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      lat: 48.169071,
-      lng: 11.756942,
-      zoom: 15,
-      isTraffic: false,
-      isAir: false,
-      // emissions: undefined,
-      points: {}
-    };
-  }
+  state = {
+    lat: 48.169071,
+    lng: 11.756942,
+    zoom: 15,
+    isTraffic: false,
+    isAir: false,
+    blur: 4,
+    opacity: 0.2,
+    radius: 10,
+    maximum: 1
+  };
 
   isEmissionAvailable() {
     return this.props.emissions !== null && this.props.emissions !== undefined;
@@ -36,6 +35,22 @@ export class DeviceMap extends PureComponent {
     this.setState({ isAir: !this.state.isAir })
   }
 
+  onBlurChange(value) {
+    this.setState({ blur: value })
+  }
+
+  onRadiusChange(value) {
+    this.setState({ radius: value })
+  }
+
+  onOpacityChange(value) {
+    this.setState({ opacity: value })
+  }
+
+  onMaximumChange(value) {
+    this.setState({ maximum: value / 100 })
+  }
+
   render() {
     console.log("[MAP] render");
     const position = [this.state.lat, this.state.lng];
@@ -49,44 +64,59 @@ export class DeviceMap extends PureComponent {
       };
       // console.log(points);
       return (
+        <div>
+          <Overlay
+            toggleTraffic={this.toggleTraffic.bind(this)}
+            toggleAir={this.toggleAir.bind(this)}
+            air={this.state.isAir}
+            traffic={this.state.isTraffic}
+            blurChange={this.onBlurChange.bind(this)}
+            radiusChange={this.onRadiusChange.bind(this)}
+            opacityChange={this.onOpacityChange.bind(this)}
+            maximumChange={this.onMaximumChange.bind(this)}
+          />
           <Map className="leaflet-container" center={position} zoom={this.state.zoom}>
-              <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-              />
-              {/*<Marker position={position}>*/}
-                  {/*<Popup>*/}
-                      {/*<span>A pretty CSS3 popup. <br/> Easily customizable.</span>*/}
-                  {/*</Popup>*/}
-              {/*</Marker>*/}
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+            />
+            {/*<Marker position={position}>*/}
+            {/*<Popup>*/}
+            {/*<span>A pretty CSS3 popup. <br/> Easily customizable.</span>*/}
+            {/*</Popup>*/}
+            {/*</Marker>*/}
             {this.isEmissionAvailable() && this.state.isAir ?
               <HeatMap
-                  points={Object.values(this.props.emissions).map(value => [value.lng, value.lat, value.CAQI / 100])}
-                  longitudeExtractor={m => m[0]}
-                  latitudeExtractor={m => m[1]}
-                  intensityExtractor={m => parseFloat(m[2])}
-                  blur={4}
-                  radius={10}
-                  max={1}
-                  maxZoom={100}
-                  minOpacity={0.2}
-                  gradient={gradient}
-              /> : <React.Fragment /> }
-            {this.isTrafficAvailable() && this.state.isTraffic ?
-              <HeatMap
+                // fitBoundsOnLoad
+                // fitBoundsOnUpdate
                 points={Object.values(this.props.emissions).map(value => [value.lng, value.lat, value.CAQI / 100])}
                 longitudeExtractor={m => m[0]}
                 latitudeExtractor={m => m[1]}
                 intensityExtractor={m => parseFloat(m[2])}
-                blur={4}
-                radius={10}
-                max={1}
+                blur={this.state.blur}
+                radius={this.state.radius}
+                max={this.state.maximum}
+                minOpacity={this.state.opacity}
                 maxZoom={100}
-                minOpacity={0.2}
                 gradient={gradient}
               /> : <React.Fragment /> }
-              <Overlay toggleTraffic={this.toggleTraffic.bind(this)} toggleAir={this.toggleAir.bind(this)} air={this.state.isAir} traffic={this.state.isTraffic}  />
+            {this.isTrafficAvailable() && this.state.isTraffic ?
+              <HeatMap
+                fitBoundsOnLoad
+                fitBoundsOnUpdate
+                points={Object.values(this.props.emissions).map(value => [value.lng, value.lat, value.CAQI / 100])}
+                longitudeExtractor={m => m[0]}
+                latitudeExtractor={m => m[1]}
+                intensityExtractor={m => parseFloat(m[2])}
+                blur={this.state.blur}
+                radius={this.state.radius}
+                max={this.state.maximum}
+                minOpacity={this.state.opacity}
+                maxZoom={100}
+                gradient={gradient}
+              /> : <React.Fragment /> }
           </Map>
+        </div>
       );
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk'
 
@@ -20,15 +20,18 @@ const theme = createMuiTheme({
   },
 });
 
-// const loggerMiddleware = createLogger()
-
+/* eslint-disable no-underscore-dangle */
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
-  applyMiddleware(
-    thunkMiddleware, // lets us dispatch() functions
-    // loggerMiddleware // neat middleware that logs actions
+  composeEnhancers(
+    applyMiddleware(
+      thunkMiddleware, // lets us dispatch() functions
+      // loggerMiddleware // neat middleware that logs actions
+    )
   )
 );
+/* eslint-enable */
 
 const target = document.getElementById('root');
 
@@ -42,10 +45,10 @@ ReactDOM.render(
 );
 
 store
-  .dispatch(fetchEmissionsIfNeeded('reactjs'))
+  .dispatch(fetchEmissionsIfNeeded(''))
   .then(() => console.log(store.getState()));
 store
-  .dispatch(fetchTrafficIfNeeded('lol'))
+  .dispatch(fetchTrafficIfNeeded(''))
   .then(() => console.log(store.getState()));
 
 // If you want your app to work offline and load faster, you can change

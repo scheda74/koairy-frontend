@@ -11,6 +11,9 @@ import Areas from './Areas/Areas';
 import WeatherScenarios from './WeatherScenarios/WeatherScenarios';
 import Vehicles from './Vehicles/Vehicles';
 import Typography from '@material-ui/core/Typography';
+import connect from 'react-redux/es/connect/connect';
+import { DeviceMap } from '../../Map/DeviceMap';
+import { setSimulationParameter } from '../../../store/actions/simulationActions';
 
 const useStyles = makeStyles(theme => ({
   drawerHeader: {
@@ -46,34 +49,12 @@ function calcWeightSum(weights) {
   return weights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0);
 }
 
-export default function DrawerContent(props) {
+
+// { srcWeights, dstWeights, setSimulationParameters, closeDrawer }
+function DrawerContent(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = React.useState({
-    srcWeights: [
-      {name: 'aschheim_west', value: 0.1},
-      {name: 'ebersberg_east', value: 0.37},
-      {name: 'feldkirchen_west', value: 0.1},
-      {name: 'heimstetten_industrial_1', value: 0.01},
-      {name: 'heimstetten_industrial_2', value: 0.01},
-      {name: 'heimstetten_residential', value: 0.18},
-      {name: 'kirchheim_industrial_east', value: 0.01},
-      {name: 'kirchheim_industrial_west', value: 0.01},
-      {name: 'kirchheim_residential', value: 0.16},
-      {name: 'unassigned_edges', value: 0.05}
-    ],
-    dstWeights: [
-      {name: 'aschheim_west', value: 0.16},
-      {name: 'ebersberg_east', value: 0.07},
-      {name: 'feldkirchen_west', value: 0.16},
-      {name: 'heimstetten_industrial_1', value: 0.14},
-      {name: 'heimstetten_industrial_2', value: 0.14},
-      {name: 'heimstetten_residential', value: 0.06},
-      {name: 'kirchheim_industrial_east', value: 0.06},
-      {name: 'kirchheim_industrial_west', value: 0.11},
-      {name: 'kirchheim_residential', value: 0.05},
-      {name: 'unassigned_edges', value: 0.05}
-    ],
     expanded: false
   });
 
@@ -82,56 +63,47 @@ export default function DrawerContent(props) {
   };
 
   const handleSrcWeightChange = (event, name) => {
-    if (event.target.value > 100) return;
-    const areaIndex = state.srcWeights.findIndex(p => p.name === name);
-    const areaWeight = {
-      ...state.srcWeights[areaIndex]
-    };
+    const areaIndex = props.srcWeights.findIndex(p => p.name === name);
+    const areaWeight = { ...props.srcWeights[areaIndex] };
 
     areaWeight.value = event.target.value / 100.0;
 
-    let weights = [...state.srcWeights];
+    let weights = [...props.srcWeights];
     weights[areaIndex] = areaWeight;
 
-    const sum = calcWeightSum(weights);
-    console.log("sum: " + sum);
-
-    if (sum > 1) {
-      weights = subtractFromArea(weights, name, sum - 1);
-      console.log(weights)
-    }
-
-    setState({ ...state, srcWeights: weights })
+    props.setSimulationParameters({
+      srcWeights: weights,
+      dstWeights: props.dstWeights,
+      vehicleNumber: 9500,
+      vehicleDistribution: [],
+      weatherScenario: 0
+    })
   };
 
   const handleDstWeightChange = (event, name) => {
-    if (event.target.value > 100) return;
-    const areaIndex = state.dstWeights.findIndex(p => p.name === name);
-    const areaWeight = {
-      ...state.dstWeights[areaIndex]
-    };
+    const areaIndex = props.dstWeights.findIndex(p => p.name === name);
+    const areaWeight = { ...props.dstWeights[areaIndex] };
 
     areaWeight.value = event.target.value / 100.0;
 
-    let weights = [...state.dstWeights];
+    let weights = [...props.dstWeights];
     weights[areaIndex] = areaWeight;
 
-    const sum = calcWeightSum(weights);
-    console.log("sum: " + sum);
-
-    if (sum > 1) {
-      weights = subtractFromArea(weights, name, sum - 1);
-      console.log(weights)
-    }
-
-    setState({...state, dstWeights: weights })
+    props.setSimulationParameters({
+      srcWeights: props.srcWeights,
+      dstWeights: weights,
+      vehicleNumber: 9500,
+      vehicleDistribution: [],
+      weatherScenario: 0
+    })
   };
 
-  const srcSum = parseInt(state.srcWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100);
-  const dstSum = parseInt(state.dstWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100);
+  // const srcSum = parseInt(srcWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100);
+  // const dstSum = parseInt(dstWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100);
 
   return (
     <div>
+      {/*{console.log(props)}*/}
       <div className={classes.drawerHeader}>
         <IconButton onClick={props.closeDrawer}>
           {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -140,20 +112,24 @@ export default function DrawerContent(props) {
       </div>
       <Divider />
       <Areas expanded={state.expanded}
-             areas={state.srcWeights}
+             areas={props.srcWeights}
              id="srcPanel"
              handleWeightChange={handleSrcWeightChange}
              handlePanelChange={handlePanelChange}
              title="Area Weights - Source"
-             sum={srcSum} />
+             // sum={srcSum}
+             sum={0}
+      />
       <Divider/>
       <Areas expanded={state.expanded}
-             areas={state.dstWeights}
+             areas={props.dstWeights}
              id="dstPanel"
              handleWeightChange={handleDstWeightChange}
              handlePanelChange={handlePanelChange}
              title="Area Weights - Destination"
-             sum={dstSum} />
+             // sum={dstSum}
+             sum={0}
+      />
       <Divider />
       <Vehicles expanded={state.expanded}
                         handlePanelChange={handlePanelChange}
@@ -198,3 +174,21 @@ export default function DrawerContent(props) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    srcWeights: state.simulation.srcWeights,
+    dstWeights: state.simulation.dstWeights
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSimulationParameters: (params) => dispatch(setSimulationParameter(params))
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DrawerContent);

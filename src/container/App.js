@@ -3,11 +3,12 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import DeviceMap from '../components/Map/DeviceMap';
 import CustomDrawer from '../components/CustomDrawer/CustomDrawer';
 import CustomToolbar from '../components/CustomToolbar/CustomToolbar';
 import Welcome from './views/Welcome/Welcome';
 import Comparison from './views/Comparison/Comparison';
+import MapContainer from './views/MapContainer/MapContainer';
+import Analysis from './views/Analysis/Analysis';
 
 
 const useStyles = makeStyles(() => ({
@@ -37,9 +38,9 @@ export default function App() {
   const router = (
     <Switch>
       <Route exact path="/" component={Welcome} />
-      <Route exact path="/map" component={DeviceMap} />
-      <Route exact path="/compare"><Comparison /></Route>
-      <Route exact path="/analysis" component={Comparison} />
+      <Route exact path="/map" component={MapContainer} />
+      <Route exact path="/compare" component={Comparison} />
+      <Route exact path="/analysis" component={Analysis} />
       <Route render={() => <Redirect to="/" />} />
     </Switch>
   );
