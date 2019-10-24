@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { connect } from 'react-redux';
 import HeatMap from 'react-leaflet-heatmap-layer';
-// import { heatMapPoints } from '../../assets/data/scen_heat_map';
 import './DeviceMap.css';
-// import { emissionPoints } from '../../assets/data/emission_cycle'
-// import { caqiData } from '../../assets/data/caqi_data';
-import { caqiData } from '../../assets/data/newCaqiData';
-// import caqiData from '../../assets/data/caqiDataJson';
+import Overlay from './Overlay/Overlay';
+
 
 export class DeviceMap extends PureComponent {
   constructor(props) {
@@ -15,30 +13,32 @@ export class DeviceMap extends PureComponent {
       lat: 48.169071,
       lng: 11.756942,
       zoom: 15,
-      points: props.points
+      isTraffic: false,
+      isAir: false,
+      // emissions: undefined,
+      points: {}
     };
   }
 
+  isEmissionAvailable() {
+    return this.props.emissions !== null && this.props.emissions !== undefined;
+  }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-      console.log("[MAP] shouldComponentUpdate");
-      return false;
-    }
+  isTrafficAvailable() {
+    return this.props.traffic !== null && this.props.traffic !== undefined;
+  }
+
+  toggleTraffic() {
+    this.setState({ isTraffic: !this.state.isTraffic })
+  }
+
+  toggleAir() {
+    this.setState({ isAir: !this.state.isAir })
+  }
 
   render() {
     console.log("[MAP] render");
     const position = [this.state.lat, this.state.lng];
-    // const points = heatMapPoints.Map(elem => {
-    //     console.log(elem['value'] * 10000);
-    //     return [elem['lng'], elem['lat'], elem['value'] * 10000]
-    // });
-    // console.log(emissionPoints);
-    // let points = [];
-    // for ( let key in caqiData ) {
-    //   // console.log(key);
-    //   points.push([caqiData[key]['lng'], caqiData[key]['lat'], caqiData[key]['CAQI'] / 100])
-    // }
-    //   console.log(points);
 
       const gradient = {
           0.0: '#78bc6a',
@@ -59,8 +59,9 @@ export class DeviceMap extends PureComponent {
                       {/*<span>A pretty CSS3 popup. <br/> Easily customizable.</span>*/}
                   {/*</Popup>*/}
               {/*</Marker>*/}
+            {this.isEmissionAvailable() && this.state.isAir ?
               <HeatMap
-                  points={this.state.points}
+                  points={Object.values(this.props.emissions).map(value => [value.lng, value.lat, value.CAQI / 100])}
                   longitudeExtractor={m => m[0]}
                   latitudeExtractor={m => m[1]}
                   intensityExtractor={m => parseFloat(m[2])}
@@ -70,10 +71,41 @@ export class DeviceMap extends PureComponent {
                   maxZoom={100}
                   minOpacity={0.2}
                   gradient={gradient}
-              />
+              /> : <React.Fragment /> }
+            {this.isTrafficAvailable() && this.state.isTraffic ?
+              <HeatMap
+                points={Object.values(this.props.emissions).map(value => [value.lng, value.lat, value.CAQI / 100])}
+                longitudeExtractor={m => m[0]}
+                latitudeExtractor={m => m[1]}
+                intensityExtractor={m => parseFloat(m[2])}
+                blur={4}
+                radius={10}
+                max={1}
+                maxZoom={100}
+                minOpacity={0.2}
+                gradient={gradient}
+              /> : <React.Fragment /> }
+              <Overlay toggleTraffic={this.toggleTraffic.bind(this)} toggleAir={this.toggleAir.bind(this)} air={this.state.isAir} traffic={this.state.isTraffic}  />
           </Map>
       );
     }
 }
-export default DeviceMap;
+
+const mapStateToProps = (state) => {
+    return {
+      emissions: state.emissions.data,
+      traffic: state.traffic.data
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DeviceMap);
 

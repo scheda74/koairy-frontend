@@ -6,6 +6,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar/AppBar';
+import { Link } from 'react-router-dom';
+import { Map, Compare, Timeline } from '@material-ui/icons';
 
 const drawerWidth = 400;
 
@@ -26,6 +28,8 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    color: 'inherit',
+    textDecoration: 'none'
   },
   hide: {
     display: 'none',
@@ -37,15 +41,48 @@ export default function CustomToolbar(props) {
 
   return (
     <AppBar
+      color="secondary"
       position="fixed"
       className={clsx(classes.appBar, {
         [classes.appBarShift]: props.open,
       })}
     >
       <Toolbar>
-        <Typography variant="h6" noWrap className={classes.title}>
-          EM-ViZ
-        </Typography>
+        <Link to="/" className={classes.title}>
+          <Typography variant="h6" noWrap>
+            EM-ViZ
+          </Typography>
+        </Link>
+        <Link to="/map" className={classes.title}>
+          <IconButton
+            color="inherit"
+            aria-label="map"
+            edge="end"
+            // onClick={() => console.log("routes should go here")}
+          >
+            <Map />
+          </IconButton>
+        </Link>
+        <Link to="/compare" className={classes.title}>
+          <IconButton
+            color="inherit"
+            aria-label="compare"
+            edge="end"
+            // onClick={() => console.log("routes should go here")}
+          >
+            <Compare />
+          </IconButton>
+        </Link>
+        <Link to="/analysis" className={classes.title}>
+          <IconButton
+            color="inherit"
+            aria-label="analysis"
+            edge="end"
+            // onClick={() => console.log("routes should go here")}
+          >
+            <Timeline />
+          </IconButton>
+        </Link>
         <IconButton
           color="inherit"
           aria-label="open drawer"

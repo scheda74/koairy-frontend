@@ -1,22 +1,16 @@
 import React from 'react';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import Areas from './Areas/Areas';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Areas from './Areas/Areas';
+import WeatherScenarios from './WeatherScenarios/WeatherScenarios';
+import Vehicles from './Vehicles/Vehicles';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   drawerHeader: {
@@ -29,11 +23,17 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'none',
   },
+  buttonContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: theme.spacing(4)
+  }
 }));
 
 function subtractFromArea(areas, name, value) {
   const filteredIndex = areas.findIndex(p => p.name !== name && p.value >= value);
-  console.log(filteredIndex)
+  console.log(filteredIndex);
   if (filteredIndex === -1) {
     return subtractFromArea(areas, name, value / 2);
     // return areas;
@@ -136,63 +136,39 @@ export default function DrawerContent(props) {
         <IconButton onClick={props.closeDrawer}>
           {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
+        <Typography variant="caption">SIMULATION PARAMETERS</Typography>
       </div>
-
+      <Divider />
+      <Areas expanded={state.expanded}
+             areas={state.srcWeights}
+             id="srcPanel"
+             handleWeightChange={handleSrcWeightChange}
+             handlePanelChange={handlePanelChange}
+             title="Area Weights - Source"
+             sum={srcSum} />
+      <Divider/>
+      <Areas expanded={state.expanded}
+             areas={state.dstWeights}
+             id="dstPanel"
+             handleWeightChange={handleDstWeightChange}
+             handlePanelChange={handlePanelChange}
+             title="Area Weights - Destination"
+             sum={dstSum} />
+      <Divider />
+      <Vehicles expanded={state.expanded}
+                        handlePanelChange={handlePanelChange}
+                        id="vehiclePanel" />
+      <Divider />
+      <WeatherScenarios expanded={state.expanded}
+                        handlePanelChange={handlePanelChange}
+                        id="weatherPanel" />
       <Divider />
 
-      <ExpansionPanel expanded={state.expanded === 'srcPanel'} onChange={handlePanelChange('srcPanel')}>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography className={classes.heading}>Area Weights - Source</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Areas areas={state.srcWeights} handleWeightChange={handleSrcWeightChange} />
-        </ExpansionPanelDetails>
-        <ExpansionPanelActions>
-          <Typography variant="overline">Sum: {srcSum} %</Typography>
-        </ExpansionPanelActions>
-      </ExpansionPanel>
-
-
-      <Divider />
-
-      <ExpansionPanel expanded={state.expanded === 'dstPanel'} onChange={handlePanelChange('dstPanel')}>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography className={classes.heading}>Area Weights - Destination</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Areas areas={state.dstWeights} handleWeightChange={handleDstWeightChange} />
-        </ExpansionPanelDetails>
-        <ExpansionPanelActions>
-          <Typography variant="overline">Sum: {dstSum} %</Typography>
-        </ExpansionPanelActions>
-      </ExpansionPanel>
-
-      <Divider />
-
-      <ExpansionPanel expanded={state.expanded === 'weatherPanel'} onChange={handlePanelChange('weatherPanel')}>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography className={classes.heading}>Meteorology</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-
-        </ExpansionPanelDetails>
-        <ExpansionPanelActions>
-          <Typography variant="overline">Sum: {dstSum} %</Typography>
-        </ExpansionPanelActions>
-      </ExpansionPanel>
-      <Divider />
+      <div className={classes.buttonContainer}>
+        <Button variant="contained" size="large" color="primary" className={classes.margin}>
+          Start Simulation
+        </Button>
+      </div>
 
       {/*<ExpansionPanel>*/}
         {/*<ExpansionPanelSummary>*/}

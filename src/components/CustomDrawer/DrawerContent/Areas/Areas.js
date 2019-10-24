@@ -1,8 +1,14 @@
 import React from 'react';
 import { makeStyles, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/core/Slider';
-import InputAdornment from '@material-ui/core/InputAdornment';
+// import Slider from '@material-ui/core/Slider';
+// import InputAdornment from '@material-ui/core/InputAdornment';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import Area from './Area/Area';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -28,63 +34,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function valueText(value) {
-  return `${value}%`;
-}
-
 export default function Areas(props) {
   const classes = useStyles();
 
-  const sliders = props.areas.map(area => {
-    const formattedName = area.name
-      .replace(/_/g, ' ')
-      .split(' ')
-      .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-      .join(' ');
-    return (
-      <div className={classes.sliderContainer}>
-        <Typography id="discrete-slider" gutterBottom variant="overline">
-          {formattedName}
-        </Typography>
-        <Slider
-          className={classes.slider}
-          defaultValue={parseInt(area.value * 100)}
-          getAriaValueText={valueText}
-          aria-labelledby="discrete-slider"
-          valueLabelDisplay="on"
-          step={1}
-          marks
-          min={0}
-          max={100}
-        />
-      </div>
-    )
-  });
-
   return (
-    <form className={classes.container} noValidate autoComplete="off">
-      {/*{sliders}*/}
-      {props.areas.map(area => {
-        const formattedName = area.name
-          .replace(/_/g, ' ')
-          .split(' ')
-          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-          .join(' ');
-
-        return <TextField
-          className={classes.textField}
-          InputProps={{
-            endAdornment: <InputAdornment position="end">%</InputAdornment>,
-            inputProps: { min: "0", max: "100", step: "1" }
-          }}
-          key={area.name}
-          id={area.name}
-          helperText={formattedName}
-          value={parseInt(area.value * 100).toString()}
-          onChange={event => props.handleWeightChange(event, area.name)}
-          type="number"
-          margin="normal" />
-      })}
-    </form>
+    <ExpansionPanel expanded={props.expanded === props.id} onChange={props.handlePanelChange(props.id)}>
+      <ExpansionPanelSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls={`${props.id}-content`}
+        id={`${props.id}-header`}
+      >
+        <Typography className={classes.heading}>{props.title}</Typography>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
+        <Area areas={props.areas} handleWeightChange={props.handleWeightChange} />
+      </ExpansionPanelDetails>
+      <ExpansionPanelActions>
+        <Typography variant="overline">Sum: {props.sum} %</Typography>
+      </ExpansionPanelActions>
+    </ExpansionPanel>
   )
 };
