@@ -47,7 +47,7 @@ export default function Areas(props) {
         <Typography className={classes.heading}>{props.title}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <Area areas={props.areas} handleWeightChange={props.handleWeightChange} />
+        <Area areas={props.areas} weightType={props.weightType} handleWeightChange={props.handleWeightChange} />
       </ExpansionPanelDetails>
       <ExpansionPanelActions>
         <Typography variant="overline">Sum: {props.sum} %</Typography>

@@ -62,40 +62,49 @@ function DrawerContent(props) {
     setState({...state, expanded: isExpanded ? panel : false});
   };
 
-  const handleSrcWeightChange = (event, name) => {
-    const areaIndex = props.srcWeights.findIndex(p => p.name === name);
-    const areaWeight = { ...props.srcWeights[areaIndex] };
+  const handleWeightChange = (event, weightType, areaName) => {
+    let weights = weightType === 'src' ? {...props.srcWeights} : {...props.dstWeights};
 
-    areaWeight.value = event.target.value / 100.0;
-
-    let weights = [...props.srcWeights];
-    weights[areaIndex] = areaWeight;
-
+    weights[areaName] = event.target.value / 100.0;
+    console.log("weights");
+    console.log(weights);
     props.setSimulationParameters({
-      srcWeights: weights,
-      dstWeights: props.dstWeights,
+      srcWeights: weightType === 'src' ? weights : props.srcWeights,
+      dstWeights: weightType === 'dst' ? weights : props.dstWeights,
       vehicleNumber: 9500,
       vehicleDistribution: [],
-      weatherScenario: 0
+      weatherScenario: 0,
+      timesteps: 10800
     })
-  };
 
-  const handleDstWeightChange = (event, name) => {
-    const areaIndex = props.dstWeights.findIndex(p => p.name === name);
-    const areaWeight = { ...props.dstWeights[areaIndex] };
+    // const areaIndex = props.srcWeights.findIndex(p => p.name === name);
+    // const areaWeight = { ...props.srcWeights[areaIndex] };
+    //
+    // areaWeight.value = event.target.value / 100.0;
+    //
+    // let weights = [...props.srcWeights];
+    // weights[areaIndex] = areaWeight;
+    //
+    // props.setSimulationParameters({
+    //   srcWeights: weights,
+    //   dstWeights: props.dstWeights,
+    //   vehicleNumber: 9500,
+    //   vehicleDistribution: [],
+    //   weatherScenario: 0
+    // })
 
-    areaWeight.value = event.target.value / 100.0;
-
-    let weights = [...props.dstWeights];
-    weights[areaIndex] = areaWeight;
-
-    props.setSimulationParameters({
-      srcWeights: props.srcWeights,
-      dstWeights: weights,
-      vehicleNumber: 9500,
-      vehicleDistribution: [],
-      weatherScenario: 0
-    })
+    // const weights = {...props.dstWeights};
+    // weights[areaName] = event.target.value / 100.0;
+    // console.log("weights");
+    // console.log(weights);
+    // props.setSimulationParameters({
+    //   srcWeights: props.srcWeights,
+    //   dstWeights: weights,
+    //   vehicleNumber: 9500,
+    //   vehicleDistribution: [],
+    //   weatherScenario: 0,
+    //   timesteps: 10800
+    // })
   };
 
   // const srcSum = parseInt(srcWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100);
@@ -113,8 +122,9 @@ function DrawerContent(props) {
       <Divider />
       <Areas expanded={state.expanded}
              areas={props.srcWeights}
+             weightType='src'
              id="srcPanel"
-             handleWeightChange={handleSrcWeightChange}
+             handleWeightChange={handleWeightChange}
              handlePanelChange={handlePanelChange}
              title="Area Weights - Source"
              // sum={srcSum}
@@ -123,8 +133,9 @@ function DrawerContent(props) {
       <Divider/>
       <Areas expanded={state.expanded}
              areas={props.dstWeights}
+             weightType='dst'
              id="dstPanel"
-             handleWeightChange={handleDstWeightChange}
+             handleWeightChange={handleWeightChange}
              handlePanelChange={handlePanelChange}
              title="Area Weights - Destination"
              // sum={dstSum}
@@ -145,32 +156,6 @@ function DrawerContent(props) {
           Start Simulation
         </Button>
       </div>
-
-      {/*<ExpansionPanel>*/}
-        {/*<ExpansionPanelSummary>*/}
-          {/*<div>*/}
-            {/*<Typography variant="h6">Upload Road Network File</Typography>*/}
-            {/*<Typography variant="caption">Default: Kirchheim OSM</Typography>*/}
-          {/*</div>*/}
-          {/*<div>*/}
-            {/*<input*/}
-              {/*accept="application/*"*/}
-              {/*className={classes.input}*/}
-              {/*id="contained-button-file"*/}
-              {/*multiple*/}
-              {/*type="file"*/}
-            {/*/>*/}
-            {/*<label htmlFor="contained-button-file">*/}
-              {/*<Button variant="contained" component="span" className={classes.button}>*/}
-                {/*Choose*/}
-              {/*</Button>*/}
-            {/*</label>*/}
-          {/*</div>*/}
-        {/*</ExpansionPanelSummary>*/}
-      {/*</ExpansionPanel>*/}
-
-
-
     </div>
   );
 }

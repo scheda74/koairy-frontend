@@ -64,8 +64,8 @@ export default function Area(props) {
   return (
     <form className={classes.container} noValidate autoComplete="off">
       {/*{sliders}*/}
-      {props.areas.map(area => {
-        const formattedName = area.name
+      {Object.keys(props.areas).map(areaName => {
+        const formattedName = areaName
           .replace(/_/g, ' ')
           .split(' ')
           .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
@@ -77,11 +77,11 @@ export default function Area(props) {
             endAdornment: <InputAdornment position="end">%</InputAdornment>,
             inputProps: { min: "0", max: "100", step: "1" }
           }}
-          key={area.name}
-          id={area.name}
+          key={areaName}
+          id={areaName}
           helperText={formattedName}
-          value={parseInt(area.value * 100).toString()}
-          onChange={event => props.handleWeightChange(event, area.name)}
+          value={parseInt(props.areas[areaName] * 100).toString()}
+          onChange={event => props.handleWeightChange(event, props.weightType, areaName)}
           type="number"
           margin="normal" />
       })}
