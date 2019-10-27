@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   },
   content: {
     width: '100vw',
-    height: '100vh',
+    // height: '100vh',
     marginTop: '64px'
   }
 }));
@@ -54,7 +54,6 @@ export default function App() {
           handleOpen={handleDrawerOpen} />
         <main className={classes.content}>
           {router}
-          {/*<DeviceMap points={points}/>*/}
         </main>
         <CustomDrawer
           open={open}
