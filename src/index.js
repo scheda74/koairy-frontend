@@ -24,6 +24,41 @@ const theme = createMuiTheme({
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
+  {
+    emissions: {},
+    simulation: {
+      isFetching: false,
+      didInvalidate: false,
+      weatherScenario: 0,
+      vehicleDistribution: [],
+      srcWeights: {
+      'aschheim_west': 0.1,
+        'ebersberg_east': 0.37,
+        'feldkirchen_west': 0.1,
+        'heimstetten_industrial_1': 0.01,
+        'heimstetten_industrial_2': 0.01,
+        'heimstetten_residential': 0.18,
+        'kirchheim_industrial_east': 0.01,
+        'kirchheim_industrial_west': 0.01,
+        'kirchheim_residential': 0.16,
+        'unassigned_edges': 0.05
+      },
+      dstWeights: {
+        'aschheim_west': 0.16,
+          'ebersberg_east': 0.07,
+          'feldkirchen_west': 0.16,
+          'heimstetten_industrial_1': 0.14,
+          'heimstetten_industrial_2': 0.14,
+          'heimstetten_residential': 0.06,
+          'kirchheim_industrial_east': 0.06,
+          'kirchheim_industrial_west': 0.11,
+          'kirchheim_residential': 0.05,
+          'unassigned_edges': 0.05
+      },
+      vehicleNumber: 9500,
+      timeSteps: 10800
+    }
+  },
   composeEnhancers(
     applyMiddleware(
       thunkMiddleware, // lets us dispatch() functions
@@ -45,11 +80,11 @@ ReactDOM.render(
 );
 
 store
-  .dispatch(fetchEmissionsIfNeeded(''))
+  .dispatch(fetchEmissionsIfNeeded())
   .then(() => console.log(store.getState()));
-store
-  .dispatch(fetchTrafficIfNeeded(''))
-  .then(() => console.log(store.getState()));
+// store
+//   .dispatch(fetchTrafficIfNeeded(''))
+//   .then(() => console.log(store.getState()));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
