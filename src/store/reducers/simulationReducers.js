@@ -75,7 +75,7 @@ export function simulation(
         srcWeights: action.srcWeights,
         dstWeights: action.dstWeights,
         vehicleNumber: action.vehicleNumber,
-        timesteps: action.timesteps
+        timeSteps: action.timeSteps
       });
     // case START_SIMULATION:
     //   return Object.assign({}, state, {

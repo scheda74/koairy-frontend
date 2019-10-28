@@ -15,7 +15,8 @@ export function setSimulationParameter(params) {
     vehicleDistribution: params.vehicleDistribution,
     srcWeights: params.srcWeights,
     dstWeights: params.dstWeights,
-    vehicleNumber: params.vehicleNumber
+    vehicleNumber: params.vehicleNumber,
+    timeSteps: params.timeSteps
   }
 }
 

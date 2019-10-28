@@ -56,7 +56,7 @@ const store = createStore(
           'unassigned_edges': 0.05
       },
       vehicleNumber: 9500,
-      timesteps: 10800
+      timeSteps: 10800
     }
   },
   composeEnhancers(

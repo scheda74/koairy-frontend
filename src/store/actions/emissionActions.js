@@ -30,6 +30,7 @@ export function requestEmissions(params) {
 }
 
 export function receiveEmissions(params, json) {
+  console.log("Emissions received");
   return {
     type: RECEIVE_EMISSIONS,
     emissions: json,
