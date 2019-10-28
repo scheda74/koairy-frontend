@@ -54,7 +54,6 @@ export class DeviceMap extends PureComponent {
   render() {
     console.log("[MAP] render");
     const position = [this.state.lat, this.state.lng];
-
       const gradient = {
           0.0: '#78bc6a',
           0.25: '#bbcf4c',
@@ -62,7 +61,6 @@ export class DeviceMap extends PureComponent {
           0.75: '#f29308',
           1.0: '#950019'
       };
-      // console.log(points);
       return (
         <div>
           <Overlay
@@ -89,7 +87,10 @@ export class DeviceMap extends PureComponent {
               <HeatMap
                 // fitBoundsOnLoad
                 // fitBoundsOnUpdate
-                points={Object.values(this.props.emissions).map(value => [value.lng, value.lat, value.CAQI / 100])}
+                points={Object.values(this.props.emissions).map(value => {
+                  // console.log(value);
+                  return [value['lng'], value['lat'], value['CAQI'] / 100]
+                })}
                 longitudeExtractor={m => m[0]}
                 latitudeExtractor={m => m[1]}
                 intensityExtractor={m => parseFloat(m[2])}

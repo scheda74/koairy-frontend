@@ -8,6 +8,7 @@ import {
   RECEIVE_STATISTICS
 } from './actionTypes';
 import { setSimulationParameter } from './simulationActions';
+import { apiUrl, getCaqi } from '../../config';
 
 const header = new Headers({
   'Content-Type': 'application/json',
@@ -29,10 +30,8 @@ export function requestEmissions(params) {
 }
 
 export function receiveEmissions(params, json) {
-  // console.log(json);
   return {
     type: RECEIVE_EMISSIONS,
-    params,
     emissions: json,
     receivedAt: Date.now()
   }
@@ -42,9 +41,8 @@ export function fetchEmissions(params) {
   return function(dispatch) {
 
     dispatch(requestEmissions(params));
-    // dispatch(setSimulationParameter(params));
 
-    return fetch('http://localhost:5000/get/caqi', { headers: header, method: 'POST', body: params })
+    return fetch(apiUrl + getCaqi, { headers: header, method: 'POST', body: JSON.stringify(params) })
       .then(response => response.json(),
           error => console.log('An error occurred', error))
       .then(json => dispatch(receiveEmissions(params, json)))
@@ -52,7 +50,7 @@ export function fetchEmissions(params) {
   }
 }
 
-function shouldFetchEmissions(state, params) {
+function shouldFetchEmissions(state) {
   const emissions = state.emissions.data;
   // console.log(emissions);
   if (!emissions) {
@@ -64,12 +62,14 @@ function shouldFetchEmissions(state, params) {
   }
 }
 
-export function fetchEmissionsIfNeeded(params) {
+export function fetchEmissionsIfNeeded() {
   return (dispatch, getState) => {
-    if (shouldFetchEmissions(getState(), params)) {
+    if (shouldFetchEmissions(getState())) {
       // Dispatch a thunk from thunk!
       console.log("fetching data now...");
-      return dispatch(fetchEmissions(params))
+      const state = getState();
+      // console.log(state);
+      return dispatch(fetchEmissions(state.simulation))
     } else {
       // Let the calling code know there's nothing to wait for.
       return Promise.resolve()

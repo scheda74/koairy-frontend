@@ -26,7 +26,7 @@
 
 import {
   REQUEST_SIMULATION,
-  SET_SIMULATION_PARAMETERS
+  SET_SIMULATION_PARAMETERS, START_SIMULATION
 } from '../actions/actionTypes';
 
 export function simulation(
@@ -74,8 +74,13 @@ export function simulation(
         vehicleDistribution: action.vehicleDistribution,
         srcWeights: action.srcWeights,
         dstWeights: action.dstWeights,
-        vehicleNumber: action.vehicleNumber
+        vehicleNumber: action.vehicleNumber,
+        timesteps: action.timesteps
       });
+    // case START_SIMULATION:
+    //   return Object.assign({}, state, {
+    //
+    //   })
     default:
       return state;
   }

@@ -9,8 +9,7 @@ export function emissions(
   state = {
     isFetching: false,
     didInvalidate: false,
-    data: null
-  }, action) {
+    }, action) {
   switch (action.type) {
     case INVALIDATE_EMISSIONS:
       return Object.assign({}, state, {
@@ -25,7 +24,7 @@ export function emissions(
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        data: action.emissions,
+        data: JSON.parse(action.emissions),
         lastUpdated: action.receivedAt
       });
     default:

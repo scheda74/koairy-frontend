@@ -13,7 +13,7 @@ import Vehicles from './Vehicles/Vehicles';
 import Typography from '@material-ui/core/Typography';
 import connect from 'react-redux/es/connect/connect';
 import { DeviceMap } from '../../Map/DeviceMap';
-import { setSimulationParameter } from '../../../store/actions/simulationActions';
+import { setSimulationParameter, startSimulation } from '../../../store/actions/simulationActions';
 
 const useStyles = makeStyles(theme => ({
   drawerHeader: {
@@ -152,7 +152,20 @@ function DrawerContent(props) {
       <Divider />
 
       <div className={classes.buttonContainer}>
-        <Button variant="contained" size="large" color="primary" className={classes.margin}>
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          className={classes.margin}
+          onClick={() => props.startSimulationWith({
+            srcWeights: props.srcWeights,
+            dstWeights: props.dstWeights,
+            vehicleNumber: 9500,
+            vehicleDistribution: [],
+            weatherScenario: 0,
+            timesteps: 10800
+          })}
+        >
           Start Simulation
         </Button>
       </div>
@@ -169,7 +182,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSimulationParameters: (params) => dispatch(setSimulationParameter(params))
+    setSimulationParameters: (params) => dispatch(setSimulationParameter(params)),
+    startSimulationWith: (params) => dispatch(startSimulation(params))
   }
 };
 
