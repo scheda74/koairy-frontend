@@ -32,7 +32,7 @@ export function startSimulation(params) {
 
     dispatch(requestSimulation(params));
 
-    return fetch(apiUrl + getCaqi,{
+    return fetch(apiUrl + startSim,{
       method: 'POST',
       headers: header,
       body: JSON.stringify(params)
