@@ -1,6 +1,6 @@
-import { REQUEST_SIMULATION, SET_SIMULATION_PARAMETERS } from './actionTypes';
+import { RECEIVE_PREDICTION, REQUEST_PREDICTION, REQUEST_SIMULATION, SET_SIMULATION_PARAMETERS } from './actionTypes';
 import { receiveTraffic, requestTraffic } from './trafficActions';
-import { apiUrl, getCaqi, startSim } from '../../config';
+import { apiUrl, getCaqi, startPrediction, startSim } from '../../config';
 import { receiveEmissions } from './emissionActions';
 
 const header = new Headers({
@@ -40,6 +40,36 @@ export function startSimulation(params) {
       .then(response => response.json(),
         error => console.log('An error occurred', error))
       .then(json => dispatch(receiveEmissions(params, json)))
+      .catch(error => console.log('An error occurred', error))
+  }
+}
+
+
+export function requestPrediction(params) {
+  return {
+    type: REQUEST_PREDICTION,
+    params
+  }
+}
+
+export function receivePrediction(params, json) {
+  console.log(json);
+  return {
+    type: RECEIVE_PREDICTION,
+    prediction: json,
+    receivedAt: Date.now()
+  }
+}
+
+export function fetchPrediction(params) {
+  return function(dispatch) {
+
+    dispatch(requestPrediction(params));
+
+    return fetch(apiUrl + startPrediction, { headers: header, method: 'POST', body: JSON.stringify(params) })
+      .then(response => response.json(),
+        error => console.log('An error occurred', error))
+      .then(json => dispatch(receivePrediction(params, json)))
       .catch(error => console.log('An error occurred', error))
   }
 }

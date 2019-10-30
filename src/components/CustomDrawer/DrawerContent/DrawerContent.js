@@ -13,7 +13,7 @@ import Vehicles from './Vehicles/Vehicles';
 import Typography from '@material-ui/core/Typography';
 import connect from 'react-redux/es/connect/connect';
 import { DeviceMap } from '../../Map/DeviceMap';
-import { setSimulationParameter, startSimulation } from '../../../store/actions/simulationActions';
+import { fetchPrediction, setSimulationParameter, startSimulation } from '../../../store/actions/simulationActions';
 import General from './General/General';
 
 const useStyles = makeStyles(theme => ({
@@ -146,7 +146,8 @@ function DrawerContent(props) {
           size="large"
           color="primary"
           className={classes.margin}
-          onClick={() => props.startSimulationWith(props.params)}
+          // onClick={() => props.startSimulationWith(props.params)}
+          onClick={() => props.startPrediction(props.params)}
         >
           Start Simulation
         </Button>
@@ -171,7 +172,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setSimulationParameters: (params) => dispatch(setSimulationParameter(params)),
-    startSimulationWith: (params) => dispatch(startSimulation(params))
+    startSimulationWith: (params) => dispatch(startSimulation(params)),
+    startPrediction: (params) => dispatch(fetchPrediction(params))
   }
 };
 

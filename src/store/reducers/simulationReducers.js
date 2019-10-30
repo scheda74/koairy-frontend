@@ -25,6 +25,8 @@
 // ],
 
 import {
+  RECEIVE_PREDICTION,
+  REQUEST_PREDICTION,
   REQUEST_SIMULATION,
   SET_SIMULATION_PARAMETERS, START_SIMULATION
 } from '../actions/actionTypes';
@@ -76,6 +78,17 @@ export function simulation(
         dstWeights: action.dstWeights,
         vehicleNumber: action.vehicleNumber,
         timeSteps: action.timeSteps
+      });
+    case REQUEST_PREDICTION:
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      });
+    case RECEIVE_PREDICTION:
+      return Object.assign({}, state, {
+        isFetching: false,
+        prediction: action.prediction,
+        lastUpdated: action.receivedAt
       });
     // case START_SIMULATION:
     //   return Object.assign({}, state, {
