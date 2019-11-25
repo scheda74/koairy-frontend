@@ -1,18 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import { Link } from 'react-router-dom';
 import { Cloud, CloudOff, Layers, LayersClear } from '@material-ui/icons';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Area from '../../CustomDrawer/DrawerContent/Areas/Area/Area';
 
 const useStyles = makeStyles(() => ({
   overlayContainer: {

@@ -1,11 +1,8 @@
 import React from 'react';
-import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
-
-import CustomDrawer from '../components/CustomDrawer/CustomDrawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import CustomToolbar from '../components/CustomToolbar/CustomToolbar';
-import Welcome from './views/Welcome/Welcome';
 import Comparison from './views/Comparison/Comparison';
 import MapContainer from './views/MapContainer/MapContainer';
 import Analysis from './views/Analysis/Analysis';
@@ -37,7 +34,8 @@ export default function App() {
 
   const router = (
     <Switch>
-      <Route exact path="/" component={Welcome} />
+      {/*<Route exact path="/" component={Welcome} />*/}
+      <Route exact path="/" component={MapContainer} />
       <Route exact path="/map" component={MapContainer} />
       <Route exact path="/compare" component={Comparison} />
       <Route exact path="/analysis" component={Analysis} />
@@ -55,9 +53,10 @@ export default function App() {
         <main className={classes.content}>
           {router}
         </main>
-        <CustomDrawer
-          open={open}
-          handleClose={handleDrawerClose} />
+        {/*<CustomDrawer*/}
+          {/*open={open}*/}
+          {/*handleClose={handleDrawerClose} />*/}
+          {/*<CustomModal open={open} handleClose={handleDrawerClose} handleOpen={handleDrawerOpen} />*/}
       </Router>
     </div>
   )

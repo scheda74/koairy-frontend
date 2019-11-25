@@ -5,7 +5,6 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Typography from '@material-ui/core/Typography';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -15,6 +14,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
+    justifyContent: 'space-around',
   },
   formContainer: {
     display: 'flex',

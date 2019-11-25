@@ -28,14 +28,26 @@ import {
   RECEIVE_PREDICTION,
   REQUEST_PREDICTION,
   REQUEST_SIMULATION,
-  SET_SIMULATION_PARAMETERS, START_SIMULATION
+  SET_SIMULATION_PARAMETERS
 } from '../actions/actionTypes';
 
 export function simulation(
   state = {
+    vehicleDistribution: {
+      "HBEFA3/PC_D_EU2": 0.007,
+      "HBEFA3/PC_D_EU3": 0.0251,
+      "HBEFA3/PC_D_EU4": 0.0934,
+      "HBEFA3/PC_D_EU5": 0.089,
+      "HBEFA3/PC_D_EU6": 0.1,
+      "HBEFA3/PC_G_EU2": 0.0764,
+      "HBEFA3/PC_G_EU3": 0.0342,
+      "HBEFA3/PC_G_EU4": 0.1907,
+      "HBEFA3/PC_G_EU5": 0.1802,
+      "HBEFA3/PC_G_EU6": 0.163,
+      "HBEFA3/PC_Alternative": 0.02
+    },
     isFetching: false,
     weatherScenario: 0,
-    vehicleDistribution: [],
     srcWeights: {
       'aschheim_west': 0.1,
       'ebersberg_east': 0.37,

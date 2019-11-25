@@ -6,17 +6,13 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Typography from '@material-ui/core/Typography';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles(theme => ({
@@ -27,15 +23,20 @@ const useStyles = makeStyles(theme => ({
   },
   selectContainer: {
     display: 'flex',
+    // justifyContent: 'space-around',
   },
   formContainer: {
     display: 'flex',
-    flexDirection: 'column',
+    // flexDirection: 'column',
     justifyContent: 'space-around',
+    flexWrap: 'wrap'
   },
   formControl: {
     margin: '0.5rem'
-  }
+  },
+  // textField: {
+  //   width: '20%'
+  // }
 }));
 
 export default function WeatherScenarios(props) {
@@ -95,8 +96,8 @@ export default function WeatherScenarios(props) {
               margin="normal" />
             <FormHelperText>Please specify a temperature</FormHelperText>
           </FormControl>
-        </FormGroup>
-        <FormGroup className={classes.formContainer}>
+        {/*</FormGroup>*/}
+        {/*<FormGroup className={classes.formContainer}>*/}
           <FormControl className={classes.formControl}>
             <FormLabel component="legend">Wind Level</FormLabel>
             <Select
