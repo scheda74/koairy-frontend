@@ -6,7 +6,8 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk'
 
 import './index.css';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { MuiThemeProvider } from '@material-ui/core';
+import { theme } from './styles/customTheme';
 
 import rootReducer from './store/reducers/rootReducer';
 
@@ -14,11 +15,6 @@ import App from './container/App';
 import { fetchEmissionsIfNeeded } from './store/actions/emissionActions';
 import { fetchTrafficIfNeeded } from './store/actions/trafficActions';
 
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark',
-  },
-});
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
