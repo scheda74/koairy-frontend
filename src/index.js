@@ -12,6 +12,7 @@ import rootReducer from './store/reducers/rootReducer';
 
 import App from './container/App';
 import { fetchEmissionsIfNeeded } from './store/actions/emissionActions';
+import { fetchTrafficIfNeeded } from './store/actions/trafficActions';
 
 const theme = createMuiTheme({
   palette: {
@@ -28,6 +29,11 @@ const store = createStore(
     simulation: {
       isFetching: false,
       didInvalidate: false,
+      predictionModel: 'lstm',
+      startDate: '2019-08-01',
+      endDate: '2019-11-10',
+      startHour: '0:00',
+      endHour: '23:00',
       weatherScenario: 0,
       vehicleDistribution: {
         "HBEFA3/PC_D_EU2": 0.007,
@@ -93,9 +99,10 @@ ReactDOM.render(
 store
   .dispatch(fetchEmissionsIfNeeded())
   .then(() => console.log(store.getState()));
-// store
-//   .dispatch(fetchTrafficIfNeeded(''))
-//   .then(() => console.log(store.getState()));
+
+store
+  .dispatch(fetchTrafficIfNeeded(''))
+  .then(() => console.log(store.getState()));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -44,7 +44,7 @@ export default function General(props) {
         aria-controls={`${props.id}-content`}
         id={`${props.id}-header`}
       >
-        <Typography className={classes.heading}>General Settings</Typography>
+        <Typography variant="overline" className={classes.heading}>General Simulation Settings</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails className={classes.container}>
         <FormGroup className={classes.formContainer}>

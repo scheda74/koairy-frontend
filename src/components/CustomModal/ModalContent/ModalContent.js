@@ -12,6 +12,7 @@ import Areas from './Areas/Areas';
 import WeatherScenarios from './WeatherScenarios/WeatherScenarios';
 import Vehicles from './Vehicles/Vehicles';
 import General from './General/General';
+import PredictionSettings from './PredictionSettings/PredictionSettings';
 
 const useStyles = makeStyles(theme => ({
   drawerHeader: {
@@ -122,6 +123,11 @@ function ModalContent(props) {
                timeSteps={props.params.timeSteps}
                vehicleNumber={props.params.vehicleNumber}
                id="generalPanel" />
+      <PredictionSettings
+        predictionModel={props.params.predictionModel}
+        expanded={state.expanded}
+        handlePanelChange={handlePanelChange}
+        handleSingleChange={handleSingleChange} />
       <div className={classes.buttonContainer}>
         <Button
           variant="contained"
@@ -156,7 +162,8 @@ const mapStateToProps = (state) => {
       vehicleNumber: state.simulation.vehicleNumber,
       vehicleDistribution: state.simulation.vehicleDistribution,
       timeSteps: state.simulation.timeSteps,
-      weatherScenario: state.simulation.weatherScenario
+      weatherScenario: state.simulation.weatherScenario,
+      predictionModel: state.simulation.predictionModel
     },
   }
 };

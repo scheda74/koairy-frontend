@@ -6,6 +6,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import ModalContent from './ModalContent/ModalContent';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -52,6 +53,7 @@ export default function CustomModal() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
+            <Typography align='center' variant="h5">SIMULATION & PREDICTION SETTINGS</Typography>
             <ModalContent closeModal={handleClose.bind(this)} openModal={handleOpen.bind(this)} />
           </div>
         </Fade>

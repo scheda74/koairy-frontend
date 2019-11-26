@@ -1,4 +1,5 @@
 import { INVALIDATE_TRAFFIC, RECEIVE_TRAFFIC, REQUEST_TRAFFIC } from './actionTypes';
+import { apiUrl, getTraining } from '../../config';
 
 const header = new Headers({
   'Content-Type': 'application/json',
@@ -30,11 +31,23 @@ export function receiveTraffic(params, json) {
 }
 
 export function fetchTraffic(params) {
-  return function(dispatch) {
+  return function(dispatch, getState) {
 
     dispatch(requestTraffic(params));
-
-    return fetch('http://smart-mobility.ge57.spacenet.de/bremicker/measures', { headers: header })
+    const state = getState();
+    let body = {
+      "start_date": state.simulation.startDate,
+      "end_date": state.simulation.endDate,
+      "start_hour": state.simulation.startHour,
+      "end_hour": state.simulation.endHour,
+      "boxID": 672
+    };
+    // return fetch('http://smart-mobility.ge57.spacenet.de/bremicker/measures', { headers: header })
+    //   .then(response => response.json(),
+    //     error => console.log('An error occurred', error))
+    //   .then(json => dispatch(receiveTraffic(params, json)))
+    //   .catch(error => console.log('An error occurred', error))
+    return fetch(apiUrl + getTraining, { headers: header, method: 'POST', body: JSON.stringify(body) })
       .then(response => response.json(),
         error => console.log('An error occurred', error))
       .then(json => dispatch(receiveTraffic(params, json)))

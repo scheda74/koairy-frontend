@@ -44,7 +44,7 @@ export default function Areas(props) {
         aria-controls={`${props.id}-content`}
         id={`${props.id}-header`}
       >
-        <Typography className={classes.heading}>{props.title}</Typography>
+        <Typography variant="overline" className={classes.heading}>{props.title}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <Area areas={props.areas} weightType={props.weightType} handleWeightChange={props.handleWeightChange} />

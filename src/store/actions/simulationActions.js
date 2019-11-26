@@ -1,6 +1,5 @@
 import { RECEIVE_PREDICTION, REQUEST_PREDICTION, REQUEST_SIMULATION, SET_SIMULATION_PARAMETERS } from './actionTypes';
-import { receiveTraffic, requestTraffic } from './trafficActions';
-import { apiUrl, getCaqi, startPrediction, startSim } from '../../config';
+import { apiUrl, startPrediction, startSim } from '../../config';
 import { receiveEmissions } from './emissionActions';
 
 const header = new Headers({
@@ -16,7 +15,12 @@ export function setSimulationParameter(params) {
     srcWeights: params.srcWeights,
     dstWeights: params.dstWeights,
     vehicleNumber: params.vehicleNumber,
-    timeSteps: params.timeSteps
+    timeSteps: params.timeSteps,
+    predictionModel: params.predictionModel,
+    startDate: params.startDate,
+    endDate: params.endDate,
+    startHour: params.startHour,
+    endHour: params.endHour
   }
 }
 

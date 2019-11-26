@@ -1,29 +1,3 @@
-
-// srcWeights: [
-//   {name: 'aschheim_west', value: 0.1},
-//   {name: 'ebersberg_east', value: 0.37},
-//   {name: 'feldkirchen_west', value: 0.1},
-//   {name: 'heimstetten_industrial_1', value: 0.01},
-//   {name: 'heimstetten_industrial_2', value: 0.01},
-//   {name: 'heimstetten_residential', value: 0.18},
-//   {name: 'kirchheim_industrial_east', value: 0.01},
-//   {name: 'kirchheim_industrial_west', value: 0.01},
-//   {name: 'kirchheim_residential', value: 0.16},
-//   {name: 'unassigned_edges', value: 0.05}
-// ],
-//   dstWeights: [
-//   {name: 'aschheim_west', value: 0.16},
-//   {name: 'ebersberg_east', value: 0.07},
-//   {name: 'feldkirchen_west', value: 0.16},
-//   {name: 'heimstetten_industrial_1', value: 0.14},
-//   {name: 'heimstetten_industrial_2', value: 0.14},
-//   {name: 'heimstetten_residential', value: 0.06},
-//   {name: 'kirchheim_industrial_east', value: 0.06},
-//   {name: 'kirchheim_industrial_west', value: 0.11},
-//   {name: 'kirchheim_residential', value: 0.05},
-//   {name: 'unassigned_edges', value: 0.05}
-// ],
-
 import {
   RECEIVE_PREDICTION,
   REQUEST_PREDICTION,
@@ -48,6 +22,11 @@ export function simulation(
     },
     isFetching: false,
     weatherScenario: 0,
+    predictionModel: 'lstm',
+    startDate: '2019-08-01',
+    endDate: '2019-11-10',
+    startHour: '0:00',
+    endHour: '23:00',
     srcWeights: {
       'aschheim_west': 0.1,
       'ebersberg_east': 0.37,
@@ -89,7 +68,12 @@ export function simulation(
         srcWeights: action.srcWeights,
         dstWeights: action.dstWeights,
         vehicleNumber: action.vehicleNumber,
-        timeSteps: action.timeSteps
+        timeSteps: action.timeSteps,
+        predictionModel: action.predictionModel,
+        startDate: action.startDate,
+        endDate: action.endDate,
+        startHour: action.startHour,
+        endHour: action.endHour,
       });
     case REQUEST_PREDICTION:
       return Object.assign({}, state, {

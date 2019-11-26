@@ -36,7 +36,7 @@ export default function Vehicles(props) {
         aria-controls={`${props.id}-content`}
         id={`${props.id}-header`}
       >
-        <Typography className={classes.heading}>Vehicle Classes</Typography>
+        <Typography variant="overline" className={classes.heading}>Vehicle Classes</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <ExpansionPanelDetails className={classes.container}>

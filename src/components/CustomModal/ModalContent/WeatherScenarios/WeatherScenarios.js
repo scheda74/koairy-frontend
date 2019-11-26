@@ -1,7 +1,5 @@
 import React from 'react';
 import { makeStyles, TextField } from '@material-ui/core';
-// import Slider from '@material-ui/core/Slider';
-// import InputAdornment from '@material-ui/core/InputAdornment';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Typography from '@material-ui/core/Typography';
@@ -60,7 +58,7 @@ export default function WeatherScenarios(props) {
         aria-controls={`${props.id}-content`}
         id={`${props.id}-header`}
       >
-        <Typography className={classes.heading}>Meteorology</Typography>
+        <Typography variant="overline" className={classes.heading}>Meteorology</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails className={classes.selectContainer}>
         <FormGroup className={classes.formContainer}>
