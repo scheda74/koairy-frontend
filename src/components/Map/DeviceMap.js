@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import HeatMap from 'react-leaflet-heatmap-layer';
 import './DeviceMap.css';
 import Overlay from './Overlay/Overlay';
-import divWithClassName from 'react-bootstrap/es/utils/divWithClassName';
+import Typography from '@material-ui/core/Typography';
 
 
 export class DeviceMap extends PureComponent {
@@ -94,6 +94,12 @@ export class DeviceMap extends PureComponent {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
+          <Marker position={[48.159129, 11.755278]}>
+            <Popup>
+              <Typography>Heimstetten Residential</Typography>
+              <Typography>142 Fahrzeuge/h</Typography>
+            </Popup>
+          </Marker>
           {this.props.sensors !== undefined ?
             this.props.sensors.map(sensor => {
               console.log(sensor);

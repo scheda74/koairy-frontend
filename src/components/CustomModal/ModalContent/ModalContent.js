@@ -137,7 +137,7 @@ function ModalContent(props) {
           // onClick={() => props.startSimulationWith(props.params)}
           onClick={() => props.closeModal()}
         >
-          Abbrechen
+          Cancel
         </Button>
         <Button
           variant="contained"

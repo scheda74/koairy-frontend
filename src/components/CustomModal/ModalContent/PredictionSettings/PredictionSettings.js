@@ -43,8 +43,8 @@ export default function PredictionSettings(props) {
     endHour: new Date().setHours(23,0,0,0)
   });
 
-  const handleDateChange = (name, event) => {
-    setState({...state, [name]: event.target.value});
+  const handleDateChange = (name, date) => {
+    setState({...state, [name]: date});
   };
 
   return (
@@ -54,7 +54,7 @@ export default function PredictionSettings(props) {
         aria-controls={`${props.id}-content`}
         id={`${props.id}-header`}
       >
-        <Typography variant="overline" className={classes.heading}>General Prediction Settings</Typography>
+        <Typography variant="overline" className={classes.heading}>Prediction Settings - Training Data</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails className={classes.container}>
           <MuiPickersUtilsProvider utils={DateFnsUtils} >
@@ -68,7 +68,7 @@ export default function PredictionSettings(props) {
                 id="date-picker-inline"
                 label="Start Date"
                 value={state.startDate}
-                onChange={(event) => handleDateChange('startDate', event)}
+                onChange={(date) => handleDateChange('startDate', date)}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
@@ -81,7 +81,7 @@ export default function PredictionSettings(props) {
                 id="end-date"
                 label="End Date"
                 value={state.endDate}
-                onChange={(event) => handleDateChange('endDate', event)}
+                onChange={(date) => handleDateChange('endDate', date)}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
@@ -91,7 +91,7 @@ export default function PredictionSettings(props) {
                 id="time-picker"
                 label="Start Time picker"
                 value={state.startHour}
-                onChange={(event) => handleDateChange('startHour', event)}
+                onChange={(date) => handleDateChange('startHour', date)}
                 KeyboardButtonProps={{
                   'aria-label': 'change time',
                 }}
@@ -101,7 +101,7 @@ export default function PredictionSettings(props) {
                 id="time-picker"
                 label="End Time picker"
                 value={state.endHour}
-                onChange={(event) => handleDateChange('endHour', event)}
+                onChange={(date) => handleDateChange('endHour', date)}
                 KeyboardButtonProps={{
                   'aria-label': 'change time',
                 }}

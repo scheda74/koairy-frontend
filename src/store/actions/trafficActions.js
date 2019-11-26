@@ -25,7 +25,7 @@ export function receiveTraffic(params, json) {
   return {
     type: RECEIVE_TRAFFIC,
     params,
-    traffic: json,
+    traffic: JSON.parse(json),
     receivedAt: Date.now()
   }
 }
