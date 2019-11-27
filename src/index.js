@@ -7,7 +7,7 @@ import thunkMiddleware from 'redux-thunk'
 
 import './index.css';
 import { MuiThemeProvider } from '@material-ui/core';
-import { theme } from './styles/customTheme';
+import { darkGreenTheme } from './styles/customTheme';
 
 import rootReducer from './store/reducers/rootReducer';
 
@@ -85,7 +85,7 @@ const target = document.getElementById('root');
 
 ReactDOM.render(
   <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={darkGreenTheme}>
       <App />
     </MuiThemeProvider>
   </Provider>,

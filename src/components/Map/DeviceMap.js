@@ -3,14 +3,13 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { connect } from 'react-redux';
 import HeatMap from 'react-leaflet-heatmap-layer';
 import './DeviceMap.css';
-import Overlay from './Overlay/Overlay';
 import Typography from '@material-ui/core/Typography';
 
 
 export class DeviceMap extends PureComponent {
   state = {
-    lat: 48.169071,
-    lng: 11.756942,
+    lat: 48.175189,
+    lng: 11.755558,
     zoom: 15,
     isTraffic: false,
     isAir: false,
@@ -78,18 +77,18 @@ export class DeviceMap extends PureComponent {
     // });
 
     return (
-      <div>
-        <Overlay
-          toggleTraffic={this.toggleTraffic.bind(this)}
-          toggleAir={this.toggleAir.bind(this)}
-          air={this.state.isAir}
-          traffic={this.state.isTraffic}
-          blurChange={this.onBlurChange.bind(this)}
-          radiusChange={this.onRadiusChange.bind(this)}
-          opacityChange={this.onOpacityChange.bind(this)}
-          maximumChange={this.onMaximumChange.bind(this)}
-        />
-        <Map className="leaflet-container" center={position} zoom={this.state.zoom}>
+      <div className="leaflet-container">
+        {/*<Overlay*/}
+          {/*toggleTraffic={this.toggleTraffic.bind(this)}*/}
+          {/*toggleAir={this.toggleAir.bind(this)}*/}
+          {/*air={this.state.isAir}*/}
+          {/*traffic={this.state.isTraffic}*/}
+          {/*blurChange={this.onBlurChange.bind(this)}*/}
+          {/*radiusChange={this.onRadiusChange.bind(this)}*/}
+          {/*opacityChange={this.onOpacityChange.bind(this)}*/}
+          {/*maximumChange={this.onMaximumChange.bind(this)}*/}
+        {/*/>*/}
+        <Map center={position} zoom={this.state.zoom}>
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'

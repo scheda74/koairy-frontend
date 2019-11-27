@@ -132,7 +132,7 @@ function ModalContent(props) {
         <Button
           variant="contained"
           size="large"
-          color="secondary"
+          color="secondary.dark"
           className={classes.margin}
           // onClick={() => props.startSimulationWith(props.params)}
           onClick={() => props.closeModal()}

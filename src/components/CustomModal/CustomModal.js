@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  icon: {
+    color: 'white'
+  }
 }));
 
 export default function CustomModal() {
@@ -36,7 +39,7 @@ export default function CustomModal() {
 
   return (
     <div>
-      <IconButton onClick={handleOpen}>
+      <IconButton className={classes.icon} onClick={handleOpen}>
         <TuneIcon />
       </IconButton>
       <Modal

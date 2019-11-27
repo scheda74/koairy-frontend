@@ -50,7 +50,7 @@ export default function CustomToolbar(props) {
 
   return (
     <AppBar
-      color="secondary"
+      color="primary"
       position="fixed"
       className={clsx(classes.appBar, {
         [classes.appBarShift]: props.open,

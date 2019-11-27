@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import CustomToolbar from '../components/CustomToolbar/CustomToolbar';
 import Comparison from './views/Comparison/Comparison';
 import MapContainer from './views/MapContainer/MapContainer';
 import Analysis from './views/Analysis/Analysis';
+import Prediction from './views/Prediction/Prediction';
 
 
 const useStyles = makeStyles(() => ({
@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
   content: {
     width: '100vw',
     // height: '100vh',
-    marginTop: '64px'
+    // marginTop: '64px'
   }
 }));
 
@@ -36,6 +36,7 @@ export default function App() {
     <Switch>
       {/*<Route exact path="/" component={Welcome} />*/}
       <Route exact path="/" component={MapContainer} />
+      <Route exact path="/prediction" component={Prediction} />
       <Route exact path="/map" component={MapContainer} />
       <Route exact path="/compare" component={Comparison} />
       <Route exact path="/analysis" component={Analysis} />
@@ -47,9 +48,9 @@ export default function App() {
     <div className={classes.root}>
       <CssBaseline />
       <Router>
-        <CustomToolbar
-          open={open}
-          handleOpen={handleDrawerOpen} />
+        {/*<CustomToolbar*/}
+          {/*open={open}*/}
+          {/*handleOpen={handleDrawerOpen} />*/}
         <main className={classes.content}>
           {router}
         </main>

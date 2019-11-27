@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import { Cloud, CloudOff, Layers, LayersClear } from '@material-ui/icons';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/core/SvgIcon/SvgIcon';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import { Settings } from '@material-ui/icons';
+import Popover from '@material-ui/core/Popover';
 
 const useStyles = makeStyles(() => ({
+  settingsContainer: {
+    position: 'fixed',
+    zIndex: '1000 !important',
+    top: '20%',
+    left: '2%',
+    backgroundColor: '#424242',
+    width: '3rem',
+    borderRadius: '32px'
+  },
   overlayContainer: {
     width: '400px',
     position: 'fixed',
@@ -32,12 +38,12 @@ const useStyles = makeStyles(() => ({
     margin: '0.5rem 1rem'
   },
   sliderContainer: {
-    width: '100%',
+    // width: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    margin: '1rem'
+    margin: '2rem 1rem 1rem 1rem',
   },
   slider: {
     display: 'flex',
@@ -49,6 +55,15 @@ const useStyles = makeStyles(() => ({
 
 export default function Overlay(props) {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const open = Boolean(anchorEl);
+  const handleClose = () => setAnchorEl(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
   const sliders = (
     <div className={classes.sliderContainer}>
       <div className={classes.slider}>
@@ -57,7 +72,7 @@ export default function Overlay(props) {
         </Typography>
         <Slider
           onChangeCommitted={(event, value) => props.blurChange(value)}
-          color="secondary"
+          color="primary"
           style={{width: '200px'}}
           defaultValue={4}
           // getAriaValueText={}
@@ -75,7 +90,7 @@ export default function Overlay(props) {
         </Typography>
         <Slider
           onChangeCommitted={(event, value) => props.radiusChange(value)}
-          color="secondary"
+          color="primary"
           style={{width: '200px'}}
           defaultValue={10}
           // getAriaValueText={}
@@ -93,7 +108,7 @@ export default function Overlay(props) {
         </Typography>
         <Slider
           onChangeCommitted={(event, value) => props.opacityChange(value)}
-          color="secondary"
+          color="primary"
           style={{width: '200px'}}
           defaultValue={0.2}
           // getAriaValueText={}
@@ -111,7 +126,7 @@ export default function Overlay(props) {
         </Typography>
         <Slider
           onChangeCommitted={(event, value) => props.maximumChange(value)}
-          color="secondary"
+          color="primary"
           style={{width: '200px'}}
           defaultValue={100}
           // getAriaValueText={}
@@ -126,27 +141,78 @@ export default function Overlay(props) {
     </div>
   );
 
+
   return (
-    <div className={classes.overlayContainer}>
-      <div className={classes.buttonContainer}>
-        <IconButton
-          disabled={props.air}
-          color="inherit"
-          aria-label="toggle traffic"
-          edge="end"
-          onClick={props.toggleTraffic}
-        >
-          {props.traffic ? <LayersClear /> : <Layers />}
-        </IconButton>
-        <IconButton
-          disabled={props.traffic}
-          color="inherit"
-          aria-label="toggle air"
-          edge="end"
-          onClick={props.toggleAir}
-        >
-          {props.air ? <CloudOff /> : <Cloud />}
-        </IconButton>
+    <div className={classes.settingsContainer}>
+      <IconButton
+        disabled={props.air}
+        color="inherit"
+        aria-label="toggle traffic"
+        edge="end"
+        onClick={handleClick}
+      >
+        <Settings />
+      </IconButton>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        {sliders}
+      </Popover>
+    </div>
+  );
+
+  // return (
+    {/*<div className={classes.overlayContainer}>*/}
+      {/*<div className={classes.buttonContainer}>*/}
+        {/*<IconButton*/}
+          {/*disabled={props.air}*/}
+          {/*color="inherit"*/}
+          {/*aria-label="toggle traffic"*/}
+          {/*edge="end"*/}
+          {/*onClick={props.toggleTraffic}*/}
+        {/*>*/}
+          {/*{props.traffic ? <LayersClear /> : <Layers />}*/}
+        {/*</IconButton>*/}
+        {/*<IconButton*/}
+          {/*disabled={props.traffic}*/}
+          {/*color="inherit"*/}
+          {/*aria-label="toggle air"*/}
+          {/*edge="end"*/}
+          {/*onClick={props.toggleAir}*/}
+        {/*>*/}
+          {/*{props.air ? <CloudOff /> : <Cloud />}*/}
+        {/*</IconButton>*/}
+        {/*<IconButton*/}
+          {/*disabled={props.air}*/}
+          {/*color="inherit"*/}
+          {/*aria-label="toggle traffic"*/}
+          {/*edge="end"*/}
+          {/*onClick={togglePopOver}*/}
+        {/*>*/}
+          {/*{props.traffic ? <Settings /> : <Settings />}*/}
+        {/*</IconButton>*/}
+        {/*<Popover*/}
+          {/*anchorOrigin={{*/}
+            {/*vertical: 'top',*/}
+            {/*horizontal: 'right',*/}
+          {/*}}*/}
+          {/*transformOrigin={{*/}
+            {/*vertical: 'top',*/}
+            {/*horizontal: 'left',*/}
+          {/*}}*/}
+        {/*>*/}
+          {/*{sliders}*/}
+        {/*</Popover>*/}
         {/*<FormControlLabel*/}
           {/*control={<Switch className={classes.switch} checked={props.traffic} onChange={props.toggleTraffic} />}*/}
           {/*label="Traffic"*/}
@@ -155,18 +221,18 @@ export default function Overlay(props) {
           {/*control={<Switch className={classes.switch} checked={props.air} onChange={props.toggleAir} />}*/}
           {/*label="Emissions"*/}
         {/*/>*/}
-      </div>
-      <ExpansionPanel style={{backgroundColor: 'inherit !important'}} expanded={props.traffic || props.air} onChange={() => console.log("this changed")}>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='content'
-          id='header'>
-          <Typography variant='h6'>HeatMap Settings</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          {sliders}
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    </div>
-  )
+      {/*</div>*/}
+      {/*<ExpansionPanel style={{backgroundColor: 'inherit !important'}} expanded={props.traffic || props.air} onChange={() => console.log("this changed")}>*/}
+        {/*<ExpansionPanelSummary*/}
+          {/*expandIcon={<ExpandMoreIcon />}*/}
+          {/*aria-controls='content'*/}
+          {/*id='header'>*/}
+          {/*<Typography variant='h6'>HeatMap Settings</Typography>*/}
+        {/*</ExpansionPanelSummary>*/}
+        {/*<ExpansionPanelDetails>*/}
+          {/*{sliders}*/}
+        {/*</ExpansionPanelDetails>*/}
+      {/*</ExpansionPanel>*/}
+    {/*</div>*/}
+  // )
 }

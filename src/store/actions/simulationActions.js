@@ -60,7 +60,7 @@ export function receivePrediction(params, json) {
   console.log(json);
   return {
     type: RECEIVE_PREDICTION,
-    prediction: json,
+    prediction: JSON.parse(json),
     receivedAt: Date.now()
   }
 }
