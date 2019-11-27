@@ -29,6 +29,7 @@ import Vehicles from './Vehicles/Vehicles';
 import WeatherScenarios from './WeatherScenarios/WeatherScenarios';
 import PredictionSettings from './PredictionSettings/PredictionSettings';
 import { WarningButton } from '../../styles/customComponents';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
@@ -287,25 +288,30 @@ function Settings(props) {
       </Stepper>
       <div>
         {state.activeStep === steps.length ? (
-          <div>
-            <Typography align='center' className={classes.instructions}>
-              All steps completed - you&apos;re done!
-            </Typography>
-            <Typography align='center' className={classes.instructions}>
-              Starting the simulation and prediction may take a while!
-            </Typography>
-            <div className={classes.buttonContainer}>
-              <Button variant='contained' onClick={handleReset} className={classes.button}>
-                Reset
-              </Button>
-              <Button variant="contained"
-                      color="primary"
-                      onClick={() => props.startPrediction(props)}
-                      className={classes.button}>
-                START
-              </Button>
+          props.isFetching ?
+            <div style={{margin: '2rem', textAlign: 'center'}} >
+              <CircularProgress color="primary" />
             </div>
-          </div>
+            :
+            <div>
+              <Typography align='center' className={classes.instructions}>
+                All steps completed - you&apos;re done!
+              </Typography>
+              <Typography align='center' className={classes.instructions}>
+                Starting the simulation and prediction may take a while!
+              </Typography>
+              <div className={classes.buttonContainer}>
+                <Button variant='contained' onClick={handleReset} className={classes.button}>
+                  Reset
+                </Button>
+                <Button variant="contained"
+                        color="primary"
+                        onClick={() => props.startPrediction(props)}
+                        className={classes.button}>
+                  START
+                </Button>
+              </div>
+            </div>
         ) : (
           <div className={classes.content}>
             {/*<Typography className={classes.instructions}>{getStepContent(state.activeStep)}</Typography>*/}

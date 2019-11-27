@@ -34,8 +34,7 @@ export default function App() {
 
   const router = (
     <Switch>
-      {/*<Route exact path="/" component={Welcome} />*/}
-      <Route exact path="/" component={MapContainer} />
+      <Route exact path="/" component={Prediction} />
       <Route exact path="/prediction" component={Prediction} />
       <Route exact path="/map" component={MapContainer} />
       <Route exact path="/compare" component={Comparison} />

@@ -10,7 +10,7 @@ export class DeviceMap extends PureComponent {
   state = {
     lat: 48.175189,
     lng: 11.755558,
-    zoom: 15,
+    zoom: 14,
     isTraffic: false,
     isAir: false,
     blur: 4,

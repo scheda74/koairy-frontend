@@ -12,8 +12,6 @@ import { darkGreenTheme } from './styles/customTheme';
 import rootReducer from './store/reducers/rootReducer';
 
 import App from './container/App';
-import { fetchEmissionsIfNeeded } from './store/actions/emissionActions';
-import { fetchTrafficIfNeeded } from './store/actions/trafficActions';
 
 
 /* eslint-disable no-underscore-dangle */
@@ -95,13 +93,13 @@ ReactDOM.render(
   target
 );
 
-store
-  .dispatch(fetchEmissionsIfNeeded())
-  .then(() => console.log(store.getState()));
-
-store
-  .dispatch(fetchTrafficIfNeeded(''))
-  .then(() => console.log(store.getState()));
+// store
+//   .dispatch(fetchEmissionsIfNeeded())
+//   .then(() => console.log(store.getState()));
+//
+// store
+//   .dispatch(fetchTrafficIfNeeded(''))
+//   .then(() => console.log(store.getState()));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

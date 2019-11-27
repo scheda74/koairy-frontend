@@ -10,6 +10,7 @@ import BambooIcon from '../../../Icons/Bamboo';
 import KoalaOutlinedIcon from '../../../Icons/KoalaOutlined';
 import { fetchPrediction, setSimulationParameter, startSimulation } from '../../../store/actions/simulationActions';
 import connect from 'react-redux/es/connect/connect';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(() => ({
   mainContainer: {
@@ -47,7 +48,8 @@ const useStyles = makeStyles(() => ({
   introduction: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    alignItems: 'center'
   },
   mapContainer: {
     // width: '100vw'
@@ -140,16 +142,21 @@ function Prediction(props) {
               <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
               <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>
             </div>
-            <div className={classes.buttonContainer}>
-              <Button
-                onClick={() => props.startPrediction(props.params)}
-                className={classes.button}
-                color='primary'
-                variant='contained'>
-                Start Predicting!
-              </Button>
-              <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>
-            </div>
+            {props.isFetching ? (
+              <CircularProgress color="primary" />
+            ) : (
+              <div className={classes.buttonContainer}>
+                <Button
+                  onClick={() => props.startPrediction(props.params)}
+                  className={classes.button}
+                  color='primary'
+                  variant='contained'>
+                  Start Predicting!
+                </Button>
+                <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>
+              </div>
+            )}
+
           </div>
           <Icon className={classes.icon}><BambooIcon /></Icon>
         </div>
@@ -161,15 +168,16 @@ function Prediction(props) {
 const mapStateToProps = (state) => {
     return {
       params: state.simulation,
-      prediction: state.prediction
+      prediction: state.prediction,
+      isFetching: state.simulation.isFetching
     }
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSimulationParameters: (state) => dispatch(setSimulationParameter(state.simulation)),
-    startSimulationWith: (state) => dispatch(startSimulation(state.simulation)),
-    startPrediction: (state) => dispatch(fetchPrediction(state.simulation)),
+    setSimulationParameters: (params) => dispatch(setSimulationParameter(params)),
+    startSimulationWith: (params) => dispatch(startSimulation(params)),
+    startPrediction: (params) => dispatch(fetchPrediction(params)),
   }
 };
 

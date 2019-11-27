@@ -54,15 +54,13 @@ export function startSimulation(params) {
 }
 
 
-export function requestPrediction(params) {
+export function requestPrediction() {
   return {
     type: REQUEST_PREDICTION,
-    params
   }
 }
 
 export function receivePrediction(params, json) {
-  console.log(json);
   return {
     type: RECEIVE_PREDICTION,
     prediction: JSON.parse(json),
@@ -70,16 +68,24 @@ export function receivePrediction(params, json) {
   }
 }
 
+export function fetchPredictionUnsuccessful(params, error) {
+  return {
+    type: RECEIVE_PREDICTION
+  }
+}
+
 export function fetchPrediction(params) {
   return function(dispatch) {
 
-    dispatch(requestPrediction(params));
+    dispatch(requestPrediction());
+
+    // console.log(params)
 
     return fetch(apiUrl + startPrediction, { headers: header, method: 'POST', body: JSON.stringify(params) })
       .then(response => response.json(),
         error => console.log('An error occurred', error))
       .then(json => dispatch(receivePrediction(params, json)))
-      .catch(error => console.log('An error occurred', error))
+      .catch(error => dispatch(fetchPredictionUnsuccessful(params, error)))
   }
 }
 
