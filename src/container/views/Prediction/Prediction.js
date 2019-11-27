@@ -5,9 +5,9 @@ import Settings from '../../../components/Settings/Settings';
 import HeatMapSettings from '../../../components/Settings/HeatMapSettings/HeatMapSettings';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import SettingsIcon from '@material-ui/icons/Settings';
-
+import Icon from '@material-ui/core/Icon';
+import BambooIcon from '../../../Icons/Bamboo';
+import KoalaOutlinedIcon from '../../../Icons/KoalaOutlined';
 
 const useStyles = makeStyles(() => ({
   mainContainer: {
@@ -20,8 +20,32 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     height: '64px'
   },
+  introductionContainer: {
+    // display: 'flex',
+    // justifyContent: 'space-between'
+    flexBasis: '60%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    // margin: '0.5rem auto',
+  },
+  icon: {
+    margin: 'auto',
+    height: '180px',
+    width: '180px',
+    // color: 'white'
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around'
+  },
+  button: {
+    margin: '0.5rem 1rem'
+  },
   introduction: {
-
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around'
   },
   mapContainer: {
     // width: '100vw'
@@ -102,20 +126,25 @@ export default function Prediction() {
         </Card>
       </div>
       <Divider />
-      <div className={classes.settingsContainer}>
-        {state.isActive ? (
+      {state.isActive ? (
+        <div className={classes.settingsContainer}>
           <Settings />
-          ) : (
+        </div>
+        ) : (
+        <div className={classes.introductionContainer}>
+          <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
           <div className={classes.introduction}>
             <Typography variant="h4" align='center'>Welcome to Koairy!</Typography>
             <Typography variant="subtitle1" align='center'>You can simulate emissions and predict air quality</Typography>
-            <Button color='primary' variant='contained'>Start Predicting!</Button>
-            <Button>Start Simulating!</Button>
-            <IconButton><SettingsIcon /></IconButton>
+            <div className={classes.buttonContainer}>
+              <Button className={classes.button} color='primary' variant='contained'>Start Predicting!</Button>
+              <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>
+            </div>
           </div>
-        )}
-
-      </div>
+          <Icon className={classes.icon}><BambooIcon /></Icon>
+        </div>
+      )}
     </div>
+
   )
 }

@@ -288,7 +288,11 @@ function Settings(props) {
             {/*<Typography className={classes.instructions}>{getStepContent(state.activeStep)}</Typography>*/}
             <div className={classes.instructions}>{getStepContent(state.activeStep)}</div>
             <div className={classes.buttonContainer}>
-              <Button type='reset' disabled={state.activeStep === 0} onClick={handleBack} className={classes.button}>
+              <Button color='secondary'
+                      variant="contained"
+                      disabled={state.activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.button}>
                 Back
               </Button>
               <Button
@@ -299,7 +303,7 @@ function Settings(props) {
               >
                 {state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
               </Button>
-              <WarningButton onClick={handleDefault} error>
+              <WarningButton onClick={handleDefault}>
                 Use Default
               </WarningButton>
             </div>

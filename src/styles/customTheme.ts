@@ -42,7 +42,7 @@ export const darkGreenTheme = createMuiTheme({
             main: "rgba(226, 219, 172, 1)",
             dark: "rgba(176, 169, 125, 1)",
             // contrastText: "rgba(0, 0, 0, 1)"
-            contrastText: "rgba(255, 255, 255, 1)"
+            contrastText: "rgba(0, 0, 0, 0.8)",
         },
         error: {
             light: "rgba(193, 78, 127, 1)",
@@ -67,6 +67,12 @@ export const darkGreenTheme = createMuiTheme({
             root: {
                 "&$disabled": {
                     color: "rgba(255, 255, 255, 0.54)"
+                }
+            },
+            containedSecondary: {
+                "&$disabled": {
+                    backgroundColor: "rgba(176, 169, 125, 1)",
+                    color: "rgba(0, 0, 0, 0.54)"
                 }
             }
         },
