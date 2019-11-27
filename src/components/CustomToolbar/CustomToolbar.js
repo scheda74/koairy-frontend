@@ -2,12 +2,12 @@ import React from 'react';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar/AppBar';
 import { Link } from 'react-router-dom';
-import { Map, Compare, Timeline } from '@material-ui/icons';
+import { Compare, Map, Timeline } from '@material-ui/icons';
+import CustomModal from '../CustomModal/CustomModal';
 
 const drawerWidth = 400;
 
@@ -38,10 +38,19 @@ const useStyles = makeStyles(theme => ({
 
 export default function CustomToolbar(props) {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <AppBar
-      color="secondary"
+      color="primary"
       position="fixed"
       className={clsx(classes.appBar, {
         [classes.appBarShift]: props.open,
@@ -83,15 +92,17 @@ export default function CustomToolbar(props) {
             <Timeline />
           </IconButton>
         </Link>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="end"
-          onClick={props.handleOpen}
-          className={clsx(props.open && classes.hide)}
-        >
-          <MenuIcon />
-        </IconButton>
+        {/*<IconButton*/}
+          {/*color="inherit"*/}
+          {/*aria-label="open drawer"*/}
+          {/*edge="end"*/}
+          {/*onClick={handleOpen}*/}
+          {/*className={clsx(props.open && classes.hide)}*/}
+        {/*>*/}
+          {/*<MenuIcon />*/}
+        {/*</IconButton>*/}
+        {/*<Button onClick={handleOpen}>*/}
+        <CustomModal open={open} handleClose={handleClose} handleOpen={handleOpen} />
       </Toolbar>
     </AppBar>
   )

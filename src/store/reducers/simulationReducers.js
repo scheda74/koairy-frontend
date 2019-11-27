@@ -1,39 +1,32 @@
-
-// srcWeights: [
-//   {name: 'aschheim_west', value: 0.1},
-//   {name: 'ebersberg_east', value: 0.37},
-//   {name: 'feldkirchen_west', value: 0.1},
-//   {name: 'heimstetten_industrial_1', value: 0.01},
-//   {name: 'heimstetten_industrial_2', value: 0.01},
-//   {name: 'heimstetten_residential', value: 0.18},
-//   {name: 'kirchheim_industrial_east', value: 0.01},
-//   {name: 'kirchheim_industrial_west', value: 0.01},
-//   {name: 'kirchheim_residential', value: 0.16},
-//   {name: 'unassigned_edges', value: 0.05}
-// ],
-//   dstWeights: [
-//   {name: 'aschheim_west', value: 0.16},
-//   {name: 'ebersberg_east', value: 0.07},
-//   {name: 'feldkirchen_west', value: 0.16},
-//   {name: 'heimstetten_industrial_1', value: 0.14},
-//   {name: 'heimstetten_industrial_2', value: 0.14},
-//   {name: 'heimstetten_residential', value: 0.06},
-//   {name: 'kirchheim_industrial_east', value: 0.06},
-//   {name: 'kirchheim_industrial_west', value: 0.11},
-//   {name: 'kirchheim_residential', value: 0.05},
-//   {name: 'unassigned_edges', value: 0.05}
-// ],
-
 import {
+  RECEIVE_PREDICTION,
+  REQUEST_PREDICTION,
   REQUEST_SIMULATION,
   SET_SIMULATION_PARAMETERS
 } from '../actions/actionTypes';
 
 export function simulation(
   state = {
+    vehicleDistribution: {
+      "HBEFA3/PC_D_EU2": 0.007,
+      "HBEFA3/PC_D_EU3": 0.0251,
+      "HBEFA3/PC_D_EU4": 0.0934,
+      "HBEFA3/PC_D_EU5": 0.089,
+      "HBEFA3/PC_D_EU6": 0.1,
+      "HBEFA3/PC_G_EU2": 0.0764,
+      "HBEFA3/PC_G_EU3": 0.0342,
+      "HBEFA3/PC_G_EU4": 0.1907,
+      "HBEFA3/PC_G_EU5": 0.1802,
+      "HBEFA3/PC_G_EU6": 0.163,
+      "HBEFA3/PC_Alternative": 0.02
+    },
     isFetching: false,
     weatherScenario: 0,
-    vehicleDistribution: [],
+    predictionModel: 'lstm',
+    startDate: '2019-08-01',
+    endDate: '2019-11-10',
+    startHour: '0:00',
+    endHour: '23:00',
     srcWeights: {
       'aschheim_west': 0.1,
       'ebersberg_east': 0.37,
@@ -74,8 +67,31 @@ export function simulation(
         vehicleDistribution: action.vehicleDistribution,
         srcWeights: action.srcWeights,
         dstWeights: action.dstWeights,
-        vehicleNumber: action.vehicleNumber
+        vehicleNumber: action.vehicleNumber,
+        timeSteps: action.timeSteps,
+        predictionModel: action.predictionModel,
+        startDate: action.startDate,
+        endDate: action.endDate,
+        startHour: action.startHour,
+        endHour: action.endHour,
+        output_key: action.output_key,
+        boxID: action.boxID
       });
+    case REQUEST_PREDICTION:
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      });
+    case RECEIVE_PREDICTION:
+      return Object.assign({}, state, {
+        isFetching: false,
+        prediction: action.prediction,
+        lastUpdated: action.receivedAt
+      });
+    // case START_SIMULATION:
+    //   return Object.assign({}, state, {
+    //
+    //   })
     default:
       return state;
   }

@@ -7,13 +7,13 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import Button from '@material-ui/core/Button';
-import Areas from './Areas/Areas';
-import WeatherScenarios from './WeatherScenarios/WeatherScenarios';
-import Vehicles from './Vehicles/Vehicles';
+import Areas from '../../CustomModal/ModalContent/Areas/Areas';
+import WeatherScenarios from '../../CustomModal/ModalContent/WeatherScenarios/WeatherScenarios';
+import Vehicles from '../../CustomModal/ModalContent/Vehicles/Vehicles';
 import Typography from '@material-ui/core/Typography';
 import connect from 'react-redux/es/connect/connect';
-import { DeviceMap } from '../../Map/DeviceMap';
-import { setSimulationParameter } from '../../../store/actions/simulationActions';
+import { fetchPrediction, setSimulationParameter, startSimulation } from '../../../store/actions/simulationActions';
+import General from '../../CustomModal/ModalContent/General/General';
 
 const useStyles = makeStyles(theme => ({
   drawerHeader: {
@@ -34,20 +34,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function subtractFromArea(areas, name, value) {
-  const filteredIndex = areas.findIndex(p => p.name !== name && p.value >= value);
-  console.log(filteredIndex);
-  if (filteredIndex === -1) {
-    return subtractFromArea(areas, name, value / 2);
-    // return areas;
-  }
-  areas[filteredIndex].value -= value;
-  return areas;
-}
 
-function calcWeightSum(weights) {
-  return weights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0);
-}
+// function subtractFromArea(areas, name, value) {
+//   const filteredIndex = areas.findIndex(p => p.name !== name && p.value >= value);
+//   console.log(filteredIndex);
+//   if (filteredIndex === -1) {
+//     return subtractFromArea(areas, name, value / 2);
+//     // return areas;
+//   }
+//   areas[filteredIndex].value -= value;
+//   return areas;
+// }
+
+// function calcWeightSum(weights) {
+//   return weights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0);
+// }
 
 
 // { srcWeights, dstWeights, setSimulationParameters, closeDrawer }
@@ -69,46 +70,22 @@ function DrawerContent(props) {
     console.log("weights");
     console.log(weights);
     props.setSimulationParameters({
-      srcWeights: weightType === 'src' ? weights : props.srcWeights,
-      dstWeights: weightType === 'dst' ? weights : props.dstWeights,
-      vehicleNumber: 9500,
-      vehicleDistribution: [],
-      weatherScenario: 0,
-      timesteps: 10800
-    })
-
-    // const areaIndex = props.srcWeights.findIndex(p => p.name === name);
-    // const areaWeight = { ...props.srcWeights[areaIndex] };
-    //
-    // areaWeight.value = event.target.value / 100.0;
-    //
-    // let weights = [...props.srcWeights];
-    // weights[areaIndex] = areaWeight;
-    //
-    // props.setSimulationParameters({
-    //   srcWeights: weights,
-    //   dstWeights: props.dstWeights,
-    //   vehicleNumber: 9500,
-    //   vehicleDistribution: [],
-    //   weatherScenario: 0
-    // })
-
-    // const weights = {...props.dstWeights};
-    // weights[areaName] = event.target.value / 100.0;
-    // console.log("weights");
-    // console.log(weights);
-    // props.setSimulationParameters({
-    //   srcWeights: props.srcWeights,
-    //   dstWeights: weights,
-    //   vehicleNumber: 9500,
-    //   vehicleDistribution: [],
-    //   weatherScenario: 0,
-    //   timesteps: 10800
-    // })
+      ...props.params,
+      srcWeights: weightType === 'src' ? weights : props.params.srcWeights,
+      dstWeights: weightType === 'dst' ? weights : props.params.dstWeights,
+    });
+    // vehicleNumber: props.vehicleNumber,
+    //   vehicleDistribution: props.vehicleDistribution,
+    //   weatherScenario: props.weatherScenario,
+    //   timesteps: props.timesteps
   };
 
-  // const srcSum = parseInt(srcWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100);
-  // const dstSum = parseInt(dstWeights.reduce((sum, area) => parseFloat(sum) + parseFloat(area.value), 0) * 100);
+  const handleSingleChange = name => event => {
+    props.setSimulationParameters({
+      ...props.params,
+      [name]: event.target.value
+    });
+  };
 
   return (
     <div>
@@ -121,7 +98,7 @@ function DrawerContent(props) {
       </div>
       <Divider />
       <Areas expanded={state.expanded}
-             areas={props.srcWeights}
+             areas={props.params.srcWeights}
              weightType='src'
              id="srcPanel"
              handleWeightChange={handleWeightChange}
@@ -132,7 +109,7 @@ function DrawerContent(props) {
       />
       <Divider/>
       <Areas expanded={state.expanded}
-             areas={props.dstWeights}
+             areas={props.params.dstWeights}
              weightType='dst'
              id="dstPanel"
              handleWeightChange={handleWeightChange}
@@ -146,13 +123,26 @@ function DrawerContent(props) {
                         handlePanelChange={handlePanelChange}
                         id="vehiclePanel" />
       <Divider />
+
       <WeatherScenarios expanded={state.expanded}
                         handlePanelChange={handlePanelChange}
                         id="weatherPanel" />
       <Divider />
-
+      <General expanded={state.expanded}
+               handlePanelChange={handlePanelChange}
+               handleSingleChange={handleSingleChange}
+               timeSteps={props.params.timeSteps}
+               vehicleNumber={props.params.vehicleNumber}
+               id="generalPanel" />
       <div className={classes.buttonContainer}>
-        <Button variant="contained" size="large" color="primary" className={classes.margin}>
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          className={classes.margin}
+          // onClick={() => props.startSimulationWith(props.params)}
+          onClick={() => props.startPrediction(props.params)}
+        >
           Start Simulation
         </Button>
       </div>
@@ -162,14 +152,22 @@ function DrawerContent(props) {
 
 const mapStateToProps = (state) => {
   return {
-    srcWeights: state.simulation.srcWeights,
-    dstWeights: state.simulation.dstWeights
+    params: {
+      srcWeights: state.simulation.srcWeights,
+      dstWeights: state.simulation.dstWeights,
+      vehicleNumber: state.simulation.vehicleNumber,
+      vehicleDistribution: state.simulation.vehicleDistribution,
+      timeSteps: state.simulation.timeSteps,
+      weatherScenario: state.simulation.weatherScenario
+    },
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSimulationParameters: (params) => dispatch(setSimulationParameter(params))
+    setSimulationParameters: (params) => dispatch(setSimulationParameter(params)),
+    startSimulationWith: (params) => dispatch(startSimulation(params)),
+    startPrediction: (params) => dispatch(fetchPrediction(params))
   }
 };
 

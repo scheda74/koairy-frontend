@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, TextField } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 // import Slider from '@material-ui/core/Slider';
 // import InputAdornment from '@material-ui/core/InputAdornment';
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Areas(props) {
   const classes = useStyles();
-
+  const sum = Object.values(props.areas).reduce((sum, val) => parseFloat(sum) + parseFloat(val), 0) * 100;
   return (
     <ExpansionPanel expanded={props.expanded === props.id} onChange={props.handlePanelChange(props.id)}>
       <ExpansionPanelSummary
@@ -44,13 +44,13 @@ export default function Areas(props) {
         aria-controls={`${props.id}-content`}
         id={`${props.id}-header`}
       >
-        <Typography className={classes.heading}>{props.title}</Typography>
+        <Typography variant="overline" className={classes.heading}>{props.title}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <Area areas={props.areas} weightType={props.weightType} handleWeightChange={props.handleWeightChange} />
       </ExpansionPanelDetails>
       <ExpansionPanelActions>
-        <Typography variant="overline">Sum: {props.sum} %</Typography>
+        <Typography variant="overline">Sum: {sum} %</Typography>
       </ExpansionPanelActions>
     </ExpansionPanel>
   )

@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 import connect from 'react-redux/es/connect/connect';
-import { DeviceMap } from '../../../components/Map/DeviceMap';
 
 const useStyles = makeStyles(() => ({
   analysisContainer: {
-    width: '100vw'
+    // width: '100vw'
   }
 }));
 
@@ -39,7 +38,7 @@ class Analysis extends Component {
 
   render() {
     return (
-      <div style={{width: '100vw'}}>
+      <div>
         {this.props.emissions !== undefined ?
           <BarChart
             width={730}
