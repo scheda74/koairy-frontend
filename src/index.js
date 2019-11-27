@@ -25,12 +25,15 @@ const store = createStore(
     simulation: {
       isFetching: false,
       didInvalidate: false,
-      predictionModel: 'lstm',
+      predictionModel: 'lin-reg',
       startDate: '2019-08-01',
       endDate: '2019-11-10',
       startHour: '0:00',
       endHour: '23:00',
+      boxID: 672,
       weatherScenario: 0,
+      input_keys: ['temp', 'hum', 'PMx', 'WIND_SPEED', 'WIND_DIR'],
+      output_key: 'pm10',
       vehicleDistribution: {
         "HBEFA3/PC_D_EU2": 0.007,
         "HBEFA3/PC_D_EU3": 0.0251,

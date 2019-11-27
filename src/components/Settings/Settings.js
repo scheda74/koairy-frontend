@@ -171,33 +171,50 @@ function Settings(props) {
   const handleReset = () => setState({...state, activeStep: 0});
 
 
-  // const handlePanelChange = panel => (event, isExpanded) => {
-  //   setState({...state, expanded: isExpanded ? panel : false});
-  // };
-
   const handleDistChange = (event, vehicleClass) => {
     props.setSimulationParameters({
-      ...props.params,
-      vehicleDistribution: {...props.params.vehicleDistribution, [vehicleClass]: event.target.value / 100}
+      ...props,
+      vehicleDistribution: {...props.vehicleDistribution, [vehicleClass]: event.target.value / 100}
     })
   };
 
+  const handleDateChange = (name, date) => {
+    // startDate: new Date('2019-08-01'),
+    //   endDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+    //   startHour: new Date().setHours(0,0,0,0),
+    //   endHour: new Date().setHours(23,0,0,0)
+    let newDate = new Date();
+    console.log(date)
+    if (name === 'startDate' || name === 'endDate') {
+      newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+    } else {
+      newDate = date.toLocaleString('DE-de', {hour: '2-digit', minute: '2-digit'})
+      console.log(newDate)
+    }
+    props.setSimulationParameters({...props, [name]: newDate});
+  };
+
+  const formatTimeToDate = time => {
+    let [hour, minute] = time.split(':')
+    return new Date().setHours(hour, minute, 0, 0);
+  };
+
   const handleWeightChange = (event, weightType, areaName) => {
-    let weights = weightType === 'src' ? {...props.params.srcWeights} : {...props.params.dstWeights};
+    let weights = weightType === 'src' ? {...props.srcWeights} : {...props.dstWeights};
 
     console.log('weight', weights)
     weights[areaName] = event.target.value / 100.0;
     console.log("weights new", weights);
     props.setSimulationParameters({
-      ...props.params,
-      srcWeights: weightType === 'src' ? weights : props.params.srcWeights,
-      dstWeights: weightType === 'dst' ? weights : props.params.dstWeights,
+      ...props,
+      srcWeights: weightType === 'src' ? weights : props.srcWeights,
+      dstWeights: weightType === 'dst' ? weights : props.dstWeights,
     });
   };
 
   const handleSingleChange = name => event => {
     props.setSimulationParameters({
-      ...props.params,
+      ...props,
       [name]: event.target.value
     });
   };
@@ -207,14 +224,14 @@ function Settings(props) {
       case 0:
         return (
           <General handleSingleChange={handleSingleChange}
-                   timeSteps={props.params.timeSteps}
-                   vehicleNumber={props.params.vehicleNumber}
+                   timeSteps={props.timeSteps}
+                   vehicleNumber={props.vehicleNumber}
                    id="generalPanel" />
         );
       case 1:
         return (
           <Areas expanded={state.expanded}
-                 areas={props.params.srcWeights}
+                 areas={props.srcWeights}
                  weightType='src'
                  id="srcPanel"
                  handleWeightChange={handleWeightChange}
@@ -225,7 +242,7 @@ function Settings(props) {
       case 2:
         return (
           <Areas expanded={state.expanded}
-                 areas={props.params.dstWeights}
+                 areas={props.dstWeights}
                  weightType='src'
                  id="dstPanel"
                  handleWeightChange={handleWeightChange}
@@ -235,7 +252,7 @@ function Settings(props) {
         );
       case 3:
         return (
-          <Vehicles vehicles={props.params.vehicleDistribution}
+          <Vehicles vehicles={props.vehicleDistribution}
                     handleDistChange={handleDistChange}
                     id="vehiclePanel" />
         );
@@ -245,13 +262,19 @@ function Settings(props) {
         );
       case 5:
         return(
-          <PredictionSettings predictionModel={props.params.predictionModel}
-                              handleSingleChange={handleSingleChange} />
+          <PredictionSettings predictionModel={props.predictionModel}
+                              startDate={props.startDate}
+                              endDate={props.endDate}
+                              startHour={formatTimeToDate(props.startHour)}
+                              endHour={formatTimeToDate(props.endHour)}
+                              output_key={props.output_key}
+                              handleSingleChange={handleSingleChange}
+                              handleDateChange={handleDateChange} />
         );
       default:
         return 'Unknown step';
     }
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -277,7 +300,7 @@ function Settings(props) {
               </Button>
               <Button variant="contained"
                       color="primary"
-                      onClick={() => props.startPrediction(props.params)}
+                      onClick={() => props.startPrediction(props)}
                       className={classes.button}>
                 START
               </Button>
@@ -316,19 +339,7 @@ function Settings(props) {
 
 {/*<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/}
 
-const mapStateToProps = (state) => {
-  return {
-    params: {
-      srcWeights: state.simulation.srcWeights,
-      dstWeights: state.simulation.dstWeights,
-      vehicleNumber: state.simulation.vehicleNumber,
-      vehicleDistribution: state.simulation.vehicleDistribution,
-      timeSteps: state.simulation.timeSteps,
-      weatherScenario: state.simulation.weatherScenario,
-      predictionModel: state.simulation.predictionModel
-    },
-  }
-};
+const mapStateToProps = state => state.simulation;
 
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import BambooIcon from '../../../Icons/Bamboo';
 import KoalaOutlinedIcon from '../../../Icons/KoalaOutlined';
+import { fetchPrediction, setSimulationParameter, startSimulation } from '../../../store/actions/simulationActions';
+import connect from 'react-redux/es/connect/connect';
 
 const useStyles = makeStyles(() => ({
   mainContainer: {
@@ -75,7 +77,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Prediction() {
+function Prediction(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     blur: 4,
@@ -134,10 +136,18 @@ export default function Prediction() {
         <div className={classes.introductionContainer}>
           <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
           <div className={classes.introduction}>
-            <Typography variant="h4" align='center'>Welcome to Koairy!</Typography>
-            <Typography variant="subtitle1" align='center'>You can simulate emissions and predict air quality</Typography>
             <div className={classes.buttonContainer}>
-              <Button className={classes.button} color='primary' variant='contained'>Start Predicting!</Button>
+              <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
+              <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>
+            </div>
+            <div className={classes.buttonContainer}>
+              <Button
+                onClick={() => props.startPrediction(props.params)}
+                className={classes.button}
+                color='primary'
+                variant='contained'>
+                Start Predicting!
+              </Button>
               <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>
             </div>
           </div>
@@ -145,6 +155,25 @@ export default function Prediction() {
         </div>
       )}
     </div>
-
   )
 }
+
+const mapStateToProps = (state) => {
+    return {
+      params: state.simulation,
+      prediction: state.prediction
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSimulationParameters: (state) => dispatch(setSimulationParameter(state.simulation)),
+    startSimulationWith: (state) => dispatch(startSimulation(state.simulation)),
+    startPrediction: (state) => dispatch(fetchPrediction(state.simulation)),
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Prediction);

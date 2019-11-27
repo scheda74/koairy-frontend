@@ -8,19 +8,24 @@ const header = new Headers({
 });
 
 export function setSimulationParameter(params) {
+  let input_keys = ['temp', 'hum', 'WIND_SPEED', 'WIND_DIR'];
+  switch (params.output_key) {
+    case 'pm10':
+      input_keys.push('PMx');
+      break;
+    case 'pm2.5':
+      input_keys.push('PMx');
+      break;
+    case 'no2':
+      input_keys.push('NOx');
+      break;
+    default:
+      console.error('[REDUX ACTION] ' + params.output_key + ' not defined!')
+  }
   return {
     type: SET_SIMULATION_PARAMETERS,
-    weatherScenario: params.weatherScenario,
-    vehicleDistribution: params.vehicleDistribution,
-    srcWeights: params.srcWeights,
-    dstWeights: params.dstWeights,
-    vehicleNumber: params.vehicleNumber,
-    timeSteps: params.timeSteps,
-    predictionModel: params.predictionModel,
-    startDate: params.startDate,
-    endDate: params.endDate,
-    startHour: params.startHour,
-    endHour: params.endHour
+    input_keys: input_keys,
+    ...params
   }
 }
 

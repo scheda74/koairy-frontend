@@ -74,6 +74,8 @@ export function simulation(
         endDate: action.endDate,
         startHour: action.startHour,
         endHour: action.endHour,
+        output_key: action.output_key,
+        boxID: action.boxID
       });
     case REQUEST_PREDICTION:
       return Object.assign({}, state, {
