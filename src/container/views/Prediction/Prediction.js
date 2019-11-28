@@ -61,12 +61,14 @@ const useStyles = makeStyles(() => ({
   mapCard: {
     // display: 'flex',
     // margin: 'auto',
+    flexBasis: '80%',
     marginLeft: '1rem',
-    width: '80%',
+    width: '100%',
     height: '100%'
   },
   card: {
     // width: '20%',
+    flexBasis: '20%',
     margin: '0 1rem'
   },
   settingsContainer: {

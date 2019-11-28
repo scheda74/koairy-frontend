@@ -64,8 +64,8 @@ const useColorlibStepIconStyles = makeStyles({
     backgroundColor: '#ccc',
     zIndex: 1,
     color: '#fff',
-    width: 50,
-    height: 50,
+    width: 32,
+    height: 32,
     display: 'flex',
     borderRadius: '50%',
     justifyContent: 'center',
@@ -91,12 +91,12 @@ function ColorlibStepIcon(props) {
   const { active, completed } = props;
 
   const icons = {
-    1: <SettingsIcon />,
-    2: <ExploreIcon />,
-    3: <ExploreIcon />,
-    4: <DriveEtaIcon />,
-    5: <CloudIcon />,
-    6: <DeveloperBoardIcon />
+    1: <SettingsIcon fontSize='small' />,
+    2: <ExploreIcon fontSize='small' />,
+    3: <ExploreIcon fontSize='small' />,
+    4: <DriveEtaIcon fontSize='small' />,
+    5: <CloudIcon fontSize='small' />,
+    6: <DeveloperBoardIcon fontSize='small' />
   };
 
   return (
@@ -121,14 +121,17 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
   },
-  content: {
-    // display: 'flex',
-    // flexDirection: 'column',
-    // alignContent: 'center'
+  stepper: {
+    padding: 12
   },
   buttonContainer: {
+    width: '75%',
+    margin: 'auto',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    // position: 'absolute',
+    // bottom: '2.5%',
+    // left: '40%'
   },
   button: {
     marginRight: theme.spacing(1)
@@ -279,7 +282,7 @@ function Settings(props) {
 
   return (
     <div className={classes.root}>
-      <Stepper alternativeLabel activeStep={state.activeStep} connector={<ColorlibConnector />}>
+      <Stepper className={classes.stepper} alternativeLabel activeStep={state.activeStep} connector={<ColorlibConnector />}>
         {steps.map(label => (
           <Step key={label}>
             <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
