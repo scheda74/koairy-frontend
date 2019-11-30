@@ -16,77 +16,12 @@ export class DeviceMap extends PureComponent {
     radius: 10,
     maximum: 1,
     polyOptions: {
-      672: {opacity: 0, color: '#ccc'},
+      672: {opacity: 0.8, color: 'rgba(83, 141, 26, 1)'},
       671: {opacity: 0, color: '#ccc'},
       670: {opacity: 0, color: '#ccc'},
-      384: {opacity: 0, color: '#ccc'},
+      384: {opacity: 0.8, color: 'rgba(83, 141, 26, 1)'}
     }
   };
-
-
-
-  isEmissionAvailable() {
-    return this.props.emissions !== null && this.props.emissions !== undefined;
-  }
-
-  isPredictionAvailable() {
-    return this.props.emissions !== null && this.props.emissions !== undefined;
-  }
-
-  isTrafficAvailable() {
-    return this.props.traffic !== null && this.props.traffic !== undefined;
-  }
-
-  toggleTraffic() {
-    this.setState({ isTraffic: !this.state.isTraffic })
-  }
-
-  toggleAir() {
-    this.setState({ isAir: !this.state.isAir })
-  }
-
-  onBlurChange(value) {
-    this.setState({ blur: value })
-  }
-
-  onRadiusChange(value) {
-    this.setState({ radius: value })
-  }
-
-  onOpacityChange(value) {
-    this.setState({ opacity: value })
-  }
-
-  onMaximumChange(value) {
-    this.setState({ maximum: value / 100 })
-  }
-
-  // gradient = {
-  //   0.0: '#78bc6a',
-  //   0.25: '#bbcf4c',
-  //   0.5: '#edc20a',
-  //   0.75: '#f29308',
-  //   1.0: '#950019'
-  // };
-  //
-  // heatMap = (
-  //   <HeatMap
-  //     // fitBoundsOnLoad
-  //     // fitBoundsOnUpdate
-  //     points={
-  //       [[48.175689, 11.765065, this.props.simulation.prediction.no2_predicted[0]],
-  //         [48.158607, 11.754464, this.props.simulation.prediction.pm10_predicted[0]]]
-  //     }
-  //     longitudeExtractor={m => m[1]}
-  //     latitudeExtractor={m => m[0]}
-  //     intensityExtractor={m => parseFloat(m[2])}
-  //     blur={this.state.blur}
-  //     radius={this.state.radius}
-  //     max={this.state.maximum}
-  //     minOpacity={this.state.opacity}
-  //     maxZoom={100}
-  //     gradient={this.gradient} />
-  // );
 
 
   sensorMarkers = Object.keys(bremickerBoxes).map(key => {
@@ -119,8 +54,9 @@ export class DeviceMap extends PureComponent {
 
     const sensorPolygons = Object.keys(bremickerBoxes).map(key => {
       let sensor = bremickerBoxes[key];
+      // onMouseOver={() => this.setPolyOpacity(key)}
       return (
-        <Polygon key={key} lineCap='round' lineJoin='round' onMouseOver={() => this.setPolyOpacity(key)}
+        <Polygon className='leaflet-fade' key={key} lineCap='round' lineJoin='round'
                  positions={sensor.polyList}
                  interactive={true}
                  fillColor={this.state.polyOptions[key].color}
