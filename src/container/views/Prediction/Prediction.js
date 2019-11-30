@@ -7,12 +7,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import BambooIcon from '../../../Icons/Bamboo';
 import KoalaOutlinedIcon from '../../../Icons/KoalaOutlined';
-import {
-  fetchPrediction,
-  fetchSinglePrediction,
-  setSimulationParameter,
-  startSimulation
-} from '../../../store/actions/simulationActions';
+import { simulationActions } from '../../../store/actions';
 import connect from 'react-redux/es/connect/connect';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import BremickerLineChart from '../../../components/Charts/BremickerLineChart';
@@ -225,16 +220,17 @@ const mapStateToProps = (state) => {
       prediction: state.prediction,
       isFetching: state.simulation.isFetching,
       selectedBox: state.traffic.selected,
-      traffic: state.traffic
+      traffic: state.traffic,
+      air: state.air
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSimulationParameters: (params) => dispatch(setSimulationParameter(params)),
-    startSimulationWith: (params) => dispatch(startSimulation(params)),
-    startPrediction: (params) => dispatch(fetchPrediction(params)),
-    startSinglePrediction: (params) => dispatch(fetchSinglePrediction(params)),
+    setSimulationParameters: (params) => dispatch(simulationActions.setSimulationParameter(params)),
+    startSimulationWith: (params) => dispatch(simulationActions.startSimulation(params)),
+    startPrediction: (params) => dispatch(simulationActions.fetchPrediction(params)),
+    startSinglePrediction: (params) => dispatch(simulationActions.fetchSinglePrediction(params)),
   }
 };
 

@@ -3,9 +3,12 @@ import { Map, Marker, Polygon, Popup, TileLayer } from 'react-leaflet';
 import { connect } from 'react-redux';
 import './DeviceMap.css';
 import bremickerBoxes from '../../assets/data/bremickerBoxes'
-import { fetchCurrentBremicker } from '../../store/actions/trafficActions';
 import { CircularProgress } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
+
+import { airActions, trafficActions } from '../../store/actions'
+// import { fetchCurrentBremicker } from '../../store/actions/trafficActions';
+// import { fetchLatestAir } from '../../store/actions/airActions';
 
 export class DeviceMap extends PureComponent {
   state = {
@@ -46,12 +49,12 @@ export class DeviceMap extends PureComponent {
         [key]: {...this.state.polyOptions[key], opacity: opacity}
       }
     })
-    console.log(this.state.polyOptions)
   };
 
   onPolygonClickHandler = key => {
-    this.setPolyOpacity(key, 0.8)
-    this.props.fetchCurrentBremickerByKey(key)
+    this.setPolyOpacity(key, 0.8);
+    this.props.fetchCurrentBremickerByKey(key);
+    // this.props.fetchCurrentAir()
   };
 
 
@@ -62,7 +65,6 @@ export class DeviceMap extends PureComponent {
     const sensorPolygons = Object.keys(bremickerBoxes).map(key => {
       let sensor = bremickerBoxes[key];
       let bremickerData = this.props.traffic && this.props.traffic[key];
-      console.log(this.state.polyOptions[key].opacity)
       return (
         <Polygon className={'leaflet-fade'}
                  key={key}
@@ -167,7 +169,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchCurrentBremickerByKey: (key) => dispatch(fetchCurrentBremicker(key)),
+    fetchCurrentBremickerByKey: (key) => dispatch(trafficActions.fetchCurrentBremicker(key)),
+    fetchCurrentAir: () => dispatch(airActions.fetchLatestAir())
   }
 };
 

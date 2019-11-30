@@ -3,12 +3,14 @@ import { statistics } from './statisticsReducer';
 import { emissions } from './emissionReducer';
 import { traffic } from './trafficReducers';
 import { simulation } from './simulationReducers';
+import { air } from './airReducer';
 
 const rootReducer = combineReducers({
   emissions,
   traffic,
   simulation,
-  statistics
+  statistics,
+  air
 });
 
 export default rootReducer;
