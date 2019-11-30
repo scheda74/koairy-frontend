@@ -8,10 +8,36 @@
     transition: opacity 2000ms;
 }
 
+/*.no-fade {*/
+    /*opacity: 1;*/
+    /*transition: none !important;*/
+/*}*/
+
+/*.leaflet-fade:hover {*/
+    /*animation: fade-in 2s linear forwards;*/
+/*}*/
+
 .leaflet-fade:hover {
-    opacity: 100%;
+    opacity: 1;
 }
 
-.leaflet-fade:focus {
-    opacity: 100%;
-}
+/*.leaflet-fade:focus {*/
+    /*opacity: 1;*/
+/*}*/
+
+/*.leaflet-fade:after {*/
+    /*opacity: 1;*/
+/*}*/
+
+
+/*@keyframes fade-in {*/
+    /*0% {*/
+        /*opacity: 0;*/
+    /*}*/
+    /*50% {*/
+        /*opacity: 0.5;*/
+    /*}*/
+    /*100% {*/
+        /*opacity: 1;*/
+    /*}*/
+/*}*/

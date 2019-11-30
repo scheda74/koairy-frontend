@@ -1,8 +1,10 @@
 import {
   RECEIVE_PREDICTION,
+  RECEIVE_SINGLE_PREDICTION,
   REQUEST_PREDICTION,
   REQUEST_SIMULATION,
-  SET_SIMULATION_PARAMETERS
+  SET_SIMULATION_PARAMETERS,
+  SET_SINGLE_SIMULATION_PARAMETERS
 } from '../actions/actionTypes';
 
 export function simulation(
@@ -77,6 +79,25 @@ export function simulation(
         output_key: action.output_key,
         boxID: action.boxID
       });
+    case SET_SINGLE_SIMULATION_PARAMETERS:
+      console.log(action);
+      return Object.assign({}, state, {
+        isFetching: false,
+        parameters: {
+          [action.boxID]: {
+            weatherScenario: action.weatherScenario,
+            vehicleDistribution: action.vehicleDistribution,
+            vehicleNumber: action.vehicleNumber,
+            timeSteps: action.timeSteps,
+            predictionModel: action.predictionModel,
+            startDate: action.startDate,
+            endDate: action.endDate,
+            startHour: action.startHour,
+            endHour: action.endHour,
+            output_key: action.output_key
+          }
+        }
+      });
     case REQUEST_PREDICTION:
       return Object.assign({}, state, {
         isFetching: true,
@@ -88,10 +109,13 @@ export function simulation(
         prediction: action.prediction,
         lastUpdated: action.receivedAt
       });
-    // case START_SIMULATION:
-    //   return Object.assign({}, state, {
-    //
-    //   })
+
+    case RECEIVE_SINGLE_PREDICTION:
+      return Object.assign({}, state, {
+        isFetching: false,
+        singlePrediction: {...state.simulation.prediction, [action.boxId]: action.prediction},
+        lastUpdated: action.receivedAt
+      });
     default:
       return state;
   }

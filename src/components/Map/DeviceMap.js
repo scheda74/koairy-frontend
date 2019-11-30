@@ -5,6 +5,7 @@ import './DeviceMap.css';
 import bremickerBoxes from '../../assets/data/bremickerBoxes'
 import { fetchCurrentBremicker } from '../../store/actions/trafficActions';
 import { CircularProgress } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 export class DeviceMap extends PureComponent {
   state = {
@@ -37,49 +38,58 @@ export class DeviceMap extends PureComponent {
     )
   })
 
-  setPolyOpacity = key => {
+  setPolyOpacity = (key, opacity) => {
     this.setState({
       ...this.state,
       polyOptions: {
         ...this.state.polyOptions,
-        [key]: {opacity: 0.8, color: '#bfbfbf'}
+        [key]: {...this.state.polyOptions[key], opacity: opacity}
       }
     })
+    console.log(this.state.polyOptions)
   };
 
+  onPolygonClickHandler = key => {
+    this.setPolyOpacity(key, 0.8)
+    this.props.fetchCurrentBremickerByKey(key)
+  };
 
 
   render() {
     console.log("[MAP] render");
-    console.log(bremickerBoxes)
     const position = [this.state.lat, this.state.lng];
 
     const sensorPolygons = Object.keys(bremickerBoxes).map(key => {
       let sensor = bremickerBoxes[key];
-      let bremickerData = this.props.traffic && this.props.traffic[key]
-      console.log('bremicker data', bremickerData);
+      let bremickerData = this.props.traffic && this.props.traffic[key];
+      console.log(this.state.polyOptions[key].opacity)
       return (
-        <Polygon className='leaflet-fade' key={key} lineCap='round' lineJoin='round'
+        <Polygon className={'leaflet-fade'}
+                 key={key}
+                 lineCap='round'
+                 lineJoin='round'
                  positions={sensor.polyList}
                  interactive={true}
                  fillColor={this.state.polyOptions[key].color}
                  stroke={false}
                  fillOpacity={this.state.polyOptions[key].opacity}
-                 onClick={() => this.props.fetchCurrentBremickerByKey(key)}
+                 // onMouseOver={() => this.setPolyOpacity(key, 0.8)}
+                 // onMouseOut={() => this.setPolyOpacity(key, 0.0)}
+                 onClick={() => this.onPolygonClickHandler(key)}
         >
           <Popup>
             {this.props.traffic && this.props.traffic[key] ?
               (
                 <div>
-                  <span>Bremicker Box ID: {key}</span>
-                  <span>Number of vehicles: {this.props.traffic[Object.keys(this.props.traffic[key]).pop()]}</span>
+                  <Typography>Bremicker Box ID: {key}</Typography>
+                  <Typography>Data fetched on: {Object.keys(this.props.traffic[key]).pop()}</Typography>
+                  <Typography>Number of vehicles: {bremickerData[Object.keys(this.props.traffic[key]).pop()]}</Typography>
                 </div>
 
               ) : (
                 <CircularProgress />
               )
             }
-
           </Popup>
         </Polygon>
       )
@@ -97,7 +107,7 @@ export class DeviceMap extends PureComponent {
           {/*opacityChange={this.onOpacityChange.bind(this)}*/}
           {/*maximumChange={this.onMaximumChange.bind(this)}*/}
         {/*/>*/}
-        <Map center={position} zoom={this.state.zoom}>
+        <Map fadeAnimation={true} center={position} zoom={this.state.zoom}>
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
@@ -157,7 +167,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchCurrentBremickerByKey: (key) => dispatch(fetchCurrentBremicker(key))
+    fetchCurrentBremickerByKey: (key) => dispatch(fetchCurrentBremicker(key)),
   }
 };
 

@@ -2,7 +2,8 @@ import {
   INVALIDATE_TRAFFIC,
   RECEIVE_CURRENT_BREMICKER,
   RECEIVE_TRAFFIC,
-  REQUEST_TRAFFIC
+  REQUEST_TRAFFIC,
+  SET_SELECTED_BOX
 } from '../actions/actionTypes';
 
 
@@ -35,7 +36,11 @@ export function traffic(
         didInvalidate: false,
         [action.boxId]: action.traffic,
         lastUpdated: action.receivedAt
-      })
+      });
+    case SET_SELECTED_BOX:
+      return Object.assign({}, state, {
+        selected: action.boxId
+      });
     default:
       return state;
   }

@@ -1,0 +1,31 @@
+import { apiUrl, currentAir, } from '../../config';
+
+
+export function requestAir(params) {
+  return {
+    type: REQUEST_LATEST_AIR,
+    params
+  }
+}
+
+export function receiveAir(json) {
+  console.log("Emissions received");
+  return {
+    type: RECEIVE_LATEST_AIR,
+    air: json,
+    receivedAt: Date.now()
+  }
+}
+
+export function fetchLatestAir() {
+  return function(dispatch) {
+
+    dispatch(requestAir());
+
+    return fetch(apiUrl + currentAir, )
+      .then(response => response.json(),
+        error => console.log('An error occurred', error))
+      .then(json => dispatch(receiveAir(json)))
+      .catch(error => console.log('An error occurred', error))
+  }
+}

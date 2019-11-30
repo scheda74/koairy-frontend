@@ -1,5 +1,12 @@
-import { RECEIVE_PREDICTION, REQUEST_PREDICTION, REQUEST_SIMULATION, SET_SIMULATION_PARAMETERS } from './actionTypes';
-import { apiUrl, startPrediction, startSim } from '../../config';
+import {
+  RECEIVE_PREDICTION,
+  RECEIVE_SINGLE_PREDICTION,
+  REQUEST_PREDICTION,
+  REQUEST_SIMULATION,
+  SET_SIMULATION_PARAMETERS,
+  SET_SINGLE_SIMULATION_PARAMETERS
+} from './actionTypes';
+import { apiUrl, startPrediction, startSim, startSinglePrediction } from '../../config';
 import { receiveEmissions } from './emissionActions';
 
 const header = new Headers({
@@ -24,6 +31,28 @@ export function setSimulationParameter(params) {
   }
   return {
     type: SET_SIMULATION_PARAMETERS,
+    input_keys: input_keys,
+    ...params
+  }
+}
+
+export function setSingleSimulationParameter(params) {
+  let input_keys = ['temp', 'hum', 'WIND_SPEED', 'WIND_DIR'];
+  switch (params.output_key) {
+    case 'pm10':
+      input_keys.push('PMx');
+      break;
+    case 'pm2.5':
+      input_keys.push('PMx');
+      break;
+    case 'no2':
+      input_keys.push('NOx');
+      break;
+    default:
+      console.error('[REDUX ACTION] ' + params.output_key + ' not defined!')
+  }
+  return {
+    type: SET_SINGLE_SIMULATION_PARAMETERS,
     input_keys: input_keys,
     ...params
   }
@@ -68,6 +97,15 @@ export function receivePrediction(params, json) {
   }
 }
 
+export function receiveSinglePrediction(params, json) {
+  return {
+    type: RECEIVE_SINGLE_PREDICTION,
+    prediction: JSON.parse(json),
+    boxId: params.boxId,
+    receivedAt: Date.now()
+  }
+}
+
 export function fetchPredictionUnsuccessful(params, error) {
   return {
     type: RECEIVE_PREDICTION
@@ -85,6 +123,19 @@ export function fetchPrediction(params) {
       .then(response => response.json(),
         error => console.log('An error occurred', error))
       .then(json => dispatch(receivePrediction(params, json)))
+      .catch(error => dispatch(fetchPredictionUnsuccessful(params, error)))
+  }
+}
+
+export function fetchSinglePrediction(params) {
+  return function(dispatch) {
+
+    dispatch(requestPrediction());
+
+    return fetch(apiUrl + startSinglePrediction, { headers: header, method: 'POST', body: JSON.stringify(params) })
+      .then(response => response.json(),
+        error => console.log('An error occurred', error))
+      .then(json => dispatch(receiveSinglePrediction(params, json)))
       .catch(error => dispatch(fetchPredictionUnsuccessful(params, error)))
   }
 }
