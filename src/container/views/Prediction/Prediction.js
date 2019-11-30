@@ -53,7 +53,7 @@ const useStyles = makeStyles(() => ({
   },
   mapContainer: {
     // width: '100vw'
-    flexBasis: '40%',
+    flexBasis: '60%',
     display: 'flex',
     justifyContent: 'space-between',
     margin: '1rem 0',
@@ -72,7 +72,7 @@ const useStyles = makeStyles(() => ({
     margin: '0 1rem'
   },
   settingsContainer: {
-    flexBasis: '60%',
+    flexBasis: '40%',
     display: 'flex',
     justifyContent: 'start',
     margin: '0.5rem auto',

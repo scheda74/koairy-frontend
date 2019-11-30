@@ -1,5 +1,5 @@
-import { INVALIDATE_TRAFFIC, RECEIVE_TRAFFIC, REQUEST_TRAFFIC } from './actionTypes';
-import { apiUrl, getTraining } from '../../config';
+import { INVALIDATE_TRAFFIC, RECEIVE_CURRENT_BREMICKER, RECEIVE_TRAFFIC, REQUEST_TRAFFIC } from './actionTypes';
+import { apiUrl, currentBremicker, getTraining } from '../../config';
 
 const header = new Headers({
   'Content-Type': 'application/json',
@@ -77,5 +77,29 @@ export function fetchTrafficIfNeeded(params) {
       // Let the calling code know there's nothing to wait for.
       return Promise.resolve()
     }
+  }
+}
+
+export function receiveCurrentBremicker(boxId, json) {
+  console.log(json);
+  return {
+    type: RECEIVE_CURRENT_BREMICKER,
+    boxId: boxId,
+    traffic: JSON.parse(json),
+    receivedAt: Date.now()
+  }
+}
+
+
+export function fetchCurrentBremicker(boxId) {
+  return async function(dispatch, getState) {
+
+    dispatch(requestTraffic(boxId));
+
+    return await fetch(apiUrl + currentBremicker + boxId)
+      .then(response => response.json(),
+        error => console.log('An error occurred', error))
+      .then(json => dispatch(receiveCurrentBremicker(boxId, json)))
+      .catch(error => console.log('An error occurred', error))
   }
 }

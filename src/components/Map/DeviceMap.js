@@ -3,6 +3,8 @@ import { Map, Marker, Polygon, Popup, TileLayer } from 'react-leaflet';
 import { connect } from 'react-redux';
 import './DeviceMap.css';
 import bremickerBoxes from '../../assets/data/bremickerBoxes'
+import { fetchCurrentBremicker } from '../../store/actions/trafficActions';
+import { CircularProgress } from '@material-ui/core';
 
 export class DeviceMap extends PureComponent {
   state = {
@@ -17,8 +19,8 @@ export class DeviceMap extends PureComponent {
     maximum: 1,
     polyOptions: {
       672: {opacity: 0.8, color: 'rgba(83, 141, 26, 1)'},
-      671: {opacity: 0, color: '#ccc'},
-      670: {opacity: 0, color: '#ccc'},
+      671: {opacity: 0.8, color: '#ccc'},
+      670: {opacity: 0.8, color: 'rgba(193, 78, 127, 1)'},
       384: {opacity: 0.8, color: 'rgba(83, 141, 26, 1)'}
     }
   };
@@ -54,7 +56,8 @@ export class DeviceMap extends PureComponent {
 
     const sensorPolygons = Object.keys(bremickerBoxes).map(key => {
       let sensor = bremickerBoxes[key];
-      // onMouseOver={() => this.setPolyOpacity(key)}
+      let bremickerData = this.props.traffic && this.props.traffic[key]
+      console.log('bremicker data', bremickerData);
       return (
         <Polygon className='leaflet-fade' key={key} lineCap='round' lineJoin='round'
                  positions={sensor.polyList}
@@ -62,9 +65,21 @@ export class DeviceMap extends PureComponent {
                  fillColor={this.state.polyOptions[key].color}
                  stroke={false}
                  fillOpacity={this.state.polyOptions[key].opacity}
+                 onClick={() => this.props.fetchCurrentBremickerByKey(key)}
         >
           <Popup>
-            <span><br/>Bremicker Box ID: {key}<br/></span>
+            {this.props.traffic && this.props.traffic[key] ?
+              (
+                <div>
+                  <span>Bremicker Box ID: {key}</span>
+                  <span>Number of vehicles: {this.props.traffic[Object.keys(this.props.traffic[key]).pop()]}</span>
+                </div>
+
+              ) : (
+                <CircularProgress />
+              )
+            }
+
           </Popup>
         </Polygon>
       )
@@ -134,7 +149,7 @@ export class DeviceMap extends PureComponent {
 const mapStateToProps = (state) => {
     return {
       emissions: state.emissions.data,
-      traffic: state.traffic.data,
+      traffic: state.traffic,
       sensors: state.traffic.sensors,
       simulation: state.simulation
     }
@@ -142,7 +157,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-
+    fetchCurrentBremickerByKey: (key) => dispatch(fetchCurrentBremicker(key))
   }
 };
 
