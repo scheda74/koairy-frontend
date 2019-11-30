@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map, Marker, Polygon, Popup, TileLayer } from 'react-leaflet';
 import { connect } from 'react-redux';
-import HeatMap from 'react-leaflet-heatmap-layer';
 import './DeviceMap.css';
-import Typography from '@material-ui/core/Typography';
-
+import bremickerBoxes from '../../assets/data/bremickerBoxes'
 
 export class DeviceMap extends PureComponent {
   state = {
@@ -16,8 +14,16 @@ export class DeviceMap extends PureComponent {
     blur: 4,
     opacity: 0.2,
     radius: 10,
-    maximum: 1
+    maximum: 1,
+    polyOptions: {
+      672: {opacity: 0, color: '#ccc'},
+      671: {opacity: 0, color: '#ccc'},
+      670: {opacity: 0, color: '#ccc'},
+      384: {opacity: 0, color: '#ccc'},
+    }
   };
+
+
 
   isEmissionAvailable() {
     return this.props.emissions !== null && this.props.emissions !== undefined;
@@ -55,26 +61,78 @@ export class DeviceMap extends PureComponent {
     this.setState({ maximum: value / 100 })
   }
 
+  // gradient = {
+  //   0.0: '#78bc6a',
+  //   0.25: '#bbcf4c',
+  //   0.5: '#edc20a',
+  //   0.75: '#f29308',
+  //   1.0: '#950019'
+  // };
+  //
+  // heatMap = (
+  //   <HeatMap
+  //     // fitBoundsOnLoad
+  //     // fitBoundsOnUpdate
+  //     points={
+  //       [[48.175689, 11.765065, this.props.simulation.prediction.no2_predicted[0]],
+  //         [48.158607, 11.754464, this.props.simulation.prediction.pm10_predicted[0]]]
+  //     }
+  //     longitudeExtractor={m => m[1]}
+  //     latitudeExtractor={m => m[0]}
+  //     intensityExtractor={m => parseFloat(m[2])}
+  //     blur={this.state.blur}
+  //     radius={this.state.radius}
+  //     max={this.state.maximum}
+  //     minOpacity={this.state.opacity}
+  //     maxZoom={100}
+  //     gradient={this.gradient} />
+  // );
+
+
+  sensorMarkers = Object.keys(bremickerBoxes).map(key => {
+    let sensor = bremickerBoxes[key];
+    return (
+      <Marker position={[sensor.lat, sensor.lng]}>
+        <Popup>
+          <span>Bremicker sensor in street <br/> Street</span>
+        </Popup>
+      </Marker>
+    )
+  })
+
+  setPolyOpacity = key => {
+    this.setState({
+      ...this.state,
+      polyOptions: {
+        ...this.state.polyOptions,
+        [key]: {opacity: 0.8, color: '#bfbfbf'}
+      }
+    })
+  };
+
+
+
   render() {
     console.log("[MAP] render");
+    console.log(bremickerBoxes)
     const position = [this.state.lat, this.state.lng];
-    const gradient = {
-        0.0: '#78bc6a',
-        0.25: '#bbcf4c',
-        0.5: '#edc20a',
-        0.75: '#f29308',
-        1.0: '#950019'
-    };
-    // const sensorMarkers = this.props.sensors.map(sensor => {
-    //   console.log(sensor);
-    //   return (
-    //     <Marker position={[sensor.lat, sensor.lng]}>
-    //       <Popup>
-    //       <span>Bremicker sensor in street <br/> Street</span>
-    //       </Popup>
-    //     </Marker>
-    //   )
-    // });
+
+    const sensorPolygons = Object.keys(bremickerBoxes).map(key => {
+      let sensor = bremickerBoxes[key];
+      return (
+        <Polygon key={key} lineCap='round' lineJoin='round' onMouseOver={() => this.setPolyOpacity(key)}
+                 positions={sensor.polyList}
+                 interactive={true}
+                 fillColor={this.state.polyOptions[key].color}
+                 stroke={false}
+                 fillOpacity={this.state.polyOptions[key].opacity}
+        >
+          <Popup>
+            <span><br/>Bremicker Box ID: {key}<br/></span>
+          </Popup>
+        </Polygon>
+      )
+    })
 
     return (
       <div className="leaflet-container">
@@ -93,41 +151,11 @@ export class DeviceMap extends PureComponent {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
-          <Marker position={[48.159129, 11.755278]}>
-            <Popup>
-              <Typography>Heimstetten Residential</Typography>
-              <Typography>142 Fahrzeuge/h</Typography>
-            </Popup>
-          </Marker>
-          {this.props.sensors !== undefined ?
-            this.props.sensors.map(sensor => {
-              console.log(sensor);
-              return (
-                <Marker position={[sensor.lat, sensor.lng]}>
-                  <Popup>
-                    <span>Bremicker sensor in street <br/> Street</span>
-                  </Popup>
-                </Marker>
-              )
-            }) : <div />}
-          {this.props.simulation.prediction !== undefined && this.state.isAir ?
-            <HeatMap
-              // fitBoundsOnLoad
-              // fitBoundsOnUpdate
-              points={
-                [[48.175689, 11.765065, this.props.simulation.prediction.no2_predicted[0]],
-                [48.158607, 11.754464, this.props.simulation.prediction.pm10_predicted[0]]]
-              }
-              longitudeExtractor={m => m[1]}
-              latitudeExtractor={m => m[0]}
-              intensityExtractor={m => parseFloat(m[2])}
-              blur={this.state.blur}
-              radius={this.state.radius}
-              max={this.state.maximum}
-              minOpacity={this.state.opacity}
-              maxZoom={100}
-              gradient={gradient} />
-            : <React.Fragment /> }
+
+          {sensorPolygons}
+          {/*{this.props.simulation.prediction !== undefined && this.state.isAir ?*/}
+              {/*this.heatMap*/}
+            {/*: <React.Fragment /> }*/}
           {/*{this.isEmissionAvailable() && this.state.isAir ?*/}
             {/*<HeatMap*/}
               {/*// fitBoundsOnLoad*/}
