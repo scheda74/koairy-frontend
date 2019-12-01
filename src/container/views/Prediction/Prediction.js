@@ -16,7 +16,7 @@ import SingleSettings from '../../../components/SingleSettings/SingleSettings';
 import Settings from '../../../components/Settings/Settings';
 import bremickerBoxes from '../../../assets/data/bremickerBoxes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   mainContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -32,7 +32,8 @@ const useStyles = makeStyles(() => ({
     // justifyContent: 'space-between'
     flexBasis: '60%',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignItems: 'center'
     // margin: '0.5rem auto',
   },
   icon: {
@@ -43,8 +44,12 @@ const useStyles = makeStyles(() => ({
   },
   buttonContainer: {
     display: 'flex',
-    // flexDirection: 'column',
-    justifyContent: 'space-around'
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+    },
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginBottom: '2rem'
   },
   button: {
     margin: '0.5rem 1rem'
@@ -125,7 +130,6 @@ function Prediction(props) {
 
   const toggleSingleSettings = () => {
     setState({...state, isSingleActive: !state.isSingleActive })
-    console.log('toggle Settings', state.isSingleActive)
   };
 
   return (
@@ -160,20 +164,11 @@ function Prediction(props) {
           </div>
         ) : (
           <div className={classes.introductionContainer}>
-            <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
             {props.selectedBox ? (
               <div className={classes.introduction}>
-                <Typography variant="h3" align='center'>You have selected Bremicker Box {props.selectedBox}</Typography>
-                <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>
-                  Would you like to simulate and predict air quality for the selected area?
-                </Typography>
-                {props.traffic && props.traffic[props.selectedBox] && props.sensors && props.sensors[bremickerBoxes[props.selectedBox]['airSensor']] ? (
-                  <Analysis selectedBox={props.selectedBox} traffic={props.traffic} sensors={props.sensors} />
-                ) : (
-                  <React.Fragment />
-                )}
                 <div className={classes.buttonContainer}>
-                  <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSingleSettings}>Adjust Settings</Button>
+                  <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSingleSettings}>Adjust Prediction Settings</Button>
+                  <Typography variant="h5" align='center'>You have selected Bremicker Box {props.selectedBox}</Typography>
                   <Button
                     onClick={() => props.startSinglePrediction(props.params)}
                     className={classes.button}
@@ -182,32 +177,54 @@ function Prediction(props) {
                     Start Using Default!
                   </Button>
                 </div>
+                {/*<Typography style={{marginTop: '0.5rem'}} variant="subtitle1" align='center'>*/}
+                  {/*Would you like to simulate and predict air quality for the selected area?*/}
+                {/*</Typography>*/}
+                {props.traffic && props.traffic[props.selectedBox] && props.sensors && props.sensors[bremickerBoxes[props.selectedBox]['airSensor']] ? (
+                  <Analysis selectedBox={props.selectedBox} traffic={props.traffic} sensors={props.sensors} />
+                ) : (
+                  <React.Fragment />
+                )}
+                {/*<div className={classes.buttonContainer}>*/}
+                  {/*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSingleSettings}>Adjust Settings</Button>*/}
+                  {/*<Button*/}
+                    {/*onClick={() => props.startSinglePrediction(props.params)}*/}
+                    {/*className={classes.button}*/}
+                    {/*color='primary'*/}
+                    {/*variant='contained'>*/}
+                    {/*Start Using Default!*/}
+                  {/*</Button>*/}
+                {/*</div>*/}
               </div>
             ) : (
-              <div className={classes.introduction}>
+              <React.Fragment>
+                <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
                 <div className={classes.introduction}>
-                  <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
-                  <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>
+
+                  <div className={classes.introduction}>
+                    <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
+                    <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>
+                  </div>
+                  {props.isFetching ?
+                    (
+                      <CircularProgress color="primary" />
+                    ) : (
+                      <div className={classes.buttonContainer}>
+                        {/*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>*/}
+                        <Button
+                          onClick={() => props.startPrediction(props.params)}
+                          className={classes.button}
+                          color='primary'
+                          variant='contained'>
+                          Start Predicting!
+                        </Button>
+                      </div>
+                    )
+                  }
                 </div>
-                {props.isFetching ?
-                  (
-                    <CircularProgress color="primary" />
-                  ) : (
-                    <div className={classes.buttonContainer}>
-                      <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>
-                      <Button
-                        onClick={() => props.startPrediction(props.params)}
-                        className={classes.button}
-                        color='primary'
-                        variant='contained'>
-                        Start Predicting!
-                      </Button>
-                    </div>
-                  )
-                }
-              </div>
+                <Icon className={classes.icon}><BambooIcon /></Icon>
+              </React.Fragment>
             )}
-            <Icon className={classes.icon}><BambooIcon /></Icon>
           </div>
       ))}
     </div>

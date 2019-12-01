@@ -78,7 +78,7 @@ export class DeviceMap extends PureComponent {
     const position = [this.state.lat, this.state.lng];
 
     const sensorPolygons = Object.keys(bremickerBoxes).map(key => {
-      let sensor = bremickerBoxes[key];
+      let bremickerBox = bremickerBoxes[key];
       let bremickerData = this.props.traffic && this.props.traffic[key];
       return (
         <Polygon
@@ -86,7 +86,7 @@ export class DeviceMap extends PureComponent {
                  key={key}
                  lineCap='round'
                  lineJoin='round'
-                 positions={sensor.polyList}
+                 positions={bremickerBox.polyList}
                  interactive={true}
                  fillColor={this.state.polyOptions[key].color}
                  stroke={false}
@@ -102,10 +102,13 @@ export class DeviceMap extends PureComponent {
                   <Typography>Bremicker Box ID: {key}</Typography>
                   <Typography>Data fetched on: {Object.keys(this.props.traffic[key]).pop()}</Typography>
                   <Typography>Number of vehicles: {bremickerData[Object.keys(this.props.traffic[key]).pop()] || 0}</Typography>
+                  {this.props.sensors ? (
+                      <Typography>Current Air Quality Index: {this.props.sensors[bremickerBox['airSensor']]['aqi'] || 'Not defined'}</Typography>
+                  ) : (<React.Fragment />)}
+
                 </div>
               ) : (
                 this.props.traffic.didInvalidate ? (<Typography>Something went wrong</Typography>) : (<CircularProgress />)
-
               )
             }
           </Popup>
@@ -178,7 +181,7 @@ const mapStateToProps = (state) => {
     return {
       emissions: state.emissions.data,
       traffic: state.traffic,
-      sensors: state.traffic.sensors,
+      sensors: state.air.sensors,
       simulation: state.simulation
     }
 };

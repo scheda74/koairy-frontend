@@ -5,10 +5,13 @@ import BremickerLineChart from '../../../components/Charts/BremickerLineChart';
 import HawaDawaLineChart from '../../../components/Charts/HawaDawaLineChart';
 import bremickerBoxes from '../../../assets/data/bremickerBoxes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+    },
   },
   chartContainer: {
     display: 'flex',
