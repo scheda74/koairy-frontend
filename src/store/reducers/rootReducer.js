@@ -3,7 +3,7 @@ import { statistics } from './statisticsReducer';
 import { emissions } from './emissionReducer';
 import { traffic } from './trafficReducers';
 import { simulation } from './simulationReducers';
-import { air } from './airReducer';
+import { air } from './hawaDawaReducer';
 
 const rootReducer = combineReducers({
   emissions,

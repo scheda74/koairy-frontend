@@ -1,76 +1,57 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
-import connect from 'react-redux/es/connect/connect';
+import Typography from '@material-ui/core/Typography';
+import BremickerLineChart from '../../../components/Charts/BremickerLineChart';
+import HawaDawaLineChart from '../../../components/Charts/HawaDawaLineChart';
+import bremickerBoxes from '../../../assets/data/bremickerBoxes';
 
 const useStyles = makeStyles(() => ({
-  analysisContainer: {
-    // width: '100vw'
+  chartContainer: {
+    display: 'flex',
+    // flexDirection: 'column'
+    justifyContent: 'space-around'
   }
 }));
 
-class Analysis extends Component {
-  state = {
-    data: [
-      {name: 'NOx', value: 0},
-      {name: 'PMx', value: 0},
-      {name: 'CO', value: 0}
-    ]
+export default function Analysis(props) {
+  // state = {
+  //   data: [
+  //     {name: 'NOx', value: 0},
+  //     {name: 'PMx', value: 0},
+  //     {name: 'CO', value: 0}
+  //   ]
+  // };
+  const classes = useStyles();
+
+  const airData = () => {
+    console.log(props.sensors)
+    let sensorData =  props.sensors[bremickerBoxes[props.selectedBox]['airSensor']]['values']
+    let result = Object.keys(sensorData).map(key => {
+      return {
+        date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
+        pm10: sensorData[key]['pm10'],
+        no2: sensorData[key]['no2']
+      }
+    })
+    console.log(result);
+    return result
   };
 
-  componentDidMount() {
-    this.initializeData();
-  }
-
-  initializeData() {
-    if (!this.props.emissions) return this.state.data;
-    const maxNOx = Math.max(...Object.values(this.props.emissions).map(value => value.NOx));
-    const maxPMx = Math.max(...Object.values(this.props.emissions).map(value => value.PMx));
-    const maxCO = Math.max(...Object.values(this.props.emissions).map(value => value.CO));
-    this.setState({data: [
-        {name: 'NOx', value: maxNOx},
-        {name: 'PMx', value: maxPMx},
-        {name: 'CO', value: maxCO}
-      ]});
-    console.log("lol");
-    console.log(this.state.data);
-  }
-
-  render() {
-    return (
-      <div>
-        {this.props.emissions !== undefined ?
-          <BarChart
-            width={730}
-            height={250}
-            data={this.state.data}
-          >
-            <CartesianGrid strokeDasharray="3 3"/>
-            <XAxis dataKey="name"/>
-            <YAxis/>
-            <Tooltip/>
-            <Legend/>
-            <Bar dataKey="NOx" fill="#9c27b0"/>
-            <Bar dataKey="PMx" fill="#e91e63"/>
-            <Bar dataKey="CO" fill="#673ab7"/>
-          </BarChart> : <React.Fragment />}
-      </div>
-    )
-  }
+  return (
+    <div className={classes.chartContainer}>
+      <Typography align='center' variant='caption'>Vehicles per hour</Typography>
+      <BremickerLineChart
+        data={
+          Object.keys(props.traffic[props.selectedBox]).map(key => {
+            return {
+              date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
+              value: props.traffic[props.selectedBox][key]
+            }
+          })
+        }
+      />
+      <Typography align='center' variant='caption'>Current Air Pollution</Typography>
+      <HawaDawaLineChart data={airData()} />
+    </div>
+  )
 }
-
-const mapStateToProps = (state) => {
-  return {
-    emissions: state.emissions.data,
-    traffic: state.traffic.data
-  }
-};
-
-const mapDispatchToProps = dispatch => {
-  return {}
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Analysis);

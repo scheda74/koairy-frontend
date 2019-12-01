@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { airActions, trafficActions } from '../../store/actions'
 // import { fetchCurrentBremicker } from '../../store/actions/trafficActions';
-// import { fetchLatestAir } from '../../store/actions/airActions';
+// import { fetchLatestAir } from '../../store/actions/hawaDawaActions.js';
 
 export class DeviceMap extends PureComponent {
   state = {
@@ -54,7 +54,7 @@ export class DeviceMap extends PureComponent {
   onPolygonClickHandler = key => {
     this.setPolyOpacity(key, 0.8);
     this.props.fetchCurrentBremickerByKey(key);
-    // this.props.fetchCurrentAir()
+    this.props.fetchCurrentAir()
   };
 
 

@@ -10,7 +10,11 @@ import KoalaOutlinedIcon from '../../../Icons/KoalaOutlined';
 import { simulationActions } from '../../../store/actions';
 import connect from 'react-redux/es/connect/connect';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import BremickerLineChart from '../../../components/Charts/BremickerLineChart';
+// import bremickerBoxes from '../../assets/data/bremickerBoxes'
+import Analysis from '../Analysis/Analysis';
+import SingleSettings from '../../../components/SingleSettings/SingleSettings';
+import Settings from '../../../components/Settings/Settings';
+import bremickerBoxes from '../../../assets/data/bremickerBoxes';
 
 const useStyles = makeStyles(() => ({
   mainContainer: {
@@ -92,7 +96,8 @@ function Prediction(props) {
     opacity: 0.2,
     radius: 10,
     maximum: 1,
-    isActive: false
+    isActive: false,
+    isSingleActive: false
   });
 
   const onBlurChange = (value) => {
@@ -113,6 +118,10 @@ function Prediction(props) {
 
   const toggleSettings = () => {
     setState({...state, isActive: !state.isActive })
+  };
+
+  const toggleSingleSettings = () => {
+    setState({...state, isSingleActive: !state.isSingleActive })
   };
 
   return (
@@ -136,32 +145,28 @@ function Prediction(props) {
         </Card>
       </div>
       <Divider />
-      <div className={classes.introductionContainer}>
-        <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
+      {state.isSingleActive ? (
+            <div className={classes.settingsContainer}>
+              <SingleSettings boxId={props.selectedBox}/>
+            </div>
+      ) : props.isActive ? (
+        <div className={classes.settingsContainer}>
+          <Settings />
+        </div>
+      ) : (
+        <div className={classes.introductionContainer}>
+          <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
           {props.selectedBox ? (
             <div className={classes.introduction}>
               <Typography variant="h3" align='center'>You have selected Bremicker Box {props.selectedBox}</Typography>
               <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>
                 Would you like to simulate and predict air quality for the selected area?
               </Typography>
-              {props.traffic && props.traffic[props.selectedBox] ? (
-                <div className={classes.chartContainer}>
-                  <Typography align='center' variant='caption'>Vehicles per hour</Typography>
-                  <BremickerLineChart
-                    data={
-                      Object.keys(props.traffic[props.selectedBox]).map(key => {
-                        return {
-                          date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
-                          value: props.traffic[props.selectedBox][key]
-                        }
-                      })
-                    }
-                  />
-                </div>
+              {props.traffic && props.traffic[props.selectedBox] && props.sensors && props.sensors[bremickerBoxes[props.selectedBox]['airSensor']] ? (
+                <Analysis selectedBox={props.selectedBox} traffic={props.traffic} sensors={props.sensors} />
               ) : (
                 <React.Fragment />
               )}
-
               <div className={classes.buttonContainer}>
                 <Button
                   onClick={() => props.startSinglePrediction(props.params)}
@@ -197,8 +202,9 @@ function Prediction(props) {
               }
             </div>
           )}
-        <Icon className={classes.icon}><BambooIcon /></Icon>
-      </div>
+          <Icon className={classes.icon}><BambooIcon /></Icon>
+        </div>
+      )}
     </div>
   )
 }
@@ -221,7 +227,7 @@ const mapStateToProps = (state) => {
       isFetching: state.simulation.isFetching,
       selectedBox: state.traffic.selected,
       traffic: state.traffic,
-      air: state.air
+      sensors: state.air.sensors
     }
 };
 
@@ -238,3 +244,25 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Prediction);
+
+
+// {/*<div className={classes.chartContainer}>*/}
+// {/*<Typography align='center' variant='caption'>Vehicles per hour</Typography>*/}
+// {/*<BremickerLineChart*/}
+// {/*data={*/}
+// {/*Object.keys(props.traffic[props.selectedBox]).map(key => {*/}
+// {/*return {*/}
+// {/*date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),*/}
+// {/*value: props.traffic[props.selectedBox][key]*/}
+// {/*}*/}
+// {/*})*/}
+// {/*}*/}
+// {/*/>*/}
+// {/*{props.sensors && props.sensors[bremickerBoxes[props.selectedBox][]]}*/}
+// {/*<HawaDawaLineChart*/}
+// {/*data={*/}
+// {/*Object.keys()*/}
+// {/*}*/}
+//
+// {/*/>*/}
+// {/*</div>*/}

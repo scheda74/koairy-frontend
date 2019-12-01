@@ -13,17 +13,19 @@ export function air(
         didInvalidate: false
       });
     case RECEIVE_LATEST_AIR:
+      console.log(action)
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        sensors: [
-          {
-            [action.id]: {
-              location: action.location,
-              values: action.values
-            }
-          }
-        ],
+        // sensors: [
+        //   {
+        //     [action.id]: {
+        //       location: action.location,
+        //       values: action.values
+        //     }
+        //   }
+        // ],
+        sensors: action.sensors,
         lastUpdated: action.receivedAt
       });
     default:

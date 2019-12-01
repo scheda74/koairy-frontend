@@ -13,19 +13,18 @@ export function requestAir() {
 }
 
 export function receiveAir(json) {
-  console.log("Emissions received");
   return {
     type: RECEIVE_LATEST_AIR,
-    id: json.id,
-    location: json.location,
-    values: json.values,
+    // id: json.id,
+    // location: json.location,
+    // values: json.values,
+    sensors: json,
     receivedAt: Date.now()
   }
 }
 
 export function fetchLatestAir() {
   return async function(dispatch, getState) {
-    console.log('are you doing this?');
     dispatch(requestAir());
 
     return await fetch(apiUrl + currentAir, {headers: header})
