@@ -16,6 +16,7 @@ export function traffic(
   switch (action.type) {
     case INVALIDATE_TRAFFIC:
       return Object.assign({}, state, {
+        isFetching: false,
         didInvalidate: true
       });
     case REQUEST_TRAFFIC:

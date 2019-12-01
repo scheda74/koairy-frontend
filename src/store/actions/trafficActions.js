@@ -12,10 +12,10 @@ const header = new Headers({
   'Access-Control-Allow-Origin': '*'
 });
 
-export function invalidateTraffic(params) {
+export function invalidateTraffic() {
+  console.log('invalidated')
   return {
-    type: INVALIDATE_TRAFFIC,
-    params
+    type: INVALIDATE_TRAFFIC
   }
 }
 
@@ -105,7 +105,7 @@ export function fetchCurrentBremicker(boxId) {
 
     return await fetch(apiUrl + currentBremicker + boxId)
       .then(response => response.json(),
-        error => console.log('An error occurred', error))
+        error => dispatch(invalidateTraffic()))
       .then(json => dispatch(receiveCurrentBremicker(boxId, json)))
       .catch(error => console.log('An error occurred', error))
   }

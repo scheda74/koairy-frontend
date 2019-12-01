@@ -212,17 +212,17 @@ function SingleSettings(props) {
                    vehicleNumber={props.vehicleNumber}
                    id="generalPanel" />
         );
-      case 2:
+      case 1:
         return (
           <Vehicles vehicles={props.vehicleDistribution}
                     handleDistChange={handleDistChange}
                     id="vehiclePanel" />
         );
-      case 3:
+      case 2:
         return (
           <WeatherScenarios />
         );
-      case 4:
+      case 3:
         return(
           <PredictionSettings predictionModel={props.predictionModel}
                               startDate={props.startDate}

@@ -5,7 +5,6 @@ import './DeviceMap.css';
 import bremickerBoxes from '../../assets/data/bremickerBoxes'
 import { CircularProgress } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-
 import { airActions, trafficActions } from '../../store/actions'
 // import { fetchCurrentBremicker } from '../../store/actions/trafficActions';
 // import { fetchLatestAir } from '../../store/actions/hawaDawaActions.js';
@@ -22,10 +21,10 @@ export class DeviceMap extends PureComponent {
     radius: 10,
     maximum: 1,
     polyOptions: {
-      672: {opacity: 0.8, color: 'rgba(83, 141, 26, 1)'},
-      671: {opacity: 0.8, color: '#ccc'},
-      670: {opacity: 0.8, color: 'rgba(193, 78, 127, 1)'},
-      384: {opacity: 0.8, color: 'rgba(83, 141, 26, 1)'}
+      672: {opacity: 0.2, color: 'rgba(83, 141, 26, 1)', isActive: false},
+      671: {opacity: 0.2, color: 'rgba(83, 141, 26, 1)', isActive: false},
+      670: {opacity: 0.2, color: 'rgba(83, 141, 26, 1)', isActive: false},
+      384: {opacity: 0.2, color: 'rgba(83, 141, 26, 1)', isActive: false}
     }
   };
 
@@ -41,18 +40,34 @@ export class DeviceMap extends PureComponent {
     )
   })
 
-  setPolyOpacity = (key, opacity) => {
+  hoverPolgygon = (key) => {
+   if (!this.state.polyOptions[key].isActive) {
+     this.setState({
+       ...this.state,
+       polyOptions: {
+         ...this.state.polyOptions,
+         [key]: {...this.state.polyOptions[key], opacity: Math.abs(1 - this.state.polyOptions[key].opacity)}
+       }
+     })
+   }
+  };
+
+  togglePolygon = key => {
     this.setState({
       ...this.state,
       polyOptions: {
         ...this.state.polyOptions,
-        [key]: {...this.state.polyOptions[key], opacity: opacity}
+        [key]: {
+          ...this.state.polyOptions[key],
+          isActive: !this.state.polyOptions[key].isActive,
+          opacity: this.state.polyOptions[key].isActive ? 0.2 : 0.8}
       }
-    })
+    });
   };
 
   onPolygonClickHandler = key => {
-    this.setPolyOpacity(key, 0.8);
+
+    this.togglePolygon(key);
     this.props.fetchCurrentBremickerByKey(key);
     this.props.fetchCurrentAir()
   };
@@ -66,7 +81,8 @@ export class DeviceMap extends PureComponent {
       let sensor = bremickerBoxes[key];
       let bremickerData = this.props.traffic && this.props.traffic[key];
       return (
-        <Polygon className={'leaflet-fade'}
+        <Polygon
+          // className='fade-in'
                  key={key}
                  lineCap='round'
                  lineJoin='round'
@@ -75,21 +91,21 @@ export class DeviceMap extends PureComponent {
                  fillColor={this.state.polyOptions[key].color}
                  stroke={false}
                  fillOpacity={this.state.polyOptions[key].opacity}
-                 // onMouseOver={() => this.setPolyOpacity(key, 0.8)}
-                 // onMouseOut={() => this.setPolyOpacity(key, 0.0)}
+                 onMouseOver={() => this.hoverPolgygon(key)}
+                 onMouseOut={() => this.hoverPolgygon(key)}
                  onClick={() => this.onPolygonClickHandler(key)}
         >
-          <Popup>
+          <Popup onClose={() => this.togglePolygon(key)}>
             {this.props.traffic && this.props.traffic[key] ?
               (
                 <div>
                   <Typography>Bremicker Box ID: {key}</Typography>
                   <Typography>Data fetched on: {Object.keys(this.props.traffic[key]).pop()}</Typography>
-                  <Typography>Number of vehicles: {bremickerData[Object.keys(this.props.traffic[key]).pop()]}</Typography>
+                  <Typography>Number of vehicles: {bremickerData[Object.keys(this.props.traffic[key]).pop()] || 0}</Typography>
                 </div>
-
               ) : (
-                <CircularProgress />
+                this.props.traffic.didInvalidate ? (<Typography>Something went wrong</Typography>) : (<CircularProgress />)
+
               )
             }
           </Popup>
