@@ -26,10 +26,13 @@ RUN npm install --silent
 RUN npm install react-scripts@3.0.1 -g --silent
 
 COPY . /app
-RUN npm run build
+RUN react-scripts build
+RUN npm install -g serve
+RUN serve -s build
+
 
 # production environment
-FROM nginx:1.17-alpine
-COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+#FROM nginx:1.17-alpine
+#COPY --from=build /app/build /usr/share/nginx/html
+#EXPOSE 80
+#CMD ["nginx", "-g", "daemon off;"]
