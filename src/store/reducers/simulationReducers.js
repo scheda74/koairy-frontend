@@ -1,4 +1,5 @@
 import {
+  INVALIDATE_PREDICTION,
   RECEIVE_PREDICTION,
   RECEIVE_SINGLE_PREDICTION,
   REQUEST_PREDICTION,
@@ -23,6 +24,7 @@ export function simulation(
       "HBEFA3/PC_Alternative": 0.02
     },
     isFetching: false,
+    didInvalidate: false,
     // weatherScenario: 0,
     predictionModel: 'lstm',
     startDate: '2019-08-01',
@@ -109,10 +111,17 @@ export function simulation(
       });
 
     case RECEIVE_SINGLE_PREDICTION:
+      console.log('prediction received: ', action)
       return Object.assign({}, state, {
         isFetching: false,
-        singlePrediction: {...state.simulation.prediction, [action.boxID]: action.prediction},
+        [action.boxID]: {prediction: action.prediction},
         lastUpdated: action.receivedAt
+      });
+    case INVALIDATE_PREDICTION:
+      console.log('something went wrong: ', action);
+      return Object.assign({}, state, {
+        didInvalidate: true,
+        isFetching: false
       });
     default:
       return state;

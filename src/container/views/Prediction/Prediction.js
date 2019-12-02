@@ -11,10 +11,7 @@ import { simulationActions } from '../../../store/actions';
 import connect from 'react-redux/es/connect/connect';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // import bremickerBoxes from '../../assets/data/bremickerBoxes'
-import Analysis from '../Analysis/Analysis';
-import SingleSettings from '../../../components/SingleSettings/SingleSettings';
-import Settings from '../../../components/Settings/Settings';
-import bremickerBoxes from '../../../assets/data/bremickerBoxes';
+import BoxArea from '../../../components/BoxArea/BoxArea'
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -101,14 +98,14 @@ function Prediction(props) {
     opacity: 0.2,
     radius: 10,
     maximum: 1,
-    isActive: false,
-    isSingleActive: false
+    // isActive: false,
+    // isSingleActive: false
   });
 
   useEffect(function() {
-    console.log('[PREDICTION] should rerender? boxID now: ' + props.boxID)
-    setState({...state, isSingleActive: false, isActive: false})
-  }, [props.boxID]);
+    console.log('[PREDICTION] should rerender? selectedBox now: ' + props.selectedBox)
+    // setState({...state, isSingleActive: false, isActive: false})
+  }, [props.selectedBox]);
 
   const onBlurChange = (value) => {
     setState({...state, blur: value })
@@ -126,16 +123,16 @@ function Prediction(props) {
     setState({...state, maximum: value / 100 })
   };
 
-  const toggleSettings = () => {
-    console.log('toggle Settings')
-    setState({...state, isActive: !state.isActive })
-    console.log('single Active?', state.isSingleActive)
-    console.log('normal active?', state.isActive)
-  };
-
-  const toggleSingleSettings = () => {
-    setState({...state, isSingleActive: !state.isSingleActive })
-  };
+  // const toggleSettings = () => {
+  //   console.log('toggle Settings')
+  //   setState({...state, isActive: !state.isActive })
+  //   console.log('single Active?', state.isSingleActive)
+  //   console.log('normal active?', state.isActive)
+  // };
+  //
+  // const toggleSingleSettings = () => {
+  //   setState({...state, isSingleActive: !state.isSingleActive })
+  // };
 
   return (
     <div className={classes.mainContainer}>
@@ -158,80 +155,37 @@ function Prediction(props) {
         </Card>
       </div>
       <Divider />
-      {props.isActive ? (
-        <div className={classes.settingsContainer}>
-          <Settings />
-        </div>
+      {props.selectedBox ? (
+        <BoxArea boxID={props.selectedBox} />
       ) : (
-        state.isSingleActive ? (
-          <div className={classes.settingsContainer}>
-            <SingleSettings boxID={props.boxID}/>
-          </div>
-        ) : (
-          <div className={classes.introductionContainer}>
-            {props.boxID ? (
-              <div className={classes.introduction}>
+        <div className={classes.introductionContainer}>
+          <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
+          <div className={classes.introduction}>
+
+            <div className={classes.introduction}>
+              <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
+              <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>
+            </div>
+            {props.isFetching ?
+              (
+                <CircularProgress color="primary" />
+              ) : (
                 <div className={classes.buttonContainer}>
-                  <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSingleSettings}>Adjust Prediction Settings</Button>
-                  <Typography variant="h5" align='center'>You have selected Bremicker Box {props.boxID}</Typography>
+                  {/*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>*/}
                   <Button
-                    onClick={() => props.startSinglePrediction(props.params)}
+                    onClick={() => props.startPrediction(props.params)}
                     className={classes.button}
                     color='primary'
                     variant='contained'>
-                    Start Using Default!
+                    Start Predicting!
                   </Button>
                 </div>
-                {/*<Typography style={{marginTop: '0.5rem'}} variant="subtitle1" align='center'>*/}
-                  {/*Would you like to simulate and predict air quality for the selected area?*/}
-                {/*</Typography>*/}
-                {props.traffic && props.traffic[props.boxID] && props.sensors && props.sensors[bremickerBoxes[props.boxID]['airSensor']] ? (
-                  <Analysis boxID={props.boxID} traffic={props.traffic} sensors={props.sensors} />
-                ) : (
-                  <React.Fragment />
-                )}
-                {/*<div className={classes.buttonContainer}>*/}
-                  {/*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSingleSettings}>Adjust Settings</Button>*/}
-                  {/*<Button*/}
-                    {/*onClick={() => props.startSinglePrediction(props.params)}*/}
-                    {/*className={classes.button}*/}
-                    {/*color='primary'*/}
-                    {/*variant='contained'>*/}
-                    {/*Start Using Default!*/}
-                  {/*</Button>*/}
-                {/*</div>*/}
-              </div>
-            ) : (
-              <React.Fragment>
-                <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
-                <div className={classes.introduction}>
-
-                  <div className={classes.introduction}>
-                    <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
-                    <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>
-                  </div>
-                  {props.isFetching ?
-                    (
-                      <CircularProgress color="primary" />
-                    ) : (
-                      <div className={classes.buttonContainer}>
-                        {/*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>*/}
-                        <Button
-                          onClick={() => props.startPrediction(props.params)}
-                          className={classes.button}
-                          color='primary'
-                          variant='contained'>
-                          Start Predicting!
-                        </Button>
-                      </div>
-                    )
-                  }
-                </div>
-                <Icon className={classes.icon}><BambooIcon /></Icon>
-              </React.Fragment>
-            )}
+              )
+            }
           </div>
-      ))}
+          <Icon className={classes.icon}><BambooIcon /></Icon>
+        </div>
+      )}
     </div>
   )
 }
@@ -252,7 +206,7 @@ const mapStateToProps = (state) => {
       params: state.simulation,
       prediction: state.prediction,
       isFetching: state.simulation.isFetching,
-      boxID: state.traffic.selected,
+      selectedBox: state.traffic.selected,
       traffic: state.traffic,
       sensors: state.air.sensors
     }
@@ -293,3 +247,78 @@ export default connect(
 //
 // {/*/>*/}
 // {/*</div>*/}
+
+// {/*{props.isActive ? (*/}
+// {/*<div className={classes.settingsContainer}>*/}
+// {/*<Settings />*/}
+// {/*</div>*/}
+// {/*) : (*/}
+// {/*state.isSingleActive ? (*/}
+// {/*<div className={classes.settingsContainer}>*/}
+// {/*<SingleSettings boxID={props.selectedBox}/>*/}
+// {/*</div>*/}
+// {/*) : (*/}
+// {/*<div className={classes.introductionContainer}>*/}
+// {/*{props.selectedBox ? (*/}
+// {/*<div className={classes.introduction}>*/}
+// {/*<div className={classes.buttonContainer}>*/}
+// {/*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSingleSettings}>Adjust Prediction Settings</Button>*/}
+// {/*<Typography variant="h5" align='center'>You have selected Bremicker Box {props.selectedBox}</Typography>*/}
+// {/*<Button*/}
+// {/*onClick={() => props.startSinglePrediction(props.params)}*/}
+// {/*className={classes.button}*/}
+// {/*color='primary'*/}
+// {/*variant='contained'>*/}
+// {/*Start Using Default!*/}
+// {/*</Button>*/}
+// {/*</div>*/}
+// {/*/!*<Typography style={{marginTop: '0.5rem'}} variant="subtitle1" align='center'>*!/*/}
+// {/*/!*Would you like to simulate and predict air quality for the selected area?*!/*/}
+// {/*/!*</Typography>*!/*/}
+// {/*{props.traffic && props.traffic[props.selectedBox] && props.sensors && props.sensors[bremickerBoxes[props.selectedBox]['airSensor']] ? (*/}
+// {/*<Analysis boxID={props.selectedBox} traffic={props.traffic} sensors={props.sensors} />*/}
+// {/*) : (*/}
+// {/*<React.Fragment />*/}
+// {/*)}*/}
+// {/*/!*<div className={classes.buttonContainer}>*!/*/}
+// {/*/!*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSingleSettings}>Adjust Settings</Button>*!/*/}
+// {/*/!*<Button*!/*/}
+// {/*/!*onClick={() => props.startSinglePrediction(props.params)}*!/*/}
+// {/*/!*className={classes.button}*!/*/}
+// {/*/!*color='primary'*!/*/}
+// {/*/!*variant='contained'>*!/*/}
+// {/*/!*Start Using Default!*!/*/}
+// {/*/!*</Button>*!/*/}
+// {/*/!*</div>*!/*/}
+// {/*</div>*/}
+// {/*) : (*/}
+// {/*<React.Fragment>*/}
+// {/*<Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>*/}
+// {/*<div className={classes.introduction}>*/}
+//
+// {/*<div className={classes.introduction}>*/}
+// {/*<Typography variant="h3" align='center'>Welcome to Koairy!</Typography>*/}
+// {/*<Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>*/}
+// {/*</div>*/}
+// {/*{props.isFetching ?*/}
+// {/*(*/}
+// {/*<CircularProgress color="primary" />*/}
+// {/*) : (*/}
+// {/*<div className={classes.buttonContainer}>*/}
+// {/*/!*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>*!/*/}
+// {/*<Button*/}
+// {/*onClick={() => props.startPrediction(props.params)}*/}
+// {/*className={classes.button}*/}
+// {/*color='primary'*/}
+// {/*variant='contained'>*/}
+// {/*Start Predicting!*/}
+// {/*</Button>*/}
+// {/*</div>*/}
+// {/*)*/}
+// {/*}*/}
+// {/*</div>*/}
+// {/*<Icon className={classes.icon}><BambooIcon /></Icon>*/}
+// {/*</React.Fragment>*/}
+// {/*)}*/}
+// {/*</div>*/}
+// {/*))}*/}

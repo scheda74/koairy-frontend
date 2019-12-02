@@ -1,4 +1,5 @@
 import {
+  INVALIDATE_PREDICTION,
   RECEIVE_PREDICTION,
   RECEIVE_SINGLE_PREDICTION,
   REQUEST_PREDICTION,
@@ -101,16 +102,16 @@ export function receiveSinglePrediction(params, json) {
   return {
     type: RECEIVE_SINGLE_PREDICTION,
     prediction: JSON.parse(json),
-    boxID: params.boxID,
+    boxID: Number(params.boxID),
     receivedAt: Date.now()
   }
 }
 
-export function fetchPredictionUnsuccessful(params, error) {
-  return {
-    type: RECEIVE_PREDICTION
-  }
-}
+// export function fetchPredictionUnsuccessful(params, error) {
+//   return {
+//     type: RECEIVE_PREDICTION
+//   }
+// }
 
 export function fetchPrediction(params) {
   return function(dispatch) {
@@ -123,7 +124,7 @@ export function fetchPrediction(params) {
       .then(response => response.json(),
         error => console.log('An error occurred', error))
       .then(json => dispatch(receivePrediction(params, json)))
-      .catch(error => dispatch(fetchPredictionUnsuccessful(params, error)))
+      .catch(error => dispatch(invalidatePrediction(params, error)))
   }
 }
 
@@ -131,7 +132,7 @@ export function fetchSinglePrediction(params) {
   return function(dispatch) {
 
     dispatch(requestPrediction());
-    console.log('single prediction params', params)
+    console.log('single prediction params', params);
     let body = {
       ...params,
       ['box_id']: params['boxID']
@@ -143,7 +144,16 @@ export function fetchSinglePrediction(params) {
       .then(response => response.json(),
         error => console.log('An error occurred', error))
       .then(json => dispatch(receiveSinglePrediction(params, json)))
-      .catch(error => dispatch(fetchPredictionUnsuccessful(params, error)))
+      .catch(error => dispatch(invalidatePrediction(params, error)))
+  }
+}
+
+
+export function invalidatePrediction(params, error) {
+  return {
+    type: INVALIDATE_PREDICTION,
+    params,
+    error
   }
 }
 
