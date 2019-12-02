@@ -12,4 +12,5 @@ RUN npm install core-js-compat@3.4.7 --save
 COPY . /app
 RUN react-scripts build
 RUN npm install -g serve
+EXPOSE 5000
 CMD serve -s build
