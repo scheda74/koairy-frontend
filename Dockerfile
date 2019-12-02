@@ -6,8 +6,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json /app/package.json
 
 RUN npm install --silent
-RUN npm install react-scripts@3.0.1 -g
-RUN npm list core-js-compat
+RUN npm install core-js-compat@3.4.7 --save
+#RUN npm install react-scripts -g
 
 COPY . /app
 RUN react-scripts build
