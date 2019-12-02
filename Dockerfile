@@ -28,7 +28,7 @@ RUN npm install react-scripts@3.0.1 -g --silent
 COPY . /
 RUN react-scripts build
 RUN npm install -g serve
-RUN serve -s build
+CMD serve -s build
 
 
 # production environment
