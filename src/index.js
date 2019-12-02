@@ -69,7 +69,7 @@ const store = createStore(
           'kirchheim_residential': 0.05,
           'unassigned_edges': 0.05
       },
-      vehicleNumber: 9500,
+      vehicleNumber: undefined,
       timeSteps: 10800
     }
   },

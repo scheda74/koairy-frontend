@@ -1,6 +1,6 @@
 import { Card, Divider, makeStyles } from '@material-ui/core';
 import DeviceMap from '../../../components/Map/DeviceMap';
-import React from 'react';
+import React, { useEffect } from 'react';
 import HeatMapSettings from '../../../components/Settings/HeatMapSettings/HeatMapSettings';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -105,6 +105,11 @@ function Prediction(props) {
     isSingleActive: false
   });
 
+  useEffect(function() {
+    console.log('[PREDICTION] should rerender? boxID now: ' + props.boxID)
+    setState({...state, isSingleActive: false, isActive: false})
+  }, [props.boxID]);
+
   const onBlurChange = (value) => {
     setState({...state, blur: value })
   };
@@ -160,15 +165,15 @@ function Prediction(props) {
       ) : (
         state.isSingleActive ? (
           <div className={classes.settingsContainer}>
-            <SingleSettings boxId={props.selectedBox}/>
+            <SingleSettings boxID={props.boxID}/>
           </div>
         ) : (
           <div className={classes.introductionContainer}>
-            {props.selectedBox ? (
+            {props.boxID ? (
               <div className={classes.introduction}>
                 <div className={classes.buttonContainer}>
                   <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSingleSettings}>Adjust Prediction Settings</Button>
-                  <Typography variant="h5" align='center'>You have selected Bremicker Box {props.selectedBox}</Typography>
+                  <Typography variant="h5" align='center'>You have selected Bremicker Box {props.boxID}</Typography>
                   <Button
                     onClick={() => props.startSinglePrediction(props.params)}
                     className={classes.button}
@@ -180,8 +185,8 @@ function Prediction(props) {
                 {/*<Typography style={{marginTop: '0.5rem'}} variant="subtitle1" align='center'>*/}
                   {/*Would you like to simulate and predict air quality for the selected area?*/}
                 {/*</Typography>*/}
-                {props.traffic && props.traffic[props.selectedBox] && props.sensors && props.sensors[bremickerBoxes[props.selectedBox]['airSensor']] ? (
-                  <Analysis selectedBox={props.selectedBox} traffic={props.traffic} sensors={props.sensors} />
+                {props.traffic && props.traffic[props.boxID] && props.sensors && props.sensors[bremickerBoxes[props.boxID]['airSensor']] ? (
+                  <Analysis boxID={props.boxID} traffic={props.traffic} sensors={props.sensors} />
                 ) : (
                   <React.Fragment />
                 )}
@@ -232,10 +237,10 @@ function Prediction(props) {
 }
 
 // {state.isActive ? (
-//   props.selectedBox ? (
+//   props.boxID ? (
 //     <div className={classes.settingsContainer}>
 //       {/*<Settings />*/}
-//       <SingleSettings boxId={props.selectedBox}/>
+//       <SingleSettings boxID={props.boxID}/>
 //     </div> ) : (
 //     <div>
 //
@@ -247,7 +252,7 @@ const mapStateToProps = (state) => {
       params: state.simulation,
       prediction: state.prediction,
       isFetching: state.simulation.isFetching,
-      selectedBox: state.traffic.selected,
+      boxID: state.traffic.selected,
       traffic: state.traffic,
       sensors: state.air.sensors
     }
@@ -272,15 +277,15 @@ export default connect(
 // {/*<Typography align='center' variant='caption'>Vehicles per hour</Typography>*/}
 // {/*<BremickerLineChart*/}
 // {/*data={*/}
-// {/*Object.keys(props.traffic[props.selectedBox]).map(key => {*/}
+// {/*Object.keys(props.traffic[props.boxID]).map(key => {*/}
 // {/*return {*/}
 // {/*date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),*/}
-// {/*value: props.traffic[props.selectedBox][key]*/}
+// {/*value: props.traffic[props.boxID][key]*/}
 // {/*}*/}
 // {/*})*/}
 // {/*}*/}
 // {/*/>*/}
-// {/*{props.sensors && props.sensors[bremickerBoxes[props.selectedBox][]]}*/}
+// {/*{props.sensors && props.sensors[bremickerBoxes[props.boxID][]]}*/}
 // {/*<HawaDawaLineChart*/}
 // {/*data={*/}
 // {/*Object.keys()*/}

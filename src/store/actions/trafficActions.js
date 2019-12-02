@@ -86,34 +86,34 @@ export function fetchTrafficIfNeeded(params) {
   }
 }
 
-export function receiveCurrentBremicker(boxId, json) {
+export function receiveCurrentBremicker(boxID, json) {
   console.log(json);
   return {
     type: RECEIVE_CURRENT_BREMICKER,
-    boxId: boxId,
+    boxID: boxID,
     traffic: JSON.parse(json),
     receivedAt: Date.now()
   }
 }
 
 
-export function fetchCurrentBremicker(boxId) {
+export function fetchCurrentBremicker(boxID) {
   return async function(dispatch, getState) {
 
-    dispatch(requestTraffic(boxId));
-    dispatch(setSelectedBox(boxId));
+    dispatch(requestTraffic(boxID));
+    dispatch(setSelectedBox(boxID));
 
-    return await fetch(apiUrl + currentBremicker + boxId)
+    return await fetch(apiUrl + currentBremicker + boxID)
       .then(response => response.json(),
         error => dispatch(invalidateTraffic()))
-      .then(json => dispatch(receiveCurrentBremicker(boxId, json)))
+      .then(json => dispatch(receiveCurrentBremicker(boxID, json)))
       .catch(error => console.log('An error occurred', error))
   }
 }
 
-export function setSelectedBox(boxId) {
+export function setSelectedBox(boxID) {
   return {
     type: SET_SELECTED_BOX,
-    boxId: boxId
+    boxID: boxID
   }
 }

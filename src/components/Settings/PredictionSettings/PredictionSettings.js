@@ -55,7 +55,7 @@ export default function PredictionSettings(props) {
             margin="normal"
             id="date-picker-inline"
             label="Start Date"
-            value={props.startDate}
+            value={new Date(props.startDate)}
             onChange={(date) => props.handleDateChange('startDate', date)}
             KeyboardButtonProps={{
               'aria-label': 'change date',
@@ -68,7 +68,7 @@ export default function PredictionSettings(props) {
             margin="normal"
             id="end-date"
             label="End Date"
-            value={props.endDate}
+            value={new Date(props.endDate)}
             onChange={(date) => props.handleDateChange('endDate', date)}
             KeyboardButtonProps={{
               'aria-label': 'change date',

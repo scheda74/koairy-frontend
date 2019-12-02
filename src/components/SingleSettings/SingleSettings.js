@@ -160,7 +160,10 @@ function SingleSettings(props) {
     activeStep: 0
   });
 
-  // const { activeStep } = state;
+  // useEffect(function() {
+  //   console.log('[SINGLE SETTINGS] rerender')
+  //   setState({...state, activeStep: 0})
+  // }, [props.boxID]);
 
   const steps = getSteps();
 
@@ -183,7 +186,8 @@ function SingleSettings(props) {
   const handleDateChange = (name, date) => {
     let newDate = new Date();
     if (name === 'startDate' || name === 'endDate') {
-      newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+      // newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+      newDate = new Date(date).toISOString().slice(0,10);
     } else {
       newDate = date.toLocaleString('DE-de', {hour: '2-digit', minute: '2-digit'})
       console.log(newDate)
@@ -267,7 +271,7 @@ function SingleSettings(props) {
                 </Button>
                 <Button variant="contained"
                         color="primary"
-                        onClick={() => props.startPrediction(props)}
+                        onClick={() => props.startSinglePrediction(props)}
                         className={classes.button}>
                   START
                 </Button>
@@ -306,7 +310,7 @@ function SingleSettings(props) {
 
 {/*<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/}
 
-const mapStateToProps = state => state.simulation;
+const mapStateToProps = (state, ownProps) => state.simulation[ownProps.boxID] || {...state.simulation, boxID: ownProps.boxID};
 
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -101,7 +101,7 @@ export function receiveSinglePrediction(params, json) {
   return {
     type: RECEIVE_SINGLE_PREDICTION,
     prediction: JSON.parse(json),
-    boxId: params.boxId,
+    boxID: params.boxID,
     receivedAt: Date.now()
   }
 }
@@ -131,8 +131,15 @@ export function fetchSinglePrediction(params) {
   return function(dispatch) {
 
     dispatch(requestPrediction());
+    console.log('single prediction params', params)
+    let body = {
+      ...params,
+      ['box_id']: params['boxID']
+    };
+    console.log(body);
 
-    return fetch(apiUrl + startSinglePrediction, { headers: header, method: 'POST', body: JSON.stringify(params) })
+
+    return fetch(apiUrl + startSinglePrediction, { headers: header, method: 'POST', body: JSON.stringify(body) })
       .then(response => response.json(),
         error => console.log('An error occurred', error))
       .then(json => dispatch(receiveSinglePrediction(params, json)))

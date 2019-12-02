@@ -24,7 +24,7 @@ export default function Analysis(props) {
 
   const airData = () => {
     console.log(props.sensors)
-    let sensorData =  props.sensors[bremickerBoxes[props.selectedBox]['airSensor']]['values']
+    let sensorData =  props.sensors[bremickerBoxes[props.boxID]['airSensor']]['values']
     let result = Object.keys(sensorData).map(key => {
       return {
         date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
@@ -42,10 +42,10 @@ export default function Analysis(props) {
         <Typography align='center' variant='caption'>Vehicles per hour</Typography>
         <BremickerLineChart
           data={
-            Object.keys(props.traffic[props.selectedBox]).map(key => {
+            Object.keys(props.traffic[props.boxID]).map(key => {
               return {
                 date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
-                vehicles: props.traffic[props.selectedBox][key] || 0
+                vehicles: props.traffic[props.boxID][key] || 0
               }
             })
           }

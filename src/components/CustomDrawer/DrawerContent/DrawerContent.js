@@ -158,7 +158,7 @@ const mapStateToProps = (state) => {
       vehicleNumber: state.simulation.vehicleNumber,
       vehicleDistribution: state.simulation.vehicleDistribution,
       timeSteps: state.simulation.timeSteps,
-      weatherScenario: state.simulation.weatherScenario
+      // weatherScenario: state.simulation.weatherScenario
     },
   }
 };

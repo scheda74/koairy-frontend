@@ -6,5 +6,5 @@ export const getCaqi = '/get/caqi';
 export const startPrediction = '/prediction';
 export const getTraining = '/traffic';
 export const currentBremicker = '/bremicker/current?boxID=';
-export const startSinglePrediction = '/simulation/single';
+export const startSinglePrediction = '/prediction/single';
 export const currentAir = '/air/current';

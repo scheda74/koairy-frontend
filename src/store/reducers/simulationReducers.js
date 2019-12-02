@@ -23,7 +23,7 @@ export function simulation(
       "HBEFA3/PC_Alternative": 0.02
     },
     isFetching: false,
-    weatherScenario: 0,
+    // weatherScenario: 0,
     predictionModel: 'lstm',
     startDate: '2019-08-01',
     endDate: '2019-11-10',
@@ -65,7 +65,7 @@ export function simulation(
       console.log(action);
       return Object.assign({}, state, {
         isFetching: false,
-        weatherScenario: action.weatherScenario,
+        // weatherScenario: action.weatherScenario,
         vehicleDistribution: action.vehicleDistribution,
         srcWeights: action.srcWeights,
         dstWeights: action.dstWeights,
@@ -83,19 +83,17 @@ export function simulation(
       console.log(action);
       return Object.assign({}, state, {
         isFetching: false,
-        parameters: {
-          [action.boxID]: {
-            weatherScenario: action.weatherScenario,
-            vehicleDistribution: action.vehicleDistribution,
-            vehicleNumber: action.vehicleNumber,
-            timeSteps: action.timeSteps,
-            predictionModel: action.predictionModel,
-            startDate: action.startDate,
-            endDate: action.endDate,
-            startHour: action.startHour,
-            endHour: action.endHour,
-            output_key: action.output_key
-          }
+        [action.boxID]: {
+          // weatherScenario: action.weatherScenario,
+          vehicleDistribution: action.vehicleDistribution,
+          vehicleNumber: action.vehicleNumber,
+          timeSteps: action.timeSteps,
+          predictionModel: action.predictionModel,
+          startDate: action.startDate,
+          endDate: action.endDate,
+          startHour: action.startHour,
+          endHour: action.endHour,
+          output_key: action.output_key
         }
       });
     case REQUEST_PREDICTION:
@@ -113,7 +111,7 @@ export function simulation(
     case RECEIVE_SINGLE_PREDICTION:
       return Object.assign({}, state, {
         isFetching: false,
-        singlePrediction: {...state.simulation.prediction, [action.boxId]: action.prediction},
+        singlePrediction: {...state.simulation.prediction, [action.boxID]: action.prediction},
         lastUpdated: action.receivedAt
       });
     default:

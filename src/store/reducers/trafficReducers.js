@@ -35,12 +35,12 @@ export function traffic(
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        [action.boxId]: action.traffic,
+        [action.boxID]: action.traffic,
         lastUpdated: action.receivedAt
       });
     case SET_SELECTED_BOX:
       return Object.assign({}, state, {
-        selected: action.boxId
+        selected: action.boxID
       });
     default:
       return state;
