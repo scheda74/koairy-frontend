@@ -55,5 +55,5 @@
     "@types/react-dom": "^16.9.1",
     "redux-devtools": "^3.5.0"
   },
-  "homepage": "http://smart-mobility.ge57.spacenet.de/koairy"
+  "homepage": "http://smart-mobility.ge57.spacenet.de/"
 }
