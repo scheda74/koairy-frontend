@@ -1,7 +1,6 @@
 import { Card, Divider, makeStyles } from '@material-ui/core';
 import DeviceMap from '../../../components/Map/DeviceMap';
 import React, { useEffect } from 'react';
-import HeatMapSettings from '../../../components/Settings/HeatMapSettings/HeatMapSettings';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
@@ -16,7 +15,7 @@ import BoxArea from '../../../components/BoxArea/BoxArea'
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     display: 'flex',
-    flexDirection: 'column',
+    // flexDirection: 'column',
     width: '100vw',
     height: '100vh'
   },
@@ -25,13 +24,21 @@ const useStyles = makeStyles((theme) => ({
     height: '64px'
   },
   introductionContainer: {
-    // display: 'flex',
-    // justifyContent: 'space-between'
-    flexBasis: '60%',
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    flexBasis: '40%',
+    margin: 'auto'
+    // justifyContent: 'center',
+    // alignItems: 'center'
     // margin: '0.5rem auto',
+  },
+  mapContainer: {
+    // width: '100vw'
+    flexBasis: '60%',
+    // display: 'flex',
+    // justifyContent: 'space-between',
+    margin: '1rem'
   },
   icon: {
     margin: 'auto',
@@ -56,13 +63,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center'
-  },
-  mapContainer: {
-    // width: '100vw'
-    flexBasis: '60%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    margin: '1rem 0',
   },
   mapCard: {
     // display: 'flex',
@@ -144,48 +144,50 @@ function Prediction(props) {
           <DeviceMap />
           {/*<span>hello</span>*/}
         </Card>
-        <Card raised={true} className={classes.card}>
-          <Button>
-            <Typography variant="overline" align='center' className={classes.heading}>HeatMap Settings</Typography>
-          </Button>
-          <HeatMapSettings blurChange={onBlurChange}
-                           radiusChange={onRadiusChange}
-                           opacityChange={onOpacityChange}
-                           maximumChange={onMaximumChange} />
-        </Card>
+        {/*<Card raised={true} className={classes.card}>*/}
+          {/*<Button>*/}
+            {/*<Typography variant="overline" align='center' className={classes.heading}>HeatMap Settings</Typography>*/}
+          {/*</Button>*/}
+          {/*<HeatMapSettings blurChange={onBlurChange}*/}
+                           {/*radiusChange={onRadiusChange}*/}
+                           {/*opacityChange={onOpacityChange}*/}
+                           {/*maximumChange={onMaximumChange} />*/}
+        {/*</Card>*/}
       </div>
       <Divider />
-      {props.selectedBox ? (
-        <BoxArea boxID={props.selectedBox} />
-      ) : (
-        <div className={classes.introductionContainer}>
-          <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
+      <div className={classes.introductionContainer}>
+        {props.selectedBox ? (
+          <BoxArea boxID={props.selectedBox} />
+        ) : (
           <div className={classes.introduction}>
-
+            <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
             <div className={classes.introduction}>
-              <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
-              <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>
+
+              <div className={classes.introduction}>
+                <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
+                <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>
+              </div>
+              {props.isFetching ?
+                (
+                  <CircularProgress color="primary" />
+                ) : (
+                  <div className={classes.buttonContainer}>
+                    {/*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>*/}
+                    <Button
+                      onClick={() => props.startPrediction(props.params)}
+                      className={classes.button}
+                      color='primary'
+                      variant='contained'>
+                      Start Predicting!
+                    </Button>
+                  </div>
+                )
+              }
             </div>
-            {props.isFetching ?
-              (
-                <CircularProgress color="primary" />
-              ) : (
-                <div className={classes.buttonContainer}>
-                  {/*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>*/}
-                  <Button
-                    onClick={() => props.startPrediction(props.params)}
-                    className={classes.button}
-                    color='primary'
-                    variant='contained'>
-                    Start Predicting!
-                  </Button>
-                </div>
-              )
-            }
+            <Icon className={classes.icon}><BambooIcon /></Icon>
           </div>
-          <Icon className={classes.icon}><BambooIcon /></Icon>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

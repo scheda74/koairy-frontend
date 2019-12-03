@@ -8,10 +8,11 @@ import bremickerBoxes from '../../../assets/data/bremickerBoxes';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'space-around',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
-    },
+    // [theme.breakpoints.down('md')]: {
+    //   flexDirection: 'column',
+    // },
   },
   chartContainer: {
     display: 'flex',

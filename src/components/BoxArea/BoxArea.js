@@ -72,17 +72,6 @@ function BoxArea(props) {
 
   return (
     <div className={classes.introduction}>
-      <div className={classes.buttonContainer}>
-        <Button className={classes.button} color='secondary' variant='contained' disabled={state.isActive} onClick={toggleSettings}>Adjust Prediction Settings</Button>
-        <Typography variant="h5" align='center'>You have selected Bremicker Box {props.boxID}</Typography>
-        <Button
-          onClick={() => props.startSinglePrediction(props.params)}
-          className={classes.button}
-          color='primary'
-          variant='contained'>
-          Start Using Default!
-        </Button>
-      </div>
       {state.isActive ? (
         <div className={classes.settingsContainer}>
           <SingleSettings boxID={props.selectedBox}/>
@@ -94,6 +83,17 @@ function BoxArea(props) {
           <CircularProgress color="primary" />
         )
       )}
+      <div className={classes.buttonContainer}>
+        <Button className={classes.button} color='secondary' variant='contained' disabled={state.isActive} onClick={toggleSettings}>Adjust Prediction Settings</Button>
+        <Typography variant="h5" align='center'>You have selected Bremicker Box {props.boxID}</Typography>
+        <Button
+          onClick={() => props.startSinglePrediction(props.params)}
+          className={classes.button}
+          color='primary'
+          variant='contained'>
+          Start Using Default!
+        </Button>
+      </div>
     </div>
   )
 }
