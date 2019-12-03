@@ -34,11 +34,11 @@ export default function App() {
 
   const router = (
     <Switch>
-      <Route exact path={`${process.env.PUBLIC_URL}/`} component={Prediction} />
-      <Route exact path={`${process.env.PUBLIC_URL}/prediction`} component={Prediction} />
-      <Route exact path={`${process.env.PUBLIC_URL}/map`} component={MapContainer} />
-      <Route exact path={`${process.env.PUBLIC_URL}/compare`} component={Comparison} />
-      <Route exact path={`${process.env.PUBLIC_URL}/analysis`} component={Analysis} />
+      <Route path={`${process.env.PUBLIC_URL}/`} component={Prediction} />
+      <Route path={`${process.env.PUBLIC_URL}/prediction`} component={Prediction} />
+      <Route path={`${process.env.PUBLIC_URL}/map`} component={MapContainer} />
+      <Route path={`${process.env.PUBLIC_URL}/compare`} component={Comparison} />
+      <Route path={`${process.env.PUBLIC_URL}/analysis`} component={Analysis} />
       <Route render={() => <Redirect to={`${process.env.PUBLIC_URL}/`} />} />
     </Switch>
   );
@@ -46,7 +46,7 @@ export default function App() {
   return(
     <div className={classes.root}>
       <CssBaseline />
-      <Router basename={"/koairy"}>
+      <Router>
         {/*<CustomToolbar*/}
           {/*open={open}*/}
           {/*handleOpen={handleDrawerOpen} />*/}
