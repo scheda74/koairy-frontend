@@ -26,9 +26,10 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     display: 'flex',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
-    },
+    // [theme.breakpoints.down('md')]: {
+    //   flexDirection: 'column',
+    // },
+    flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
     marginBottom: '2rem'
@@ -51,7 +52,10 @@ const useStyles = makeStyles((theme) => ({
   },
   chartContainer: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginTop: '1rem',
+    marginRight: '1.5rem'
+
   }
 }));
 
@@ -72,26 +76,33 @@ function BoxArea(props) {
 
   return (
     <div className={classes.introduction}>
+      <Typography variant="h6" align='center'>You have selected Bremicker Box {props.boxID}</Typography>
       {state.isActive ? (
         <div className={classes.settingsContainer}>
           <SingleSettings boxID={props.selectedBox}/>
         </div>
       ) : (
         props.traffic && props.traffic[props.boxID] && props.sensors && props.sensors[bremickerBoxes[props.boxID]['airSensor']] ? (
-          <Analysis boxID={props.boxID} traffic={props.traffic} sensors={props.sensors} />
+          <Analysis isFetching={props.isFetching} prediction={props.prediction} boxID={props.boxID} traffic={props.traffic} sensors={props.sensors} />
         ) : (
           <CircularProgress color="primary" />
         )
       )}
       <div className={classes.buttonContainer}>
-        <Button className={classes.button} color='secondary' variant='contained' disabled={state.isActive} onClick={toggleSettings}>Adjust Prediction Settings</Button>
-        <Typography variant="h5" align='center'>You have selected Bremicker Box {props.boxID}</Typography>
         <Button
+          size='small'
+          className={classes.button}
+          color='secondary'
+          variant='contained'
+          disabled={state.isActive}
+          onClick={toggleSettings}>Adjust Prediction Settings
+        </Button>
+        <Button
+          size='small'
           onClick={() => props.startSinglePrediction(props.params)}
           className={classes.button}
           color='primary'
-          variant='contained'>
-          Start Using Default!
+          variant='contained'>Start Prediction Using Default!
         </Button>
       </div>
     </div>
@@ -101,7 +112,7 @@ function BoxArea(props) {
 const mapStateToProps = (state, ownProps) => {
   return {
     params: state.simulation[ownProps.boxID] || {...state.simulation, boxID: ownProps.boxID},
-    prediction: state.prediction,
+    prediction: state.simulation[ownProps.boxID] && state.simulation[ownProps.boxID].prediction,
     isFetching: state.simulation.isFetching,
     traffic: state.traffic,
     sensors: state.air.sensors

@@ -11,6 +11,7 @@ import connect from 'react-redux/es/connect/connect';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // import bremickerBoxes from '../../assets/data/bremickerBoxes'
 import BoxArea from '../../../components/BoxArea/BoxArea'
+import Analysis from '../Analysis/Analysis';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     flexBasis: '60%',
     // display: 'flex',
     // justifyContent: 'space-between',
-    margin: '1rem'
+    margin: '0.5rem'
   },
   icon: {
     margin: 'auto',
@@ -159,9 +160,12 @@ function Prediction(props) {
         {props.selectedBox ? (
           <BoxArea boxID={props.selectedBox} />
         ) : (
-          <div className={classes.introduction}>
-            <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
+          props.prediction ? (
+              <Analysis isFetching={props.isFetching} prediction={props.prediction}/>
+            ) : (
             <div className={classes.introduction}>
+              <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
+              {/*<div className={classes.introduction}>*/}
 
               <div className={classes.introduction}>
                 <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
@@ -171,21 +175,18 @@ function Prediction(props) {
                 (
                   <CircularProgress color="primary" />
                 ) : (
-                  <div className={classes.buttonContainer}>
-                    {/*<Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>*/}
-                    <Button
-                      onClick={() => props.startPrediction(props.params)}
-                      className={classes.button}
-                      color='primary'
-                      variant='contained'>
-                      Start Predicting!
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={() => props.startPrediction(props.params)}
+                    className={classes.button}
+                    color='primary'
+                    variant='contained'>
+                    Start Predicting!
+                  </Button>
                 )
               }
+              <Icon className={classes.icon}><BambooIcon /></Icon>
             </div>
-            <Icon className={classes.icon}><BambooIcon /></Icon>
-          </div>
+          )
         )}
       </div>
     </div>
@@ -206,7 +207,7 @@ function Prediction(props) {
 const mapStateToProps = (state) => {
     return {
       params: state.simulation,
-      prediction: state.prediction,
+      prediction: state.simulation.prediction,
       isFetching: state.simulation.isFetching,
       selectedBox: state.traffic.selected,
       traffic: state.traffic,

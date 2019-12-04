@@ -4,7 +4,7 @@ import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'r
 
 export default function HawaDawaLineChart(props) {
   return (
-    <LineChart width={500} height={300} data={props.data}>
+    <LineChart width={450} height={280} data={props.data}>
       <XAxis dataKey="date" />
       <YAxis dataKey="no2" />
       <Tooltip />

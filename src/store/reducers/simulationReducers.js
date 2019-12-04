@@ -28,7 +28,7 @@ export function simulation(
     // weatherScenario: 0,
     predictionModel: 'lstm',
     startDate: '2019-08-01',
-    endDate: '2019-11-10',
+    endDate: '2019-12-02',
     startHour: '0:00',
     endHour: '23:00',
     srcWeights: {
