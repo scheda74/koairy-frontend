@@ -4,9 +4,10 @@ import React from 'react';
 import DetailToolbar from '../../components/DetailToolbar/DetailToolbar';
 import Settings from './Settings/Settings'
 
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Welcome from './Welcome/Welcome';
+import Detail from './Detail/Detail';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -38,9 +39,11 @@ const detailRouter = (
   <Switch>
     <Route exact path={`${process.env.PUBLIC_URL}/`} component={Welcome} />
     <Route exact path={`${process.env.PUBLIC_URL}/settings`} component={Settings} />
+    <Route exact path={`${process.env.PUBLIC_URL}/settings/:boxId`} component={Settings} />
+    <Route exact path={`${process.env.PUBLIC_URL}/detail`} component={Detail} />
+    <Route exact path={`${process.env.PUBLIC_URL}/detail/:boxId`} component={Detail} />
     <Route exact path={`${process.env.PUBLIC_URL}/prediction`} component={Settings} />
     <Route exact path={`${process.env.PUBLIC_URL}/prediction/:boxId`} component={Settings} />
-    {/*<Route path={`${process.env.PUBLIC_URL}/settings`} component={Prediction} />*/}
     <Route exact render={() => <Redirect to={`${process.env.PUBLIC_URL}/`} />} />
   </Switch>
 );
@@ -55,10 +58,10 @@ export default function Main(props) {
       </Card>
       <Divider />
       <Card raised={true} className={classes.detailCard}>
-        <Router>
+        {/*<Router>*/}
           <DetailToolbar />
           {detailRouter}
-        </Router>
+        {/*</Router>*/}
       </Card>
     </div>
   )

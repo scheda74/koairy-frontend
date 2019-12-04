@@ -3,8 +3,6 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import BambooIcon from '../../../Icons/Bamboo';
 import KoalaOutlinedIcon from '../../../Icons/KoalaOutlined';
-import connect from 'react-redux/es/connect/connect';
-import { triggerToolbar } from '../../../store/reducers/rootReducer';
 import { Link } from 'react-router-dom';
 
 
@@ -30,7 +28,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 
-function Welcome(props) {
+export default function Welcome(props) {
   const classes = useStyles();
 
   return (
@@ -40,20 +38,11 @@ function Welcome(props) {
         <Typography variant="h4" align='center'>Welcome to Koairy!</Typography>
         <Typography style={{marginTop: '0.5rem'}} variant="subtitle1" align='center'>You can simulate emissions and predict air quality</Typography>
         {/*<Button onClick={() => props.triggerToolbar()}>Toggle Toolbar</Button>*/}
-        <Link to="/settings"><Button color="primary" variant="contained" onClick={() => props.triggerToolbar()}>Get Started</Button></Link>
+        <Link to="/detail">
+          <Button color="primary" variant="contained">Get Started</Button>
+        </Link>
       </div>
       <Icon className={classes.icon}><BambooIcon /></Icon>
     </div>
   );
 }
-
-const mapStateToProps = state => {};
-
-const mapDispatchToProps = dispatch => {
-  return {triggerToolbar: () => dispatch(triggerToolbar(true))}
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Welcome);

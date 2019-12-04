@@ -4,7 +4,7 @@ import * as serviceWorker from './serviceWorker';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk'
-
+import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import { MuiThemeProvider } from '@material-ui/core';
 import { darkGreenTheme } from './styles/customTheme';
@@ -19,7 +19,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
   {
-    isToolbarActive: false,
     emissions: {},
     prediction: {
       isFetching: false,
@@ -88,7 +87,9 @@ const target = document.getElementById('root');
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider theme={darkGreenTheme}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </MuiThemeProvider>
   </Provider>,
   target

@@ -17,14 +17,6 @@ export function air(
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        // sensors: [
-        //   {
-        //     [action.id]: {
-        //       location: action.location,
-        //       values: action.values
-        //     }
-        //   }
-        // ],
         sensors: action.sensors,
         lastUpdated: action.receivedAt
       });

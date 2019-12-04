@@ -101,6 +101,5 @@ export default function Analysis(props) {
           )
       )}
     </div>
-
   )
 }

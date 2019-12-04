@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import connect from 'react-redux/es/connect/connect';
 
-import { predictionActions } from '../../store/actions';
+import { predictionActions } from '../../../store/actions';
 
 import SettingsIcon from '@material-ui/icons/Settings';
 import CloudIcon from '@material-ui/icons/Cloud';
@@ -22,11 +22,11 @@ import clsx from 'clsx';
 import Stepper from '@material-ui/core/Stepper';
 import { withStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import General from '../Settings/General/General';
-import Vehicles from '../Settings/Vehicles/Vehicles';
-import WeatherScenarios from '../Settings/WeatherScenarios/WeatherScenarios';
-import PredictionSettings from '../Settings/PredictionSettings/PredictionSettings';
-import { WarningButton } from '../../styles/customComponents';
+import General from '../../Settings/General/General';
+import Vehicles from '../../Settings/Vehicles/Vehicles';
+import WeatherScenarios from '../../Settings/WeatherScenarios/WeatherScenarios';
+import PredictionSettings from '../../Settings/PredictionSettings/PredictionSettings';
+import { WarningButton } from '../../../styles/customComponents';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const ColorlibConnector = withStyles({

@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Map, Marker, Polygon, Popup, TileLayer } from 'react-leaflet';
 import { connect } from 'react-redux';
+import { Map, Polygon, Popup, TileLayer } from 'react-leaflet';
+import { CircularProgress, Typography } from '@material-ui/core';
+
 import './DeviceMap.css';
 import bremickerBoxes from '../../assets/data/bremickerBoxes'
-import { CircularProgress } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import { airActions, trafficActions } from '../../store/actions'
-// import { fetchCurrentBremicker } from '../../store/actions/trafficActions';
-// import { fetchLatestAir } from '../../store/actions/hawaDawaActions.js';
+import { withRouter } from 'react-router';
 
 export class DeviceMap extends PureComponent {
   state = {
@@ -27,18 +25,6 @@ export class DeviceMap extends PureComponent {
       384: {opacity: 0.2, color: 'rgba(83, 141, 26, 1)', isActive: false}
     }
   };
-
-
-  sensorMarkers = Object.keys(bremickerBoxes).map(key => {
-    let sensor = bremickerBoxes[key];
-    return (
-      <Marker position={[sensor.lat, sensor.lng]}>
-        <Popup>
-          <span>Bremicker sensor in street <br/> Street</span>
-        </Popup>
-      </Marker>
-    )
-  })
 
   hoverPolgygon = (key) => {
    if (!this.state.polyOptions[key].isActive) {
@@ -65,15 +51,17 @@ export class DeviceMap extends PureComponent {
     });
   };
 
-  onPolygonClickHandler = key => {
-
-    this.togglePolygon(key);
-    this.props.fetchCurrentBremickerByKey(key);
-    this.props.fetchCurrentAir()
-  };
-
 
   render() {
+    const { history } = this.props;
+
+    const onPolygonClickHandler = key => {
+      this.togglePolygon(key);
+      // this.props.fetchCurrentBremickerByKey(key);
+      // this.props.fetchCurrentAir();
+      history.push('/detail/' + key);
+    };
+
     console.log("[MAP] render");
     const position = [this.state.lat, this.state.lng];
 
@@ -82,7 +70,6 @@ export class DeviceMap extends PureComponent {
       let bremickerData = this.props.traffic && this.props.traffic[key];
       return (
         <Polygon
-          // className='fade-in'
                  key={key}
                  lineCap='round'
                  lineJoin='round'
@@ -93,7 +80,7 @@ export class DeviceMap extends PureComponent {
                  fillOpacity={this.state.polyOptions[key].opacity}
                  onMouseOver={() => this.hoverPolgygon(key)}
                  onMouseOut={() => this.hoverPolgygon(key)}
-                 onClick={() => this.onPolygonClickHandler(key)}
+                 onClick={() => onPolygonClickHandler(key)}
         >
           <Popup onClose={() => this.togglePolygon(key)}>
             {this.props.traffic && this.props.traffic[key] ?
@@ -179,22 +166,13 @@ export class DeviceMap extends PureComponent {
 
 const mapStateToProps = (state) => {
     return {
-      emissions: state.emissions.data,
       traffic: state.traffic,
       sensors: state.air.sensors,
-      simulation: state.simulation
     }
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchCurrentBremickerByKey: (key) => dispatch(trafficActions.fetchCurrentBremicker(key)),
-    fetchCurrentAir: () => dispatch(airActions.fetchLatestAir())
-  }
-};
-
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
-  mapDispatchToProps
-)(DeviceMap);
+  {}
+)(DeviceMap));
 

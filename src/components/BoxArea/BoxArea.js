@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import bremickerBoxes from '../../assets/data/bremickerBoxes';
 import Analysis from '../../container/views/Analysis/Analysis';
-import SingleSettings from '../SingleSettings/SingleSettings';
+import SingleSettings from '../OldStuff/SingleSettings/SingleSettings';
 
 const useStyles = makeStyles((theme) => ({
   introductionContainer: {

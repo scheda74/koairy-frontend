@@ -7,6 +7,7 @@ import PredictionSettings from '../../../components/Settings/PredictionSettings/
 import React from 'react';
 import { predictionActions } from '../../../store/actions';
 import connect from 'react-redux/es/connect/connect';
+import { useParams } from 'react-router';
 
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +46,14 @@ function Settings(props) {
     activeStep: 0
   });
 
-  const steps = getSteps();
+  const { boxId } = useParams();
+
+  // skip step 1 and 2 if it's a single setting
+  let steps = getSteps();
+  if (boxId) {
+    steps = steps.filter((step, index) => index !== 1 && index !== 2);
+  }
+
 
   const handleNext = () => setState({...state, activeStep: state.activeStep + 1});
 
@@ -65,7 +73,6 @@ function Settings(props) {
 
   const handleDateChange = (name, date) => {
     let newDate = new Date();
-    console.log(date)
     if (name === 'startDate' || name === 'endDate') {
       newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
     } else {
@@ -82,10 +89,7 @@ function Settings(props) {
 
   const handleWeightChange = (event, weightType, areaName) => {
     let weights = weightType === 'src' ? {...props.srcWeights} : {...props.dstWeights};
-
-    console.log('weight', weights)
     weights[areaName] = event.target.value / 100.0;
-    console.log("weights new", weights);
     props.setSimulationParameters({
       ...props,
       srcWeights: weightType === 'src' ? weights : props.srcWeights,
@@ -144,8 +148,8 @@ function Settings(props) {
       case 5:
         return(
           <PredictionSettings predictionModel={props.predictionModel}
-                              startDate={props.startDate}
-                              endDate={props.endDate}
+                              startDate={new Date(props.startDate)}
+                              endDate={new Date(props.endDate)}
                               startHour={formatTimeToDate(props.startHour)}
                               endHour={formatTimeToDate(props.endHour)}
                               handleSingleChange={handleSingleChange}
@@ -160,37 +164,41 @@ function Settings(props) {
     <div className={classes.root}>
       <Stepper activeStep={state.activeStep} orientation="vertical">
         {steps.map((label, index) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-            <StepContent>
-              <Typography>{getStepContent(index)}</Typography>
-              <div className={classes.actionsContainer}>
-                <div>
-                  <Button
-                    disabled={state.activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+              <StepContent>
+                {getStepContent(index)}
+                <div className={classes.actionsContainer}>
+                  <div>
+                    <Button
+                      disabled={state.activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.button}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      {state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </StepContent>
-          </Step>
-        ))}
+              </StepContent>
+            </Step>
+          )
+        )}
       </Stepper>
       {state.activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>All steps completed - you&apos;re finished</Typography>
+          <Typography>All steps completed - You&apos;re now able to start the prediction!</Typography>
           <Button onClick={handleReset} className={classes.button}>
+            Reset
+          </Button>
+          <Button onClick={() => props.startPrediction(props)} className={classes.button}>
             Reset
           </Button>
         </Paper>
@@ -205,6 +213,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setSimulationParameters: (params) => dispatch(predictionActions.setSimulationParameter(params)),
     startPrediction: (params) => dispatch(predictionActions.fetchPrediction(params)),
+    startSinglePrediction: (params) => dispatch(predictionActions.fetchSinglePrediction(params)),
   }
 };
 

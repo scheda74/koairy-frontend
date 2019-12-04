@@ -1,6 +1,6 @@
+import React from 'react';
 import { IconButton, makeStyles, Slide, Toolbar, Tooltip } from '@material-ui/core';
 import { ChevronLeft, MultilineChart, Settings, Timeline } from '@material-ui/icons'
-import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useRouteMatch } from 'react-router';
 
@@ -17,10 +17,6 @@ export default function DetailToolbar(props) {
   const classes = useStyles();
   let history = useHistory();
   let toolbarActive = !useRouteMatch('/').isExact;
-
-  useEffect(function() {
-
-  }, [toolbarActive]);
 
   const handleNext = route => {
     history.push(route)

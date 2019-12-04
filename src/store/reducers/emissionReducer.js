@@ -1,8 +1,4 @@
-import {
-  INVALIDATE_EMISSIONS,
-  RECEIVE_EMISSIONS, RECEIVE_PREDICTION,
-  REQUEST_EMISSIONS, REQUEST_PREDICTION
-} from '../actions/actionTypes';
+import { INVALIDATE_EMISSIONS, RECEIVE_EMISSIONS, REQUEST_EMISSIONS } from '../actions/actionTypes';
 
 
 export function emissions(
