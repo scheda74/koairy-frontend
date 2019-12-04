@@ -1,13 +1,10 @@
 import {
-  REQUEST_EMISSIONS,
-  FETCH_EMISSIONS,
   INVALIDATE_EMISSIONS,
   RECEIVE_EMISSIONS,
-  REQUEST_STATISTICS,
-  FETCH_STATISTICS,
-  RECEIVE_STATISTICS
+  RECEIVE_STATISTICS,
+  REQUEST_EMISSIONS,
+  REQUEST_STATISTICS
 } from './actionTypes';
-import { setSimulationParameter } from './simulationActions';
 import { apiUrl, getCaqi } from '../../config';
 
 const header = new Headers({

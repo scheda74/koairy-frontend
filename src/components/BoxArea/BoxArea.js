@@ -1,6 +1,6 @@
 import { CircularProgress, makeStyles } from '@material-ui/core';
 import React, { useEffect } from 'react';
-import { simulationActions } from '../../store/actions';
+import { predictionActions } from '../../store/actions';
 import connect from 'react-redux/es/connect/connect';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -111,9 +111,11 @@ function BoxArea(props) {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    params: state.simulation[ownProps.boxID] || {...state.simulation, boxID: ownProps.boxID},
-    prediction: state.simulation[ownProps.boxID] && state.simulation[ownProps.boxID].prediction,
-    isFetching: state.simulation.isFetching,
+    // params: state.prediction[ownProps.boxID] || {...state.prediction, boxID: ownProps.boxID},
+    // prediction: state.prediction[ownProps.boxID] && state.prediction[ownProps.boxID].prediction,
+    params: state.prediction,
+    prediction: state.prediction.single,
+    isFetching: state.prediction.isFetching,
     traffic: state.traffic,
     sensors: state.air.sensors
   }
@@ -122,7 +124,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     // startSimulationWith: (params) => dispatch(simulationActions.startSimulation(params)),
-    startSinglePrediction: (params) => dispatch(simulationActions.fetchSinglePrediction(params)),
+    startSinglePrediction: (params) => dispatch(predictionActions.fetchSinglePrediction(params)),
   }
 };
 

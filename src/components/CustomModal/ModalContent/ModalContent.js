@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import connect from 'react-redux/es/connect/connect';
 
-import { fetchPrediction, setSimulationParameter, startSimulation } from '../../../store/actions/simulationActions';
+import { predictionActions, simulationActions } from '../../../store/actions';
 
 import Areas from './Areas/Areas';
 import WeatherScenarios from './WeatherScenarios/WeatherScenarios';
@@ -170,9 +170,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSimulationParameters: (params) => dispatch(setSimulationParameter(params)),
-    startSimulationWith: (params) => dispatch(startSimulation(params)),
-    startPrediction: (params) => dispatch(fetchPrediction(params)),
+    setSimulationParameters: (params) => dispatch(predictionActions.setSimulationParameter(params)),
+    startSimulationWith: (params) => dispatch(simulationActions.startSimulation(params)),
+    startPrediction: (params) => dispatch(predictionActions.fetchPrediction(params)),
   }
 };
 

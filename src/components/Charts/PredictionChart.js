@@ -9,9 +9,7 @@ export default function PredictionChart(props) {
   return (
     <LineChart width={450} height={280} data={props.data}>
       <XAxis dataKey="date" />
-      <YAxis dataKey={pollutantNames[0]} />
-      <YAxis dataKey={pollutantNames[1]} />
-      <YAxis dataKey={pollutantNames[2]} />
+      <YAxis dataKey={props.maxKey} />
       <Tooltip />
       <Legend verticalAlign="top" height={36}/>
       <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>

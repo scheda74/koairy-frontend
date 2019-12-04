@@ -19,19 +19,20 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
   {
+    isToolbarActive: false,
     emissions: {},
-    simulation: {
+    prediction: {
       isFetching: false,
       didInvalidate: false,
       predictionModel: 'lin-reg',
       startDate: '2019-08-01',
-      endDate: '2019-12-02',
+      endDate: '2019-12-04',
       startHour: '07:00',
       endHour: '10:00',
       boxID: 672,
       weatherScenario: 0,
-      input_keys: ['temp', 'hum', 'PMx', 'WIND_SPEED', 'WIND_DIR'],
-      output_key: 'pm10',
+      inputKeys: ['temp', 'hum', 'WIND_SPEED', 'WIND_DIR'],
+      outputKeys: ['no2', 'pm10'],
       vehicleDistribution: {
         "HBEFA3/PC_D_EU2": 0.007,
         "HBEFA3/PC_D_EU3": 0.0251,

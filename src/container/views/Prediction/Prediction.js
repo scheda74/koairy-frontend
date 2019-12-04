@@ -5,13 +5,13 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import BambooIcon from '../../../Icons/Bamboo';
-import KoalaOutlinedIcon from '../../../Icons/KoalaOutlined';
-import { simulationActions } from '../../../store/actions';
+import { predictionActions, simulationActions } from '../../../store/actions';
 import connect from 'react-redux/es/connect/connect';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // import bremickerBoxes from '../../assets/data/bremickerBoxes'
 import BoxArea from '../../../components/BoxArea/BoxArea'
 import Analysis from '../Analysis/Analysis';
+import Settings from '../../../components/Settings/Settings';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -28,11 +28,17 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'column',
-    flexBasis: '40%',
-    margin: 'auto'
+    flexBasis: '40%'
     // justifyContent: 'center',
     // alignItems: 'center'
     // margin: '0.5rem auto',
+  },
+  introduction: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
   },
   mapContainer: {
     // width: '100vw'
@@ -42,9 +48,13 @@ const useStyles = makeStyles((theme) => ({
     margin: '0.5rem'
   },
   icon: {
-    margin: 'auto',
+    // margin: 'auto',
     height: '180px',
     width: '180px',
+    [theme.breakpoints.down('md')]: {
+      height: '90px',
+      width: '90px'
+    },
     // color: 'white'
   },
   buttonContainer: {
@@ -59,11 +69,10 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: '0.5rem 1rem'
   },
-  introduction: {
+  textContainer: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center'
+
   },
   mapCard: {
     // display: 'flex',
@@ -99,7 +108,7 @@ function Prediction(props) {
     opacity: 0.2,
     radius: 10,
     maximum: 1,
-    // isActive: false,
+    isActive: false,
     // isSingleActive: false
   });
 
@@ -124,12 +133,10 @@ function Prediction(props) {
     setState({...state, maximum: value / 100 })
   };
 
-  // const toggleSettings = () => {
-  //   console.log('toggle Settings')
-  //   setState({...state, isActive: !state.isActive })
-  //   console.log('single Active?', state.isSingleActive)
-  //   console.log('normal active?', state.isActive)
-  // };
+  const toggleSettings = () => {
+    console.log("active")
+    setState({...state, isActive: !state.isActive })
+  };
   //
   // const toggleSingleSettings = () => {
   //   setState({...state, isSingleActive: !state.isSingleActive })
@@ -161,27 +168,36 @@ function Prediction(props) {
           <BoxArea boxID={props.selectedBox} />
         ) : (
           props.prediction ? (
-              <Analysis isFetching={props.isFetching} prediction={props.prediction}/>
+              <Analysis isFetching={props.isFetching} prediction={props.prediction} outputKeys={props.outputKeys}/>
             ) : (
             <div className={classes.introduction}>
-              <Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>
+              {/*<Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>*/}
               {/*<div className={classes.introduction}>*/}
 
-              <div className={classes.introduction}>
-                <Typography variant="h3" align='center'>Welcome to Koairy!</Typography>
-                <Typography style={{marginTop: '0.5rem'}} variant="h5" align='center'>You can simulate emissions and predict air quality</Typography>
+              <div className={classes.textContainer}>
+                <Typography variant="h4" align='center'>Welcome to Koairy!</Typography>
+                <Typography style={{marginTop: '0.5rem'}} variant="subtitle1" align='center'>You can simulate emissions and predict air quality</Typography>
               </div>
-              {props.isFetching ?
+              {props.isFetchingPred ?
                 (
                   <CircularProgress color="primary" />
                 ) : (
-                  <Button
-                    onClick={() => props.startPrediction(props.params)}
-                    className={classes.button}
-                    color='primary'
-                    variant='contained'>
-                    Start Predicting!
-                  </Button>
+                  props.isActive ? (
+                    <div className={classes.settingsContainer}>
+                      <Settings />
+                    </div>
+                    ) : (
+                      <div className={classes.buttonContainer}>
+                        <Button
+                          onClick={() => props.startPrediction(props.params)}
+                          className={classes.button}
+                          color='primary'
+                          variant='contained'>
+                          Start Predicting!
+                        </Button>
+                        <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>
+                      </div>
+                  )
                 )
               }
               <Icon className={classes.icon}><BambooIcon /></Icon>
@@ -206,21 +222,22 @@ function Prediction(props) {
 
 const mapStateToProps = (state) => {
     return {
-      params: state.simulation,
-      prediction: state.simulation.prediction,
-      isFetching: state.simulation.isFetching,
+      params: state.prediction,
+      prediction: state.prediction.response || state.prediction.single,
+      isFetchingPred: state.prediction.isFetching,
       selectedBox: state.traffic.selected,
       traffic: state.traffic,
-      sensors: state.air.sensors
+      sensors: state.air.sensors,
+      outputKeys: state.prediction.outputKeys
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSimulationParameters: (params) => dispatch(simulationActions.setSimulationParameter(params)),
+    setSimulationParameters: (params) => dispatch(predictionActions.setSimulationParameter(params)),
     startSimulationWith: (params) => dispatch(simulationActions.startSimulation(params)),
-    startPrediction: (params) => dispatch(simulationActions.fetchPrediction(params)),
-    startSinglePrediction: (params) => dispatch(simulationActions.fetchSinglePrediction(params)),
+    startPrediction: (params) => dispatch(predictionActions.fetchPrediction(params)),
+    startSinglePrediction: (params) => dispatch(predictionActions.fetchSinglePrediction(params)),
   }
 };
 

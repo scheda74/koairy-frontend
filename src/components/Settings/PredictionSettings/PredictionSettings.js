@@ -110,22 +110,22 @@ export default function PredictionSettings(props) {
             </Select>
             <FormHelperText>Please select a wind level</FormHelperText>
           </FormControl>
-          <FormControl className={classes.formControl}>
-            <FormLabel component="legend">What to predict?</FormLabel>
-            <Select
-              value={props.output_key || ''}
-              onChange={props.handleSingleChange('output_key')}
-              inputProps={{
-                name: 'pollutant',
-                id: 'pollutant-select'
-              }}
-            >
-              <MenuItem value='pm10'>PM10</MenuItem>
-              <MenuItem value='pm2.5'>PM2.5</MenuItem>
-              <MenuItem value='no2'>NO2</MenuItem>
-            </Select>
-            <FormHelperText>Please select a wind level</FormHelperText>
-          </FormControl>
+          {/*<FormControl className={classes.formControl}>*/}
+            {/*<FormLabel component="legend">What to predict?</FormLabel>*/}
+            {/*<Select*/}
+              {/*value={props.outputKeys || ''}*/}
+              {/*onChange={props.handleSingleChange('outputKeys')}*/}
+              {/*inputProps={{*/}
+                {/*name: 'pollutant',*/}
+                {/*id: 'pollutant-select'*/}
+              {/*}}*/}
+            {/*>*/}
+              {/*<MenuItem value='pm10'>PM10</MenuItem>*/}
+              {/*<MenuItem value='pm2.5'>PM2.5</MenuItem>*/}
+              {/*<MenuItem value='no2'>NO2</MenuItem>*/}
+            {/*</Select>*/}
+            {/*<FormHelperText>Please select a wind level</FormHelperText>*/}
+          {/*</FormControl>*/}
         </FormGroup>
       </MuiPickersUtilsProvider>
     </div>

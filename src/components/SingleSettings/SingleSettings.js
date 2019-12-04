@@ -6,11 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import connect from 'react-redux/es/connect/connect';
 
-import {
-  fetchSinglePrediction,
-  setSingleSimulationParameter,
-  startSimulation
-} from '../../store/actions/simulationActions';
+import { predictionActions } from '../../store/actions';
 
 import SettingsIcon from '@material-ui/icons/Settings';
 import CloudIcon from '@material-ui/icons/Cloud';
@@ -233,7 +229,7 @@ function SingleSettings(props) {
                               endDate={props.endDate}
                               startHour={formatTimeToDate(props.startHour)}
                               endHour={formatTimeToDate(props.endHour)}
-                              output_key={props.output_key}
+                              // outputKeys={props.outputKeys}
                               handleSingleChange={handleSingleChange}
                               handleDateChange={handleDateChange} />
         );
@@ -314,9 +310,9 @@ const mapStateToProps = (state, ownProps) => state.simulation[ownProps.boxID] ||
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSingleSimulationParameters: (params) => dispatch(setSingleSimulationParameter(params)),
-    startSimulationWith: (params) => dispatch(startSimulation(params)),
-    startSinglePrediction: (params) => dispatch(fetchSinglePrediction(params)),
+    setSingleSimulationParameters: (params) => dispatch(predictionActions.setSingleSimulationParameter(params)),
+    startSimulationWith: (params) => dispatch(predictionActions.startSimulation(params)),
+    startSinglePrediction: (params) => dispatch(predictionActions.fetchSinglePrediction(params)),
   }
 };
 

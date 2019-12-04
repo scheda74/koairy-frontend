@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import connect from 'react-redux/es/connect/connect';
 
-import { fetchPrediction, setSimulationParameter, startSimulation } from '../../store/actions/simulationActions';
+import { predictionActions, simulationActions } from '../../store/actions';
 
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExploreIcon from '@material-ui/icons/Explore';
@@ -183,10 +183,6 @@ function Settings(props) {
   };
 
   const handleDateChange = (name, date) => {
-    // startDate: new Date('2019-08-01'),
-    //   endDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-    //   startHour: new Date().setHours(0,0,0,0),
-    //   endHour: new Date().setHours(23,0,0,0)
     let newDate = new Date();
     console.log(date)
     if (name === 'startDate' || name === 'endDate') {
@@ -271,7 +267,7 @@ function Settings(props) {
                               endDate={props.endDate}
                               startHour={formatTimeToDate(props.startHour)}
                               endHour={formatTimeToDate(props.endHour)}
-                              output_key={props.output_key}
+                              // outputKeys={props.outputKeys}
                               handleSingleChange={handleSingleChange}
                               handleDateChange={handleDateChange} />
         );
@@ -352,9 +348,9 @@ const mapStateToProps = state => state.simulation;
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSimulationParameters: (params) => dispatch(setSimulationParameter(params)),
-    startSimulationWith: (params) => dispatch(startSimulation(params)),
-    startPrediction: (params) => dispatch(fetchPrediction(params)),
+    setSimulationParameters: (params) => dispatch(predictionActions.setSimulationParameter(params)),
+    startSimulationWith: (params) => dispatch(simulationActions.startSimulation(params)),
+    startPrediction: (params) => dispatch(predictionActions.fetchPrediction(params)),
   }
 };
 

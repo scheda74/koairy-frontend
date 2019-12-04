@@ -12,7 +12,7 @@ import WeatherScenarios from '../../CustomModal/ModalContent/WeatherScenarios/We
 import Vehicles from '../../CustomModal/ModalContent/Vehicles/Vehicles';
 import Typography from '@material-ui/core/Typography';
 import connect from 'react-redux/es/connect/connect';
-import { fetchPrediction, setSimulationParameter, startSimulation } from '../../../store/actions/simulationActions';
+import { predictionActions, simulationActions } from '../../../store/actions';
 import General from '../../CustomModal/ModalContent/General/General';
 
 const useStyles = makeStyles(theme => ({
@@ -165,9 +165,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSimulationParameters: (params) => dispatch(setSimulationParameter(params)),
-    startSimulationWith: (params) => dispatch(startSimulation(params)),
-    startPrediction: (params) => dispatch(fetchPrediction(params))
+    setSimulationParameters: (params) => dispatch(predictionActions.setSimulationParameter(params)),
+    startSimulationWith: (params) => dispatch(simulationActions.startSimulation(params)),
+    startPrediction: (params) => dispatch(predictionActions.fetchPrediction(params))
   }
 };
 

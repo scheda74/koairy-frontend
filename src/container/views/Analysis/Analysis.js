@@ -19,13 +19,38 @@ const useStyles = makeStyles((theme) => ({
   chartContainer: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
     marginTop: '1rem',
     marginRight: '1rem'
   }
 }));
 
 export default function Analysis(props) {
+  console.log(props.prediction);
   const classes = useStyles();
+
+  const predictionCharts = props.prediction && props.prediction.map(response => {
+    let mea = response['mea'];
+    let outputKey = response['key']
+    let prediction = response['prediction']
+    return (
+      <div key={outputKey} className={classes.chartContainer}>
+        <Typography align='center' variant='caption'>Simulated and Predicted {outputKey.toUpperCase()}</Typography>
+        <Typography align='center' variant='overline'>Mean Absolute Error: {mea}</Typography>
+        <PredictionChart
+          maxKey={prediction['maxKey']}
+          data={
+            Object.keys(prediction).map(key => {
+              return {
+                date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
+                [outputKey + "_real"]: prediction[key][outputKey] || 0,
+                [outputKey + "_predicted"]: prediction[key][outputKey + "_predicted"] || 0,
+                [outputKey + "_simulated"]: prediction[key][outputKey + "_simulated"] || 0,
+              }})}
+        />
+      </div>
+    )
+  });
 
   const airData = () => {
     if (!props.sensors) return []
@@ -52,43 +77,14 @@ export default function Analysis(props) {
 
   return (
     <div className={classes.container}>
-      {props.isFetching ? (
-        <CircularProgress color='primary' />
-      ) : (
-        props.prediction ? (
-          <React.Fragment>
-            {/*<div className={classes.chartContainer}>*/}
-            {/*<Typography align='center' variant='caption'>Simulated and Predicted NOx/NO2</Typography>*/}
-            {/*<PredictionChart*/}
-            {/*data={*/}
-            {/*Object.keys(props.prediction).map(key => {*/}
-            {/*return {*/}
-            {/*date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),*/}
-            {/*NOx: props.prediction[key]['NOx'] || 0,*/}
-            {/*NO2_predicted: props.prediction[key]['no2_predicted'] || 0,*/}
-            {/*}*/}
-            {/*})*/}
-            {/*}*/}
-            {/*/>*/}
-            {/*</div>*/}
-            <div className={classes.chartContainer}>
-              <Typography align='center' variant='caption'>Simulated and Predicted NOx/NO2</Typography>
-              <PredictionChart
-                data={
-                  Object.keys(props.prediction).map(key => {
-                    return {
-                      date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
-                      PM10_real: props.prediction[key]['pm10'] || 0,
-                      PM10_predicted: props.prediction[key]['pm10_predicted'] || 0,
-                      PM10_simulated: props.prediction[key]['pm10_simulated'] || 0,
-                    }
-                  })
-                }
-              />
-            </div>
-          </React.Fragment>
+      {props.prediction ? (
+        props.isFetching ? (
+            <CircularProgress color='primary' />
+          ) : (
+            {predictionCharts}
+          )
         ) : (
-          props.traffic && props.sensors ? (
+          !props.traffic && !props.sensors ? (
             <CircularProgress />
             ) : (
             <React.Fragment>
@@ -102,9 +98,7 @@ export default function Analysis(props) {
                 <HawaDawaLineChart data={airData()} />
               </div>
             </React.Fragment>
-            )
-
-        )
+          )
       )}
     </div>
 
