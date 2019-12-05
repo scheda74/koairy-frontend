@@ -1,213 +1,279 @@
-import { Card, Divider, makeStyles } from '@material-ui/core';
-import DeviceMap from '../../../components/Map/DeviceMap';
-import React, { useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import BambooIcon from '../../../Icons/Bamboo';
-import { predictionActions, simulationActions } from '../../../store/actions';
+import React from 'react';
+
+import { useParams } from 'react-router';
 import connect from 'react-redux/es/connect/connect';
-import CircularProgress from '@material-ui/core/CircularProgress';
-// import bremickerBoxes from '../../assets/data/bremickerBoxes'
-import BoxArea from '../../../components/BoxArea/BoxArea'
-import Analysis from '../Analysis/Analysis';
-import Settings from '../../../components/Settings/Settings';
+import { CircularProgress, makeStyles, Typography } from '@material-ui/core';
+import PredictionChart from '../../../components/Charts/PredictionChart';
+
 
 const useStyles = makeStyles((theme) => ({
-  mainContainer: {
-    display: 'flex',
-    // flexDirection: 'column',
-    width: '100vw',
-    height: '100vh'
-  },
-  subToolbar: {
-    width: '100%',
-    height: '64px'
-  },
-  introductionContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    flexBasis: '40%'
-    // justifyContent: 'center',
-    // alignItems: 'center'
-    // margin: '0.5rem auto',
-  },
-  introduction: {
+  container: {
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%'
-  },
-  mapContainer: {
-    // width: '100vw'
-    flexBasis: '60%',
-    // display: 'flex',
-    // justifyContent: 'space-between',
-    margin: '0.5rem'
-  },
-  icon: {
-    // margin: 'auto',
-    height: '180px',
-    width: '180px',
-    [theme.breakpoints.down('md')]: {
-      height: '90px',
-      width: '90px'
-    },
-    // color: 'white'
-  },
-  buttonContainer: {
-    display: 'flex',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
-    },
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginBottom: '2rem'
-  },
-  button: {
-    margin: '0.5rem 1rem'
-  },
-  textContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-
-  },
-  mapCard: {
-    // display: 'flex',
-    // margin: 'auto',
-    flexBasis: '80%',
-    marginLeft: '1rem',
-    width: '100%',
-    height: '100%'
-  },
-  card: {
-    // width: '20%',
-    flexBasis: '20%',
-    margin: '0 1rem'
-  },
-  settingsContainer: {
-    flexBasis: '40%',
-    display: 'flex',
-    justifyContent: 'start',
-    margin: '0.5rem auto',
-    // width: '80%'
-    // alignItems: 'center'
+    alignItems: 'center'
   },
   chartContainer: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: '1rem',
+    marginRight: '1rem'
   }
 }));
 
 function Prediction(props) {
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    blur: 4,
-    opacity: 0.2,
-    radius: 10,
-    maximum: 1,
-    isActive: false,
-    // isSingleActive: false
-  });
 
-  useEffect(function() {
-    console.log('[PREDICTION] should rerender? selectedBox now: ' + props.selectedBox)
-    // setState({...state, isSingleActive: false, isActive: false})
-  }, [props.selectedBox]);
+  const { boxId } = useParams();
 
-  const onBlurChange = (value) => {
-    setState({...state, blur: value })
+  const predictionCharts = () => {
+    let data = boxId ? props.prediction[boxId] : props.prediction.full;
+    data.map(response => {
+      let mea = response['mea'] || 'not defined';
+      let outputKey = response['key'];
+      let prediction = response['prediction'];
+      return (
+        <div key={outputKey} className={classes.chartContainer}>
+          <Typography align='center' variant='caption'>Simulated and Predicted {outputKey.toUpperCase()}</Typography>
+          <Typography align='center' variant='overline'>Mean Absolute Error: {mea}</Typography>
+          <PredictionChart
+            maxKey={prediction['maxKey']}
+            data={
+              Object.keys(prediction).map(key => {
+                return {
+                  date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
+                  [outputKey + "_real"]: prediction[key][outputKey] || 0,
+                  [outputKey + "_predicted"]: prediction[key][outputKey + "_predicted"] || 0,
+                  [outputKey + "_simulated"]: prediction[key][outputKey + "_simulated"] || 0,
+                }})}
+          />
+        </div>
+      )
+    });
   };
-
-  const onRadiusChange = (value) => {
-    setState({...state, radius: value })
-  };
-
-  const onOpacityChange = (value) => {
-    setState({...state, opacity: value })
-  };
-
-  const onMaximumChange = (value) => {
-    setState({...state, maximum: value / 100 })
-  };
-
-  const toggleSettings = () => {
-    console.log("active")
-    setState({...state, isActive: !state.isActive })
-  };
-  //
-  // const toggleSingleSettings = () => {
-  //   setState({...state, isSingleActive: !state.isSingleActive })
-  // };
 
   return (
-    <div className={classes.mainContainer}>
-      {/*<div className={classes.subToolbar}>*/}
-        {/*<span>second toolbar</span>*/}
-      {/*</div>*/}
-      <div className={classes.mapContainer}>
-        <Card raised={true} className={classes.mapCard}>
-          <DeviceMap />
-          {/*<span>hello</span>*/}
-        </Card>
-        {/*<Card raised={true} className={classes.card}>*/}
-          {/*<Button>*/}
-            {/*<Typography variant="overline" align='center' className={classes.heading}>HeatMap Settings</Typography>*/}
-          {/*</Button>*/}
-          {/*<HeatMapSettings blurChange={onBlurChange}*/}
-                           {/*radiusChange={onRadiusChange}*/}
-                           {/*opacityChange={onOpacityChange}*/}
-                           {/*maximumChange={onMaximumChange} />*/}
-        {/*</Card>*/}
-      </div>
-      <Divider />
-      <div className={classes.introductionContainer}>
-        {props.selectedBox ? (
-          <BoxArea boxID={props.selectedBox} />
+      <div className={classes.container}>
+        {(boxId && props.prediction[boxId]) || props.prediction.response ? (
+          predictionCharts()
         ) : (
-          props.prediction ? (
-              <Analysis isFetching={props.isFetching} prediction={props.prediction} outputKeys={props.outputKeys}/>
-            ) : (
-            <div className={classes.introduction}>
-              {/*<Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>*/}
-              {/*<div className={classes.introduction}>*/}
-
-              <div className={classes.textContainer}>
-                <Typography variant="h4" align='center'>Welcome to Koairy!</Typography>
-                <Typography style={{marginTop: '0.5rem'}} variant="subtitle1" align='center'>You can simulate emissions and predict air quality</Typography>
-              </div>
-              {props.isFetchingPred ?
-                (
-                  <CircularProgress color="primary" />
-                ) : (
-                  props.isActive ? (
-                    <div className={classes.settingsContainer}>
-                      <Settings />
-                    </div>
-                    ) : (
-                      <div className={classes.buttonContainer}>
-                        <Button
-                          onClick={() => props.startPrediction(props.params)}
-                          className={classes.button}
-                          color='primary'
-                          variant='contained'>
-                          Start Predicting!
-                        </Button>
-                        <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>
-                      </div>
-                  )
-                )
-              }
-              <Icon className={classes.icon}><BambooIcon /></Icon>
-            </div>
-          )
+          <CircularProgress style={{margin: '3rem'}} color="primary" />
         )}
       </div>
-    </div>
   )
 }
+
+const mapStateToProps = (state) => {
+    return {
+      params: state.prediction,
+      prediction: state.prediction,
+      isFetching: state.prediction.isFetching,
+      outputKeys: state.prediction.outputKeys
+    }
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Prediction);
+
+// const useStyles = makeStyles((theme) => ({
+//   mainContainer: {
+//     display: 'flex',
+//     // flexDirection: 'column',
+//     width: '100vw',
+//     height: '100vh'
+//   },
+//   subToolbar: {
+//     width: '100%',
+//     height: '64px'
+//   },
+//   introductionContainer: {
+//     display: 'flex',
+//     justifyContent: 'space-between',
+//     flexDirection: 'column',
+//     flexBasis: '40%'
+//     // justifyContent: 'center',
+//     // alignItems: 'center'
+//     // margin: '0.5rem auto',
+//   },
+//   introduction: {
+//     display: 'flex',
+//     flexDirection: 'column',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     height: '100%'
+//   },
+//   mapContainer: {
+//     // width: '100vw'
+//     flexBasis: '60%',
+//     // display: 'flex',
+//     // justifyContent: 'space-between',
+//     margin: '0.5rem'
+//   },
+//   icon: {
+//     // margin: 'auto',
+//     height: '180px',
+//     width: '180px',
+//     [theme.breakpoints.down('md')]: {
+//       height: '90px',
+//       width: '90px'
+//     },
+//     // color: 'white'
+//   },
+//   buttonContainer: {
+//     display: 'flex',
+//     [theme.breakpoints.down('md')]: {
+//       flexDirection: 'column',
+//     },
+//     justifyContent: 'space-around',
+//     alignItems: 'center',
+//     marginBottom: '2rem'
+//   },
+//   button: {
+//     margin: '0.5rem 1rem'
+//   },
+//   textContainer: {
+//     display: 'flex',
+//     flexDirection: 'column',
+//
+//   },
+//   mapCard: {
+//     // display: 'flex',
+//     // margin: 'auto',
+//     flexBasis: '80%',
+//     marginLeft: '1rem',
+//     width: '100%',
+//     height: '100%'
+//   },
+//   card: {
+//     // width: '20%',
+//     flexBasis: '20%',
+//     margin: '0 1rem'
+//   },
+//   settingsContainer: {
+//     flexBasis: '40%',
+//     display: 'flex',
+//     justifyContent: 'start',
+//     margin: '0.5rem auto',
+//     // width: '80%'
+//     // alignItems: 'center'
+//   },
+//   chartContainer: {
+//     display: 'flex',
+//     flexDirection: 'column'
+//   }
+// }));
+//
+// function Prediction(props) {
+//   const classes = useStyles();
+//   const [state, setState] = React.useState({
+//     blur: 4,
+//     opacity: 0.2,
+//     radius: 10,
+//     maximum: 1,
+//     isActive: false,
+//     // isSingleActive: false
+//   });
+//
+//   useEffect(function() {
+//     console.log('[PREDICTION] should rerender? selectedBox now: ' + props.selectedBox)
+//     // setState({...state, isSingleActive: false, isActive: false})
+//   }, [props.selectedBox]);
+//
+//   const onBlurChange = (value) => {
+//     setState({...state, blur: value })
+//   };
+//
+//   const onRadiusChange = (value) => {
+//     setState({...state, radius: value })
+//   };
+//
+//   const onOpacityChange = (value) => {
+//     setState({...state, opacity: value })
+//   };
+//
+//   const onMaximumChange = (value) => {
+//     setState({...state, maximum: value / 100 })
+//   };
+//
+//   const toggleSettings = () => {
+//     console.log("active")
+//     setState({...state, isActive: !state.isActive })
+//   };
+//   //
+//   // const toggleSingleSettings = () => {
+//   //   setState({...state, isSingleActive: !state.isSingleActive })
+//   // };
+//
+//   return (
+//     <div className={classes.mainContainer}>
+//       {/*<div className={classes.subToolbar}>*/}
+//         {/*<span>second toolbar</span>*/}
+//       {/*</div>*/}
+//       <div className={classes.mapContainer}>
+//         <Card raised={true} className={classes.mapCard}>
+//           <DeviceMap />
+//           {/*<span>hello</span>*/}
+//         </Card>
+//         {/*<Card raised={true} className={classes.card}>*/}
+//           {/*<Button>*/}
+//             {/*<Typography variant="overline" align='center' className={classes.heading}>HeatMap Settings</Typography>*/}
+//           {/*</Button>*/}
+//           {/*<HeatMapSettings blurChange={onBlurChange}*/}
+//                            {/*radiusChange={onRadiusChange}*/}
+//                            {/*opacityChange={onOpacityChange}*/}
+//                            {/*maximumChange={onMaximumChange} />*/}
+//         {/*</Card>*/}
+//       </div>
+//       <Divider />
+//       <div className={classes.introductionContainer}>
+//         {props.selectedBox ? (
+//           <BoxArea boxID={props.selectedBox} />
+//         ) : (
+//           props.prediction ? (
+//               <Analysis isFetching={props.isFetching} prediction={props.prediction} outputKeys={props.outputKeys}/>
+//             ) : (
+//             <div className={classes.introduction}>
+//               {/*<Icon className={classes.icon}><KoalaOutlinedIcon /></Icon>*/}
+//               {/*<div className={classes.introduction}>*/}
+//
+//               <div className={classes.textContainer}>
+//                 <Typography variant="h4" align='center'>Welcome to Koairy!</Typography>
+//                 <Typography style={{marginTop: '0.5rem'}} variant="subtitle1" align='center'>You can simulate emissions and predict air quality</Typography>
+//               </div>
+//               {props.isFetchingPred ?
+//                 (
+//                   <CircularProgress color="primary" />
+//                 ) : (
+//                   props.isActive ? (
+//                     <div className={classes.settingsContainer}>
+//                       <Settings />
+//                     </div>
+//                     ) : (
+//                       <div className={classes.buttonContainer}>
+//                         <Button
+//                           onClick={() => props.startPrediction(props.params)}
+//                           className={classes.button}
+//                           color='primary'
+//                           variant='contained'>
+//                           Start Predicting!
+//                         </Button>
+//                         <Button className={classes.button} color='secondary' variant='contained' onClick={toggleSettings}>Settings</Button>
+//                       </div>
+//                   )
+//                 )
+//               }
+//               <Icon className={classes.icon}><BambooIcon /></Icon>
+//             </div>
+//           )
+//         )}
+//       </div>
+//     </div>
+//   )
+// }
 
 // {state.isActive ? (
 //   props.boxID ? (
@@ -220,31 +286,31 @@ function Prediction(props) {
 //     </div> )
 // ) : (
 
-const mapStateToProps = (state) => {
-    return {
-      params: state.prediction,
-      prediction: state.prediction.response || state.prediction.single,
-      isFetchingPred: state.prediction.isFetching,
-      selectedBox: state.traffic.selected,
-      traffic: state.traffic,
-      sensors: state.air.sensors,
-      outputKeys: state.prediction.outputKeys
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setSimulationParameters: (params) => dispatch(predictionActions.setSimulationParameter(params)),
-    startSimulationWith: (params) => dispatch(simulationActions.startSimulation(params)),
-    startPrediction: (params) => dispatch(predictionActions.fetchPrediction(params)),
-    startSinglePrediction: (params) => dispatch(predictionActions.fetchSinglePrediction(params)),
-  }
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Prediction);
+// const mapStateToProps = (state) => {
+//     return {
+//       params: state.prediction,
+//       prediction: state.prediction.response || state.prediction.single,
+//       isFetchingPred: state.prediction.isFetching,
+//       selectedBox: state.traffic.selected,
+//       traffic: state.traffic,
+//       sensors: state.air.sensors,
+//       outputKeys: state.prediction.outputKeys
+//     }
+// };
+//
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     setSimulationParameters: (params) => dispatch(predictionActions.setSimulationParameter(params)),
+//     startSimulationWith: (params) => dispatch(simulationActions.startSimulation(params)),
+//     startPrediction: (params) => dispatch(predictionActions.fetchPrediction(params)),
+//     startSinglePrediction: (params) => dispatch(predictionActions.fetchSinglePrediction(params)),
+//   }
+// };
+//
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(Prediction);
 
 
 // {/*<div className={classes.chartContainer}>*/}

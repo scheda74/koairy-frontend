@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton, makeStyles, Slide, Toolbar, Tooltip } from '@material-ui/core';
-import { ChevronLeft, MultilineChart, Settings, Timeline } from '@material-ui/icons'
+import { ChevronLeft, Settings, Timeline } from '@material-ui/icons'
 import { useHistory } from 'react-router-dom';
 import { useRouteMatch } from 'react-router';
 
@@ -28,16 +28,16 @@ export default function DetailToolbar(props) {
         <IconButton color="inherit" edge="start" onClick={() => history.goBack()}>
           <ChevronLeft />
         </IconButton>
-        <Tooltip title="Single Area Prediction" placement="bottom">
-          <IconButton color="inherit" onClick={() => handleNext('/prediction')}>
+        <Tooltip title="Traffic and air quality details" placement="bottom">
+          <IconButton color="inherit" onClick={() => handleNext('/detail')}>
             <Timeline />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Full City Prediction" placement="bottom">
-          <IconButton color="inherit" onClick={() => console.log('router here')}>
-            <MultilineChart />
-          </IconButton>
-        </Tooltip>
+        {/*<Tooltip title="Full City Prediction" placement="bottom">*/}
+          {/*<IconButton color="inherit" onClick={() => console.log('router here')}>*/}
+            {/*<MultilineChart />*/}
+          {/*</IconButton>*/}
+        {/*</Tooltip>*/}
         <Tooltip title="Adjust Prediction Settings" placement="bottom">
           <IconButton color="inherit" edge="end" onClick={() => handleNext('/settings')}>
             <Settings />

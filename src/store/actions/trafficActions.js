@@ -12,10 +12,11 @@ const header = new Headers({
   'Access-Control-Allow-Origin': '*'
 });
 
-export function invalidateTraffic() {
+export function invalidateTraffic(response) {
   console.log('invalidated')
   return {
-    type: INVALIDATE_TRAFFIC
+    type: INVALIDATE_TRAFFIC,
+    response
   }
 }
 
@@ -55,9 +56,9 @@ export function fetchTraffic(params) {
     //   .catch(error => console.log('An error occurred', error))
     return fetch(apiUrl + getTraining, { headers: header, method: 'POST', body: JSON.stringify(body) })
       .then(response => response.json(),
-        error => console.log('An error occurred', error))
+        error => dispatch(invalidateTraffic(error)))
       .then(json => dispatch(receiveTraffic(params, json)))
-      .catch(error => console.log('An error occurred', error))
+      .catch(error => dispatch(invalidateTraffic(error)))
   }
 }
 
@@ -87,6 +88,7 @@ export function fetchTrafficIfNeeded(params) {
 }
 
 export function receiveCurrentBremicker(boxID, json) {
+  console.log('bremicker data received!')
   console.log(json);
   return {
     type: RECEIVE_CURRENT_BREMICKER,
@@ -99,15 +101,16 @@ export function receiveCurrentBremicker(boxID, json) {
 
 export function fetchCurrentBremicker(boxID) {
   return async function(dispatch, getState) {
+    console.log('Fetching bremicker data!')
 
     dispatch(requestTraffic(boxID));
     dispatch(setSelectedBox(boxID));
 
     return await fetch(apiUrl + currentBremicker + boxID)
       .then(response => response.json(),
-        error => dispatch(invalidateTraffic()))
+        error => dispatch(invalidateTraffic(error)))
       .then(json => dispatch(receiveCurrentBremicker(boxID, json)))
-      .catch(error => console.log('An error occurred', error))
+      .catch(error => dispatch(invalidateTraffic(error)))
   }
 }
 

@@ -1,4 +1,4 @@
-import { RECEIVE_LATEST_AIR, REQUEST_LATEST_AIR } from '../actions/actionTypes';
+import { INVALIDATE_AIR, RECEIVE_LATEST_AIR, REQUEST_LATEST_AIR } from '../actions/actionTypes';
 
 
 export function air(
@@ -7,6 +7,12 @@ export function air(
     didInvalidate: false,
   }, action) {
   switch (action.type) {
+    case INVALIDATE_AIR:
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: true,
+        action
+      });
     case REQUEST_LATEST_AIR:
       return Object.assign({}, state, {
         isFetching: true,

@@ -5,7 +5,7 @@ import connect from 'react-redux/es/connect/connect';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import bremickerBoxes from '../../assets/data/bremickerBoxes';
-import Analysis from '../../container/views/Analysis/Analysis';
+import Analysis from '../OldStuff/Analysis/Analysis';
 import SingleSettings from '../OldStuff/SingleSettings/SingleSettings';
 
 const useStyles = makeStyles((theme) => ({

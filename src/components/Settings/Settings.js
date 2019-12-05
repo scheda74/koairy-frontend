@@ -1,144 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
-import { makeStyles } from '@material-ui/core/styles';
-
-import Button from '@material-ui/core/Button';
-import connect from 'react-redux/es/connect/connect';
-
-import { predictionActions, simulationActions } from '../../store/actions';
-
-import SettingsIcon from '@material-ui/icons/Settings';
-import ExploreIcon from '@material-ui/icons/Explore';
-import CloudIcon from '@material-ui/icons/Cloud';
-import DriveEtaIcon from '@material-ui/icons/DriveEta';
-import DeveloperBoardIcon from '@material-ui/icons/DeveloperBoard';
-
-
-import StepConnector from '@material-ui/core/StepConnector';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import clsx from 'clsx';
-
-import Stepper from '@material-ui/core/Stepper';
-import { withStyles } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Button, makeStyles, Paper, Step, StepContent, StepLabel, Stepper, Typography } from '@material-ui/core';
 import General from './General/General';
 import Areas from './Areas/Areas';
 import Vehicles from './Vehicles/Vehicles';
 import WeatherScenarios from './WeatherScenarios/WeatherScenarios';
 import PredictionSettings from './PredictionSettings/PredictionSettings';
+import React from 'react';
+import { predictionActions } from '../../store/actions';
+import connect from 'react-redux/es/connect/connect';
+import { useHistory, useParams } from 'react-router';
 import { WarningButton } from '../../styles/customComponents';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-const ColorlibConnector = withStyles({
-  alternativeLabel: {
-    top: 22,
-  },
-  active: {
-    '& $line': {
-      // backgroundImage:
-      //   'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
-      backgroundImage:
-        'linear-gradient( 136deg, rgb(83, 141, 26) 0%, rgb(130, 189, 75) 50%, rgb(226, 219, 172) 100%)',
-    },
-  },
-  completed: {
-    '& $line': {
-      // backgroundImage:
-      //   'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
-      backgroundImage:
-        'linear-gradient( 136deg, rgb(83, 141, 26) 0%, rgb(130, 189, 75) 50%, rgb(226, 219, 172) 100%)',
-    },
-  },
-  line: {
-    height: 3,
-    border: 0,
-    backgroundColor: '#eaeaf0',
-    borderRadius: 1,
-  },
-})(StepConnector);
-
-const useColorlibStepIconStyles = makeStyles({
-  root: {
-    backgroundColor: '#ccc',
-    zIndex: 1,
-    color: '#fff',
-    width: 32,
-    height: 32,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  active: {
-    // backgroundImage:
-    //   'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(83, 141, 26) 0%, rgb(130, 189, 75) 50%, rgb(226, 219, 172) 100%)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-  },
-  completed: {
-    // backgroundImage:
-    //   'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-    backgroundImage:
-      'linear-gradient( 136deg, rgb(83, 141, 26) 0%, rgb(130, 189, 75) 50%, rgb(226, 219, 172) 100%)'
-  },
-});
-
-function ColorlibStepIcon(props) {
-  const classes = useColorlibStepIconStyles();
-  const { active, completed } = props;
-
-  const icons = {
-    1: <SettingsIcon fontSize='small' />,
-    2: <ExploreIcon fontSize='small' />,
-    3: <ExploreIcon fontSize='small' />,
-    4: <DriveEtaIcon fontSize='small' />,
-    5: <CloudIcon fontSize='small' />,
-    6: <DeveloperBoardIcon fontSize='small' />
-  };
-
-  return (
-    <div
-      className={clsx(classes.root, {
-        [classes.active]: active,
-        [classes.completed]: completed,
-      })}
-    >
-      {icons[String(props.icon)]}
-    </div>
-  );
-}
-
-ColorlibStepIcon.propTypes = {
-  active: PropTypes.bool,
-  completed: PropTypes.bool,
-  icon: PropTypes.node,
-};
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
   },
-  stepper: {
-    padding: 12
-  },
-  buttonContainer: {
-    width: '75%',
-    margin: 'auto',
-    display: 'flex',
-    justifyContent: 'space-between',
-    // position: 'absolute',
-    // bottom: '2.5%',
-    // left: '40%'
-  },
   button: {
-    marginRight: theme.spacing(1)
-  },
-  instructions: {
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+  actionsContainer: {
+    marginBottom: theme.spacing(2),
+  },
+  resetContainer: {
+    padding: theme.spacing(3),
   },
 }));
 
@@ -162,9 +47,16 @@ function Settings(props) {
     activeStep: 0
   });
 
-  // const { activeStep } = state;
+  let history = useHistory()
+  const { boxId } = useParams();
+  const predictionUrl = boxId ? "/prediction/" + boxId : "/prediction";
 
-  const steps = getSteps();
+  // skip step 1 and 2 if it's a single setting
+  let steps = getSteps();
+  if (boxId) {
+    steps = steps.filter((step, index) => index !== 1 && index !== 2);
+  }
+
 
   const handleNext = () => setState({...state, activeStep: state.activeStep + 1});
 
@@ -184,7 +76,6 @@ function Settings(props) {
 
   const handleDateChange = (name, date) => {
     let newDate = new Date();
-    console.log(date)
     if (name === 'startDate' || name === 'endDate') {
       newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
     } else {
@@ -201,10 +92,7 @@ function Settings(props) {
 
   const handleWeightChange = (event, weightType, areaName) => {
     let weights = weightType === 'src' ? {...props.srcWeights} : {...props.dstWeights};
-
-    console.log('weight', weights)
     weights[areaName] = event.target.value / 100.0;
-    console.log("weights new", weights);
     props.setSimulationParameters({
       ...props,
       srcWeights: weightType === 'src' ? weights : props.srcWeights,
@@ -263,11 +151,10 @@ function Settings(props) {
       case 5:
         return(
           <PredictionSettings predictionModel={props.predictionModel}
-                              startDate={props.startDate}
-                              endDate={props.endDate}
+                              startDate={new Date(props.startDate)}
+                              endDate={new Date(props.endDate)}
                               startHour={formatTimeToDate(props.startHour)}
                               endHour={formatTimeToDate(props.endHour)}
-                              // outputKeys={props.outputKeys}
                               handleSingleChange={handleSingleChange}
                               handleDateChange={handleDateChange} />
         );
@@ -276,81 +163,75 @@ function Settings(props) {
     }
   };
 
+  const handlePredictionStart = () => {
+    if (boxId) {
+      props.startSinglePrediction(props)
+    } else {
+      props.startPrediction(props)
+    }
+    history.push(predictionUrl);
+  };
+
   return (
     <div className={classes.root}>
-      <Stepper className={classes.stepper} alternativeLabel activeStep={state.activeStep} connector={<ColorlibConnector />}>
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <div>
-        {state.activeStep === steps.length ? (
-          props.isFetching ?
-            <div style={{margin: '2rem', textAlign: 'center'}} >
-              <CircularProgress color="primary" />
-            </div>
-            :
-            <div>
-              <Typography align='center' className={classes.instructions}>
-                All steps completed - you&apos;re done!
-              </Typography>
-              <Typography align='center' className={classes.instructions}>
-                Starting the simulation and prediction may take a while!
-              </Typography>
-              <div className={classes.buttonContainer}>
-                <Button variant='contained' onClick={handleReset} className={classes.button}>
-                  Reset
-                </Button>
-                <Button variant="contained"
-                        color="primary"
-                        onClick={() => props.startPrediction(props)}
-                        className={classes.button}>
-                  START
-                </Button>
-              </div>
-            </div>
-        ) : (
-          <div className={classes.content}>
-            {/*<Typography className={classes.instructions}>{getStepContent(state.activeStep)}</Typography>*/}
-            <div className={classes.instructions}>{getStepContent(state.activeStep)}</div>
-            <div className={classes.buttonContainer}>
-              <Button color='secondary'
-                      variant="contained"
+      <Stepper activeStep={state.activeStep} orientation="vertical">
+        {steps.map((label, index) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+              <StepContent>
+                {getStepContent(index)}
+                <div className={classes.actionsContainer}>
+                  <div>
+                    <Button
                       disabled={state.activeStep === 0}
                       onClick={handleBack}
-                      className={classes.button}>
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
-              <WarningButton onClick={handleDefault}>
-                Use Default
-              </WarningButton>
-            </div>
-          </div>
+                      className={classes.button}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      {state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  </div>
+                </div>
+              </StepContent>
+            </Step>
+          )
         )}
-      </div>
+      </Stepper>
+      {state.activeStep === steps.length && (
+        <Paper square elevation={0} className={classes.resetContainer}>
+          <Typography>All steps completed - You&apos;re now able to start the prediction!</Typography>
+          <WarningButton onClick={() => history.push('/detail')} className={classes.button}>
+            Back To Details
+          </WarningButton>
+          <Button color="secondary" variant="contained" onClick={handleReset} className={classes.button}>
+            Reset
+          </Button>
+          <Button
+            onClick={() => handlePredictionStart()}
+            className={classes.button}
+            color='primary'
+            variant='contained'>Start Prediction
+          </Button>
+        </Paper>
+      )}
     </div>
-  )
+  );
 }
 
-{/*<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/}
-
-const mapStateToProps = state => state.simulation;
+const mapStateToProps = state => state.prediction;
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setSimulationParameters: (params) => dispatch(predictionActions.setSimulationParameter(params)),
-    startSimulationWith: (params) => dispatch(simulationActions.startSimulation(params)),
     startPrediction: (params) => dispatch(predictionActions.fetchPrediction(params)),
+    startSinglePrediction: (params) => dispatch(predictionActions.fetchSinglePrediction(params)),
   }
 };
 

@@ -57,9 +57,12 @@ export class DeviceMap extends PureComponent {
 
     const onPolygonClickHandler = key => {
       this.togglePolygon(key);
-      // this.props.fetchCurrentBremickerByKey(key);
-      // this.props.fetchCurrentAir();
       history.push('/detail/' + key);
+    };
+
+    const popupCloseHandler = key => {
+      this.togglePolygon(key);
+      history.push('/detail');
     };
 
     console.log("[MAP] render");
@@ -82,7 +85,7 @@ export class DeviceMap extends PureComponent {
                  onMouseOut={() => this.hoverPolgygon(key)}
                  onClick={() => onPolygonClickHandler(key)}
         >
-          <Popup onClose={() => this.togglePolygon(key)}>
+          <Popup onClose={() => popupCloseHandler(key)}>
             {this.props.traffic && this.props.traffic[key] ?
               (
                 <div>
@@ -101,63 +104,16 @@ export class DeviceMap extends PureComponent {
           </Popup>
         </Polygon>
       )
-    })
+    });
 
     return (
       <div className="leaflet-container">
-        {/*<Overlay*/}
-          {/*toggleTraffic={this.toggleTraffic.bind(this)}*/}
-          {/*toggleAir={this.toggleAir.bind(this)}*/}
-          {/*air={this.state.isAir}*/}
-          {/*traffic={this.state.isTraffic}*/}
-          {/*blurChange={this.onBlurChange.bind(this)}*/}
-          {/*radiusChange={this.onRadiusChange.bind(this)}*/}
-          {/*opacityChange={this.onOpacityChange.bind(this)}*/}
-          {/*maximumChange={this.onMaximumChange.bind(this)}*/}
-        {/*/>*/}
         <Map fadeAnimation={true} center={position} zoom={this.state.zoom}>
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
-
           {sensorPolygons}
-          {/*{this.props.simulation.prediction !== undefined && this.state.isAir ?*/}
-              {/*this.heatMap*/}
-            {/*: <React.Fragment /> }*/}
-          {/*{this.isEmissionAvailable() && this.state.isAir ?*/}
-            {/*<HeatMap*/}
-              {/*// fitBoundsOnLoad*/}
-              {/*// fitBoundsOnUpdate*/}
-              {/*points={Object.values(this.props.emissions).map(value => {*/}
-                {/*// console.log(value);*/}
-                {/*return [value['lng'], value['lat'], value['CAQI'] / 100]*/}
-              {/*})}*/}
-              {/*longitudeExtractor={m => m[0]}*/}
-              {/*latitudeExtractor={m => m[1]}*/}
-              {/*intensityExtractor={m => parseFloat(m[2])}*/}
-              {/*blur={this.state.blur}*/}
-              {/*radius={this.state.radius}*/}
-              {/*max={this.state.maximum}*/}
-              {/*minOpacity={this.state.opacity}*/}
-              {/*maxZoom={100}*/}
-              {/*gradient={gradient}*/}
-            {/*/> : <React.Fragment /> }*/}
-          {/*{this.isTrafficAvailable() && this.state.isTraffic ?*/}
-            {/*<HeatMap*/}
-              {/*fitBoundsOnLoad*/}
-              {/*fitBoundsOnUpdate*/}
-              {/*points={Object.values(this.props.emissions).map(value => [value.lng, value.lat, value.CAQI / 100])}*/}
-              {/*longitudeExtractor={m => m[0]}*/}
-              {/*latitudeExtractor={m => m[1]}*/}
-              {/*intensityExtractor={m => parseFloat(m[2])}*/}
-              {/*blur={this.state.blur}*/}
-              {/*radius={this.state.radius}*/}
-              {/*max={this.state.maximum}*/}
-              {/*minOpacity={this.state.opacity}*/}
-              {/*maxZoom={100}*/}
-              {/*gradient={gradient}*/}
-            {/*/> : <React.Fragment /> }*/}
         </Map>
       </div>
     );
@@ -176,3 +132,51 @@ export default withRouter(connect(
   {}
 )(DeviceMap));
 
+
+// {/*<Overlay*/}
+// {/*toggleTraffic={this.toggleTraffic.bind(this)}*/}
+// {/*toggleAir={this.toggleAir.bind(this)}*/}
+// {/*air={this.state.isAir}*/}
+// {/*traffic={this.state.isTraffic}*/}
+// {/*blurChange={this.onBlurChange.bind(this)}*/}
+// {/*radiusChange={this.onRadiusChange.bind(this)}*/}
+// {/*opacityChange={this.onOpacityChange.bind(this)}*/}
+// {/*maximumChange={this.onMaximumChange.bind(this)}*/}
+// {/*/>*/}
+
+// {/*{this.props.simulation.prediction !== undefined && this.state.isAir ?*/}
+// {/*this.heatMap*/}
+// {/*: <React.Fragment /> }*/}
+// {/*{this.isEmissionAvailable() && this.state.isAir ?*/}
+// {/*<HeatMap*/}
+// {/*// fitBoundsOnLoad*/}
+// {/*// fitBoundsOnUpdate*/}
+// {/*points={Object.values(this.props.emissions).map(value => {*/}
+// {/*// console.log(value);*/}
+// {/*return [value['lng'], value['lat'], value['CAQI'] / 100]*/}
+// {/*})}*/}
+// {/*longitudeExtractor={m => m[0]}*/}
+// {/*latitudeExtractor={m => m[1]}*/}
+// {/*intensityExtractor={m => parseFloat(m[2])}*/}
+// {/*blur={this.state.blur}*/}
+// {/*radius={this.state.radius}*/}
+// {/*max={this.state.maximum}*/}
+// {/*minOpacity={this.state.opacity}*/}
+// {/*maxZoom={100}*/}
+// {/*gradient={gradient}*/}
+// {/*/> : <React.Fragment /> }*/}
+// {/*{this.isTrafficAvailable() && this.state.isTraffic ?*/}
+// {/*<HeatMap*/}
+// {/*fitBoundsOnLoad*/}
+// {/*fitBoundsOnUpdate*/}
+// {/*points={Object.values(this.props.emissions).map(value => [value.lng, value.lat, value.CAQI / 100])}*/}
+// {/*longitudeExtractor={m => m[0]}*/}
+// {/*latitudeExtractor={m => m[1]}*/}
+// {/*intensityExtractor={m => parseFloat(m[2])}*/}
+// {/*blur={this.state.blur}*/}
+// {/*radius={this.state.radius}*/}
+// {/*max={this.state.maximum}*/}
+// {/*minOpacity={this.state.opacity}*/}
+// {/*maxZoom={100}*/}
+// {/*gradient={gradient}*/}
+// {/*/> : <React.Fragment /> }*/}

@@ -57,15 +57,15 @@ export function prediction(
     case RECEIVE_PREDICTION:
       return Object.assign({}, state, {
         isFetching: false,
-        response: action.prediction,
+        full: action.prediction,
         lastUpdated: action.receivedAt
       });
     case RECEIVE_SINGLE_PREDICTION:
       console.log('prediction received: ', action)
       return Object.assign({}, state, {
         isFetching: false,
-        // [action.boxID]: {prediction: action.prediction},
-        single: action.prediction,
+        [action.boxID]: action.prediction,
+        // single: action.prediction,
         lastUpdated: action.receivedAt
       });
     case INVALIDATE_PREDICTION:

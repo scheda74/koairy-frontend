@@ -59,7 +59,7 @@ export function fetchPrediction(params) {
 
     return fetch(apiUrl + startPrediction, { headers: header, method: 'POST', body: JSON.stringify(params) })
       .then(response => response.json(),
-        error => console.log('An error occurred', error))
+        error => dispatch(invalidatePrediction(params, error)))
       .then(json => dispatch(receivePrediction(params, json)))
       .catch(error => dispatch(invalidatePrediction(params, error)))
   }
@@ -70,16 +70,11 @@ export function fetchSinglePrediction(params) {
 
     dispatch(requestPrediction());
     console.log('single prediction params', params);
-    let body = {
-      ...params,
-      // ['box_id']: params['boxID']
-    };
-    console.log(body);
 
 
-    return fetch(apiUrl + startSinglePrediction, { headers: header, method: 'POST', body: JSON.stringify(body) })
+    return fetch(apiUrl + startSinglePrediction, { headers: header, method: 'POST', body: JSON.stringify(params) })
       .then(response => response.json(),
-        error => console.log('An error occurred', error))
+        error => dispatch(invalidatePrediction(params, error)))
       .then(json => dispatch(receiveSinglePrediction(params, json)))
       .catch(error => dispatch(invalidatePrediction(params, error)))
   }
@@ -89,7 +84,7 @@ export function fetchSinglePrediction(params) {
 export function invalidatePrediction(params, error) {
   return {
     type: INVALIDATE_PREDICTION,
-    params,
+    // params,
     error
   }
 }

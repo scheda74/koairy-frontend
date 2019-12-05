@@ -1,13 +1,14 @@
 import { Card, Divider, makeStyles } from '@material-ui/core';
-import DeviceMap from '../../components/Map/DeviceMap';
 import React from 'react';
 import DetailToolbar from '../../components/DetailToolbar/DetailToolbar';
-import Settings from './Settings/Settings'
+import Settings from '../../components/Settings/Settings'
+import DeviceMap from '../../components/Map/DeviceMap';
 
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Welcome from './Welcome/Welcome';
 import Detail from './Detail/Detail';
+import Prediction from './Prediction/Prediction';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -42,8 +43,8 @@ const detailRouter = (
     <Route exact path={`${process.env.PUBLIC_URL}/settings/:boxId`} component={Settings} />
     <Route exact path={`${process.env.PUBLIC_URL}/detail`} component={Detail} />
     <Route exact path={`${process.env.PUBLIC_URL}/detail/:boxId`} component={Detail} />
-    <Route exact path={`${process.env.PUBLIC_URL}/prediction`} component={Settings} />
-    <Route exact path={`${process.env.PUBLIC_URL}/prediction/:boxId`} component={Settings} />
+    <Route exact path={`${process.env.PUBLIC_URL}/prediction`} component={Prediction} />
+    <Route exact path={`${process.env.PUBLIC_URL}/prediction/:boxId`} component={Prediction} />
     <Route exact render={() => <Redirect to={`${process.env.PUBLIC_URL}/`} />} />
   </Switch>
 );
