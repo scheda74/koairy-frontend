@@ -30,7 +30,7 @@ function Prediction(props) {
 
   const predictionCharts = () => {
     let data = boxId ? props.prediction[boxId] : props.prediction.full;
-    data.map(response => {
+    return data.map(response => {
       let mea = response['mea'] || 'not defined';
       let outputKey = response['key'];
       let prediction = response['prediction'];
@@ -56,7 +56,7 @@ function Prediction(props) {
 
   return (
       <div className={classes.container}>
-        {(boxId && props.prediction[boxId]) || props.prediction.response ? (
+        {(boxId && props.prediction[boxId]) || props.prediction.full ? (
           predictionCharts()
         ) : (
           <CircularProgress style={{margin: '3rem'}} color="primary" />
