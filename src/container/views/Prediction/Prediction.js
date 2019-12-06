@@ -29,7 +29,7 @@ function Prediction(props) {
   const { boxId } = useParams();
 
   const predictionCharts = () => {
-    let data = boxId ? props.prediction[boxId] : props.prediction.full;
+    let data = boxId ? (props.prediction[boxId] ? props.prediction[boxId] : []) : props.prediction.full;
     return data.map(response => {
       let mea = response['mea'] || 'not defined';
       let outputKey = response['key'];

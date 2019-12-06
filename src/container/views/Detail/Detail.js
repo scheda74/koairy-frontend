@@ -57,6 +57,7 @@ function Detail(props) {
   }, [boxId]);
 
   const airData = () => {
+    // if (!props.air.sensors[bremickerBoxes[boxId]['airSensor']]) return [];
     let sensorData =  props.air.sensors[bremickerBoxes[boxId]['airSensor']]['values'];
     return Object.keys(sensorData).map(key => {
       return {
@@ -90,7 +91,7 @@ function Detail(props) {
   };
 
   const airChart = () => {
-    if (props.air.sensors) {
+    if (props.air.sensors[bremickerBoxes[boxId]['airSensor']]) {
       return (
         <div key='air' className={classes.chartContainer}>
           <Typography align='center' variant='caption'>Current Air Pollution</Typography>
