@@ -77,10 +77,10 @@ function Settings(props) {
   const handleDateChange = (name, date) => {
     let newDate = new Date();
     if (name === 'startDate' || name === 'endDate') {
-      newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+      newDate = date.toISOString().substr(0, 10);
+      console.log(newDate)
     } else {
       newDate = date.toLocaleString('DE-de', {hour: '2-digit', minute: '2-digit'})
-      console.log(newDate)
     }
     props.setSimulationParameters({...props, [name]: newDate});
   };

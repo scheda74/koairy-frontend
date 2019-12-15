@@ -29,7 +29,20 @@ function Prediction(props) {
   const { boxId } = useParams();
 
   const predictionCharts = () => {
-    let data = boxId ? (props.prediction[boxId] ? props.prediction[boxId] : []) : props.prediction.full;
+    if (props.didInvalidate) {
+      return [];
+    }
+    let data = [];
+    if (boxId && props.prediction[boxId]) {
+      data = props.prediction[boxId];
+    } else if (props.prediction.full) {
+      if (props.prediction.full.error) {
+        data = []
+      } else {
+        data = props.prediction.full;
+      }
+      console.log('data', data);
+    }
     return data.map(response => {
       let mea = response['mea'] || 'not defined';
       let outputKey = response['key'];
@@ -56,7 +69,7 @@ function Prediction(props) {
 
   return (
       <div className={classes.container}>
-        {(boxId && props.prediction[boxId]) || props.prediction.full ? (
+        {((boxId && props.prediction[boxId]) || props.prediction.full) && !props.didInvalidate ? (
           predictionCharts()
         ) : (
           <CircularProgress style={{margin: '3rem'}} color="primary" />
@@ -70,7 +83,8 @@ const mapStateToProps = (state) => {
       params: state.prediction,
       prediction: state.prediction,
       isFetching: state.prediction.isFetching,
-      outputKeys: state.prediction.outputKeys
+      outputKeys: state.prediction.outputKeys,
+      didInvalidate: state.prediction.didInvalidate
     }
 };
 

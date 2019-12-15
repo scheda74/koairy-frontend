@@ -72,7 +72,9 @@ export function prediction(
       console.log('something went wrong: ', action);
       return Object.assign({}, state, {
         didInvalidate: true,
-        isFetching: false
+        isFetching: false,
+        error: action.error,
+        full: undefined
       });
     default:
       return state;

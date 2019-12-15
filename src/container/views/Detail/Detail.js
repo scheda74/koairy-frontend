@@ -1,7 +1,6 @@
 import { CircularProgress, makeStyles, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import connect from 'react-redux/es/connect/connect';
-import { CustomLink } from '../../../styles/customComponents';
 import BremickerLineChart from '../../../components/Charts/BremickerLineChart';
 import Divider from '@material-ui/core/Divider';
 import HawaDawaLineChart from '../../../components/Charts/HawaDawaLineChart';
@@ -91,7 +90,7 @@ function Detail(props) {
   };
 
   const airChart = () => {
-    if (props.air.sensors[bremickerBoxes[boxId]['airSensor']]) {
+    if (props.air.sensors && props.air.sensors[bremickerBoxes[boxId]['airSensor']]) {
       return (
         <div key='air' className={classes.chartContainer}>
           <Typography align='center' variant='caption'>Current Air Pollution</Typography>
