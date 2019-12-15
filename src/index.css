@@ -23,6 +23,10 @@ root {
   height: 100vh;
 }
 
+a {
+  text-decoration: none;
+}
+
 /*.leaflet-container {*/
   /*width: 100vw;*/
   /*height: 100vh;*/

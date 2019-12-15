@@ -22,9 +22,9 @@ function PredictionAnalysis(props) {
 
 const mapStateToProps = (state) => {
   return {
-    prediction: state.simulation.prediction,
-    isFetching: state.simulation.isFetching,
-    didInvalidate: state.simulation.didInvalidate
+    prediction: state.prediction,
+    isFetching: state.prediction.isFetching,
+    didInvalidate: state.prediction.didInvalidate
   }
 };
 

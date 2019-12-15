@@ -1,26 +1,29 @@
-import { INVALIDATE_EMISSIONS, RECEIVE_EMISSIONS, REQUEST_EMISSIONS } from '../actions/actionTypes';
+import { INVALIDATE_AIR, RECEIVE_LATEST_AIR, REQUEST_LATEST_AIR } from '../actions/actionTypes';
 
 
-export function emissions(
+export function air(
   state = {
     isFetching: false,
     didInvalidate: false,
-    }, action) {
+  }, action) {
   switch (action.type) {
-    case INVALIDATE_EMISSIONS:
+    case INVALIDATE_AIR:
       return Object.assign({}, state, {
-        didInvalidate: true
+        isFetching: false,
+        didInvalidate: true,
+        action
       });
-    case REQUEST_EMISSIONS:
+    case REQUEST_LATEST_AIR:
       return Object.assign({}, state, {
         isFetching: true,
         didInvalidate: false
       });
-    case RECEIVE_EMISSIONS:
+    case RECEIVE_LATEST_AIR:
+      console.log(action)
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        data: JSON.parse(action.emissions),
+        sensors: action.sensors,
         lastUpdated: action.receivedAt
       });
     default:

@@ -1,15 +1,22 @@
-import { INVALIDATE_TRAFFIC, RECEIVE_TRAFFIC, REQUEST_TRAFFIC } from './actionTypes';
-import { apiUrl, getTraining } from '../../config';
+import {
+  INVALIDATE_TRAFFIC,
+  RECEIVE_CURRENT_BREMICKER,
+  RECEIVE_TRAFFIC,
+  REQUEST_TRAFFIC,
+  SET_SELECTED_BOX
+} from './actionTypes';
+import { apiUrl, currentBremicker, getTraining } from '../../config';
 
 const header = new Headers({
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*'
 });
 
-export function invalidateTraffic(params) {
+export function invalidateTraffic(response) {
+  console.log('invalidated')
   return {
     type: INVALIDATE_TRAFFIC,
-    params
+    response
   }
 }
 
@@ -49,9 +56,9 @@ export function fetchTraffic(params) {
     //   .catch(error => console.log('An error occurred', error))
     return fetch(apiUrl + getTraining, { headers: header, method: 'POST', body: JSON.stringify(body) })
       .then(response => response.json(),
-        error => console.log('An error occurred', error))
+        error => dispatch(invalidateTraffic(error)))
       .then(json => dispatch(receiveTraffic(params, json)))
-      .catch(error => console.log('An error occurred', error))
+      .catch(error => dispatch(invalidateTraffic(error)))
   }
 }
 
@@ -77,5 +84,39 @@ export function fetchTrafficIfNeeded(params) {
       // Let the calling code know there's nothing to wait for.
       return Promise.resolve()
     }
+  }
+}
+
+export function receiveCurrentBremicker(boxID, json) {
+  console.log('bremicker data received!')
+  console.log(json);
+  return {
+    type: RECEIVE_CURRENT_BREMICKER,
+    boxID: boxID,
+    traffic: JSON.parse(json),
+    receivedAt: Date.now()
+  }
+}
+
+
+export function fetchCurrentBremicker(boxID) {
+  return async function(dispatch, getState) {
+    console.log('Fetching bremicker data!')
+
+    dispatch(requestTraffic(boxID));
+    dispatch(setSelectedBox(boxID));
+
+    return await fetch(apiUrl + currentBremicker + boxID)
+      .then(response => response.json(),
+        error => dispatch(invalidateTraffic(error)))
+      .then(json => dispatch(receiveCurrentBremicker(boxID, json)))
+      .catch(error => dispatch(invalidateTraffic(error)))
+  }
+}
+
+export function setSelectedBox(boxID) {
+  return {
+    type: SET_SELECTED_BOX,
+    boxID: boxID
   }
 }

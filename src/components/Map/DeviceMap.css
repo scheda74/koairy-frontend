@@ -2,3 +2,59 @@
     width: 100%;
     height: 100%;
 }
+
+/*.leaflet-fade {*/
+    /*opacity: 0.2;*/
+    /*!*transition: opacity 2000ms;*!*/
+
+/*}*/
+
+/*.no-fade {*/
+    /*opacity: 1;*/
+    /*transition: none !important;*/
+/*}*/
+
+/*.leaflet-fade:hover {*/
+    /*animation: fade-in 2s linear forwards;*/
+/*}*/
+
+.leaflet-fade {
+    opacity: 0.2;
+    /*animation-name: fade-in;*/
+    /*animation-duration: 1s;*/
+    /*animation-timing-function: linear;*/
+    /*animation-fill-mode: backwards;*/
+    /*animation-play-state: paused;*/
+    /*opacity: 1;*/
+}
+
+.selected {
+    opacity: 1 !important;
+}
+
+.leaflet-fade:hover,
+.leaflet-fade:focus {
+    /*opacity: 1;*/
+    /*animation-fill-mode: forwards;*/
+    /*animation-play-state: running;*/
+    /*opacity: 1;*/
+}
+
+/*.leaflet-fade:focus {*/
+    /*opacity: 1;*/
+/*}*/
+
+/*.leaflet-fade:after {*/
+    /*opacity: 1;*/
+/*}*/
+
+
+
+/*@keyframes fade-in {*/
+    /*0% {*/
+        /*opacity: 0.2;*/
+    /*}*/
+    /*100% {*/
+        /*opacity: 1;*/
+    /*}*/
+/*}*/

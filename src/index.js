@@ -4,7 +4,7 @@ import * as serviceWorker from './serviceWorker';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk'
-
+import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import { MuiThemeProvider } from '@material-ui/core';
 import { darkGreenTheme } from './styles/customTheme';
@@ -20,18 +20,18 @@ const store = createStore(
   rootReducer,
   {
     emissions: {},
-    simulation: {
+    prediction: {
       isFetching: false,
       didInvalidate: false,
       predictionModel: 'lin-reg',
       startDate: '2019-08-01',
-      endDate: '2019-11-10',
-      startHour: '0:00',
-      endHour: '23:00',
+      endDate: '2019-12-04',
+      startHour: '07:00',
+      endHour: '10:00',
       boxID: 672,
       weatherScenario: 0,
-      input_keys: ['temp', 'hum', 'PMx', 'WIND_SPEED', 'WIND_DIR'],
-      output_key: 'pm10',
+      inputKeys: ['temp', 'hum', 'WIND_SPEED', 'WIND_DIR'],
+      outputKeys: ['no2', 'pm10'],
       vehicleDistribution: {
         "HBEFA3/PC_D_EU2": 0.007,
         "HBEFA3/PC_D_EU3": 0.0251,
@@ -69,7 +69,7 @@ const store = createStore(
           'kirchheim_residential': 0.05,
           'unassigned_edges': 0.05
       },
-      vehicleNumber: 9500,
+      vehicleNumber: undefined,
       timeSteps: 10800
     }
   },
@@ -87,7 +87,9 @@ const target = document.getElementById('root');
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider theme={darkGreenTheme}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </MuiThemeProvider>
   </Provider>,
   target
