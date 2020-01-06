@@ -15,7 +15,7 @@ export default function PredictionChart(props) {
       <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
       <Line type="monotone" dataKey={pollutantNames[0]} stroke="#8884d8" />
       <Line type="monotone" dataKey={pollutantNames[1]} stroke="#82ca9d" />
-      <Line type="monotone" dataKey={pollutantNames[2]} stroke="#8d1a1a" />
+      <Line type="monotone" dataKey={pollutantNames[2]} stroke="#fff540" />
     </LineChart>
   )
 }
