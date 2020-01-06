@@ -25,7 +25,7 @@ const store = createStore(
       didInvalidate: false,
       predictionModel: 'lin-reg',
       startDate: '2019-08-01',
-      endDate: '2019-12-04',
+      endDate: '2019-11-15',
       startHour: '07:00',
       endHour: '10:00',
       boxID: 672,

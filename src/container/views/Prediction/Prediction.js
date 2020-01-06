@@ -36,7 +36,8 @@ function Prediction(props) {
     if (boxId && props.prediction[boxId]) {
       data = props.prediction[boxId];
     } else if (props.prediction.full) {
-      if (props.prediction.full.error) {
+      if (props.prediction.full.error || props.prediction.full.detail) {
+        console.log('im here')
         data = []
       } else {
         data = props.prediction.full;
@@ -46,6 +47,7 @@ function Prediction(props) {
     return data.map(response => {
       let mea = response['mea'] || 'not defined';
       let outputKey = response['key'];
+      let simKey = outputKey === "no2" ? "NOx" : "PMx";
       let prediction = response['prediction'];
       return (
         <div key={outputKey} className={classes.chartContainer}>
@@ -59,7 +61,7 @@ function Prediction(props) {
                   date: new Date(key).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
                   [outputKey + "_real"]: prediction[key][outputKey] || 0,
                   [outputKey + "_predicted"]: prediction[key][outputKey + "_predicted"] || 0,
-                  [outputKey + "_simulated"]: prediction[key][outputKey + "_simulated"] || 0,
+                  [simKey + "_simulated"]: prediction[key][simKey + "_simulated"] || 0,
                 }})}
           />
         </div>
@@ -69,7 +71,7 @@ function Prediction(props) {
 
   return (
       <div className={classes.container}>
-        {((boxId && props.prediction[boxId]) || props.prediction.full) && !props.didInvalidate ? (
+        {((boxId && props.prediction[boxId]) || props.prediction.full) && !props.didInvalidate && (typeof props.prediction.full.detail === 'undefined') ? (
           predictionCharts()
         ) : (
           <CircularProgress style={{margin: '3rem'}} color="primary" />

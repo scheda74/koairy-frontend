@@ -93,7 +93,7 @@ export class DeviceMap extends PureComponent {
                   <Typography>Data fetched on: {Object.keys(this.props.traffic[key]).pop()}</Typography>
                   <Typography>Number of vehicles: {bremickerData[Object.keys(this.props.traffic[key]).pop()] || 0}</Typography>
                   {this.props.sensors ? (
-                      <Typography>Current Air Quality Index: {this.props.sensors[bremickerBox['airSensor']]['aqi'] || 'Not defined'}</Typography>
+                      <Typography>Current Air Quality Index: { this.props.sensors[bremickerBox['airSensor']] && this.props.sensors[bremickerBox['airSensor']]['aqi'] || 'Not defined'}</Typography>
                   ) : (<React.Fragment />)}
 
                 </div>
