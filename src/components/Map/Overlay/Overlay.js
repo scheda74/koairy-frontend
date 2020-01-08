@@ -75,14 +75,14 @@ export default function Overlay(props) {
           onChangeCommitted={(event, value) => props.blurChange(value)}
           color="primary"
           style={{width: '200px'}}
-          defaultValue={4}
+          defaultValue={20}
           // getAriaValueText={}
           aria-labelledby="discrete-slider"
           valueLabelDisplay="on"
           step={1}
           marks
           min={0}
-          max={20}
+          max={40}
         />
       </div>
       <div className={classes.slider}>
@@ -93,7 +93,7 @@ export default function Overlay(props) {
           onChangeCommitted={(event, value) => props.radiusChange(value)}
           color="primary"
           style={{width: '200px'}}
-          defaultValue={10}
+          defaultValue={15}
           // getAriaValueText={}
           aria-labelledby="discrete-slider"
           valueLabelDisplay="on"
@@ -136,7 +136,7 @@ export default function Overlay(props) {
           step={1}
           marks
           min={0}
-          max={200}
+          max={400}
         />
       </div>
     </div>

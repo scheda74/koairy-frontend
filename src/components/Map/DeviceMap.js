@@ -10,7 +10,7 @@ import { withRouter } from 'react-router';
 import Overlay from './Overlay/Overlay'
 import { traffic } from '../../store/reducers/trafficReducers';
 
-export class DeviceMap extends PureComponent {
+export class DeviceMap extends React.Component {
   state = {
     lat: 48.175189,
     lng: 11.755558,
@@ -35,6 +35,22 @@ export class DeviceMap extends PureComponent {
       1.0: '#950019'
     }
   };
+
+  onBlurChange(value) {
+    this.setState({ blur: value })
+  }
+
+  onRadiusChange(value) {
+    this.setState({ radius: value })
+  }
+
+  onOpacityChange(value) {
+    this.setState({ opacity: value })
+  }
+
+  onMaximumChange(value) {
+    this.setState({ maximum: value / 100 })
+  }
 
   hoverPolgygon = (key) => {
    if (!this.state.polyOptions[key].isActive) {
@@ -127,14 +143,19 @@ export class DeviceMap extends PureComponent {
             longitudeExtractor={m => m[0]}
             latitudeExtractor={m => m[1]}
             intensityExtractor={m => parseFloat(m[2])}
-            blur={25}
+            blur={this.state.blur}
             radius={15}
-            max={max}
-            minOpacity={0.3}
-            // maxZoom={5}
+            max={this.state.maximum}
+            minOpacity={this.state.opacity}
+            // maxZoom={}
             // gradient={this.state.gradient}
           />
-          <Overlay />
+          <Overlay
+            blurChange={this.onBlurChange.bind(this)}
+            radiusChange={this.onRadiusChange.bind(this)}
+            opacityChange={this.onOpacityChange.bind(this)}
+            maximumChange={this.onMaximumChange.bind(this)}
+          />
         </React.Fragment>
         )
     };
