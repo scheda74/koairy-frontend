@@ -4,8 +4,8 @@ import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'r
 
 export default function PredictionChart(props) {
   const pollutantNames = Object.keys(props.data[0]).filter(key => key !== "date");
-  console.log('data', props.data);
-  console.log('names ', pollutantNames);
+  // console.log('data', props.data);
+  // console.log('names ', pollutantNames);
   return (
     <LineChart width={450} height={280} data={props.data}>
       <XAxis dataKey="date" />

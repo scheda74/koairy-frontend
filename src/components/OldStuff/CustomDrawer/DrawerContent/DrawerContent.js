@@ -67,8 +67,8 @@ function DrawerContent(props) {
     let weights = weightType === 'src' ? {...props.srcWeights} : {...props.dstWeights};
 
     weights[areaName] = event.target.value / 100.0;
-    console.log("weights");
-    console.log(weights);
+    // console.log("weights");
+    // console.log(weights);
     props.setSimulationParameters({
       ...props.params,
       srcWeights: weightType === 'src' ? weights : props.params.srcWeights,

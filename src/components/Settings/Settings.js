@@ -78,7 +78,7 @@ function Settings(props) {
     let newDate = new Date();
     if (name === 'startDate' || name === 'endDate') {
       newDate = date.toISOString().substr(0, 10);
-      console.log(newDate)
+      // console.log(newDate)
     } else {
       newDate = date.toLocaleString('DE-de', {hour: '2-digit', minute: '2-digit'})
     }

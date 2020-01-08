@@ -36,7 +36,8 @@ export function requestPrediction() {
 export function receivePrediction(params, json) {
   return {
     type: RECEIVE_PREDICTION,
-    prediction: json,
+    prediction: json.prediction,
+    traffic: json.traffic,
     receivedAt: Date.now()
   }
 }

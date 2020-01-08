@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Map, Polygon, Popup, TileLayer } from 'react-leaflet';
+import HeatMap from 'react-leaflet-heatmap-layer';
 import { CircularProgress, Typography } from '@material-ui/core';
 
 import './DeviceMap.css';
 import bremickerBoxes from '../../assets/data/bremickerBoxes'
 import { withRouter } from 'react-router';
+import { traffic } from '../../store/reducers/trafficReducers';
 
 export class DeviceMap extends PureComponent {
   state = {
@@ -106,6 +108,26 @@ export class DeviceMap extends PureComponent {
       )
     });
 
+    const renderHeatMap = () => {
+      console.log(this.props.simulatedTraffic);
+      return (
+        <HeatMap
+          fitBoundsOnLoad
+          fitBoundsOnUpdate
+          points={Object.values(this.props.simulatedTraffic).map(value => [value.lng, value.lat, value.CAQI / 100])}
+          longitudeExtractor={m => m[0]}
+          latitudeExtractor={m => m[1]}
+          intensityExtractor={m => parseFloat(m[2])}
+          blur={this.state.blur}
+          radius={this.state.radius}
+          max={this.state.maximum}
+          minOpacity={this.state.opacity}
+          maxZoom={100}
+          gradient={this.state.gradient}
+        />
+        )
+    };
+
     return (
       <div className="leaflet-container">
         <Map fadeAnimation={true} center={position} zoom={this.state.zoom}>
@@ -113,15 +135,18 @@ export class DeviceMap extends PureComponent {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
-          {sensorPolygons}
+          {this.isTrafficAvailable() ? renderHeatMap() : sensorPolygons}
         </Map>
       </div>
     );
   }
+
+  isTrafficAvailable = () => typeof this.props.simulatedTraffic !== "undefined";
 }
 
 const mapStateToProps = (state) => {
     return {
+      simulatedTraffic: state.prediction.traffic,
       traffic: state.traffic,
       sensors: state.air.sensors,
     }
@@ -155,21 +180,6 @@ export default withRouter(connect(
 // {/*// console.log(value);*/}
 // {/*return [value['lng'], value['lat'], value['CAQI'] / 100]*/}
 // {/*})}*/}
-// {/*longitudeExtractor={m => m[0]}*/}
-// {/*latitudeExtractor={m => m[1]}*/}
-// {/*intensityExtractor={m => parseFloat(m[2])}*/}
-// {/*blur={this.state.blur}*/}
-// {/*radius={this.state.radius}*/}
-// {/*max={this.state.maximum}*/}
-// {/*minOpacity={this.state.opacity}*/}
-// {/*maxZoom={100}*/}
-// {/*gradient={gradient}*/}
-// {/*/> : <React.Fragment /> }*/}
-// {/*{this.isTrafficAvailable() && this.state.isTraffic ?*/}
-// {/*<HeatMap*/}
-// {/*fitBoundsOnLoad*/}
-// {/*fitBoundsOnUpdate*/}
-// {/*points={Object.values(this.props.emissions).map(value => [value.lng, value.lat, value.CAQI / 100])}*/}
 // {/*longitudeExtractor={m => m[0]}*/}
 // {/*latitudeExtractor={m => m[1]}*/}
 // {/*intensityExtractor={m => parseFloat(m[2])}*/}

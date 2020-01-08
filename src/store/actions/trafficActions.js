@@ -101,7 +101,7 @@ export function receiveCurrentBremicker(boxID, json) {
 
 export function fetchCurrentBremicker(boxID) {
   return async function(dispatch, getState) {
-    console.log('Fetching bremicker data!')
+    // console.log('Fetching bremicker data!')
 
     dispatch(requestTraffic(boxID));
     dispatch(setSelectedBox(boxID));

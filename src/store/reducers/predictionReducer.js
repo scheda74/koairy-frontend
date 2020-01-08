@@ -55,9 +55,11 @@ export function prediction(
         didInvalidate: false
       });
     case RECEIVE_PREDICTION:
+      console.log("prediction received", action);
       return Object.assign({}, state, {
         isFetching: false,
         full: action.prediction,
+        traffic: action.traffic,
         lastUpdated: action.receivedAt
       });
     case RECEIVE_SINGLE_PREDICTION:
@@ -66,6 +68,7 @@ export function prediction(
         isFetching: false,
         [action.boxID]: action.prediction,
         // single: action.prediction,
+        traffic: action.traffic,
         lastUpdated: action.receivedAt
       });
     case INVALIDATE_PREDICTION:

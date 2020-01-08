@@ -186,7 +186,7 @@ function SingleSettings(props) {
       newDate = new Date(date).toISOString().slice(0,10);
     } else {
       newDate = date.toLocaleString('DE-de', {hour: '2-digit', minute: '2-digit'})
-      console.log(newDate)
+      // console.log(newDate)
     }
     props.setSingleSimulationParameters({...props, [name]: newDate});
   };

@@ -37,12 +37,12 @@ function Prediction(props) {
       data = props.prediction[boxId];
     } else if (props.prediction.full) {
       if (props.prediction.full.error || props.prediction.full.detail) {
-        console.log('im here')
+        // console.log('im here')
         data = []
       } else {
         data = props.prediction.full;
       }
-      console.log('data', data);
+      // console.log('data', data);
     }
     return data.map(response => {
       let mea = response['mea'] || 'not defined';

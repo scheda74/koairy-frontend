@@ -61,9 +61,9 @@ function ModalContent(props) {
   const handleWeightChange = (event, weightType, areaName) => {
     let weights = weightType === 'src' ? {...props.params.srcWeights} : {...props.params.dstWeights};
 
-    console.log('weight', weights)
+    // console.log('weight', weights)
     weights[areaName] = event.target.value / 100.0;
-    console.log("weights new", weights);
+    // console.log("weights new", weights);
     props.setSimulationParameters({
       ...props.params,
       srcWeights: weightType === 'src' ? weights : props.params.srcWeights,
