@@ -7,6 +7,7 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import './DeviceMap.css';
 import bremickerBoxes from '../../assets/data/bremickerBoxes'
 import { withRouter } from 'react-router';
+import Overlay from './Overlay/Overlay'
 import { traffic } from '../../store/reducers/trafficReducers';
 
 export class DeviceMap extends PureComponent {
@@ -16,15 +17,22 @@ export class DeviceMap extends PureComponent {
     zoom: 14,
     isTraffic: false,
     isAir: false,
-    blur: 4,
+    blur: 20,
     opacity: 0.2,
-    radius: 10,
-    maximum: 1,
+    radius: 15,
+    maximum: 300,
     polyOptions: {
       672: {opacity: 0.2, color: 'rgba(83, 141, 26, 1)', isActive: false},
       671: {opacity: 0.2, color: 'rgba(83, 141, 26, 1)', isActive: false},
       670: {opacity: 0.2, color: 'rgba(83, 141, 26, 1)', isActive: false},
       384: {opacity: 0.2, color: 'rgba(83, 141, 26, 1)', isActive: false}
+    },
+    gradient: {
+      0.0: '#78bc6a',
+      0.25: '#bbcf4c',
+      0.5: '#edc20a',
+      0.75: '#f29308',
+      1.0: '#950019'
     }
   };
 
@@ -109,22 +117,25 @@ export class DeviceMap extends PureComponent {
     });
 
     const renderHeatMap = () => {
-      console.log(this.props.simulatedTraffic);
+      let max = Math.max(Object.values(this.props.simulatedTraffic).map(val => val.count));
       return (
-        <HeatMap
-          fitBoundsOnLoad
-          fitBoundsOnUpdate
-          points={Object.values(this.props.simulatedTraffic).map(value => [value.lng, value.lat, value.CAQI / 100])}
-          longitudeExtractor={m => m[0]}
-          latitudeExtractor={m => m[1]}
-          intensityExtractor={m => parseFloat(m[2])}
-          blur={this.state.blur}
-          radius={this.state.radius}
-          max={this.state.maximum}
-          minOpacity={this.state.opacity}
-          maxZoom={100}
-          gradient={this.state.gradient}
-        />
+        <React.Fragment>
+          <HeatMap
+            fitBoundsOnLoad
+            fitBoundsOnUpdate
+            points={Object.values(this.props.simulatedTraffic).map(value => [value.lng, value.lat, value.count / max])}
+            longitudeExtractor={m => m[0]}
+            latitudeExtractor={m => m[1]}
+            intensityExtractor={m => parseFloat(m[2])}
+            blur={25}
+            radius={15}
+            max={max}
+            minOpacity={0.3}
+            // maxZoom={5}
+            // gradient={this.state.gradient}
+          />
+          <Overlay />
+        </React.Fragment>
         )
     };
 

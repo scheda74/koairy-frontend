@@ -23,6 +23,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     justifyContent: 'space-around',
     bottom: 0,
+    right: 0,
     margin: '2rem',
     zIndex: '1000 !important',
     backgroundColor: '#424242',
