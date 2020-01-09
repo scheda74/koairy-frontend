@@ -146,6 +146,7 @@ export default function Overlay(props) {
   return (
     <div className={classes.settingsContainer}>
       <IconButton
+        disabled={!props.isTrafficAvailable}
         color="inherit"
         aria-label="toggle heatmap"
         edge="end"

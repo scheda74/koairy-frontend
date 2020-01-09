@@ -142,26 +142,24 @@ export class DeviceMap extends React.Component {
       }
       return (
         <React.Fragment>
-          {this.isTrafficAvailable() && (
-            this.state.showHeatMap ? (
-                <HeatMap
-                  fitBoundsOnLoad
-                  fitBoundsOnUpdate
-                  points={Object.values(this.props.simulatedTraffic).map(value => [value.lng, value.lat, value.count / max])}
-                  longitudeExtractor={m => m[0]}
-                  latitudeExtractor={m => m[1]}
-                  intensityExtractor={m => parseFloat(m[2])}
-                  blur={this.state.blur}
-                  radius={15}
-                  max={this.state.maximum}
-                  minOpacity={this.state.opacity}
-                  // maxZoom={}
-                  // gradient={this.state.gradient}
-                />
-              ) : sensorPolygons
-            )
+          {this.isTrafficAvailable() && this.state.showHeatMap && (
+            <HeatMap
+              fitBoundsOnLoad
+              fitBoundsOnUpdate
+              points={Object.values(this.props.simulatedTraffic).map(value => [value.lng, value.lat, value.count / max])}
+              longitudeExtractor={m => m[0]}
+              latitudeExtractor={m => m[1]}
+              intensityExtractor={m => parseFloat(m[2])}
+              blur={this.state.blur}
+              radius={15}
+              max={this.state.maximum}
+              minOpacity={this.state.opacity}
+              // maxZoom={}
+              // gradient={this.state.gradient}
+            />)
           }
           <Overlay
+            isTrafficAvailable={this.isTrafficAvailable()}
             toggleHeatMap={this.toggleHeatMap.bind(this)}
             showHeatMap={this.state.showHeatMap}
             blurChange={this.onBlurChange.bind(this)}
@@ -181,6 +179,7 @@ export class DeviceMap extends React.Component {
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
           {renderHeatMap()}
+          {!this.showHeatMap && sensorPolygons}
         </Map>
       </div>
     );
