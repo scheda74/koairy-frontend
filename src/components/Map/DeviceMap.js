@@ -8,14 +8,13 @@ import './DeviceMap.css';
 import bremickerBoxes from '../../assets/data/bremickerBoxes'
 import { withRouter } from 'react-router';
 import Overlay from './Overlay/Overlay'
-import { traffic } from '../../store/reducers/trafficReducers';
 
 export class DeviceMap extends React.Component {
   state = {
     lat: 48.175189,
     lng: 11.755558,
     zoom: 14,
-    isTraffic: false,
+    showHeatMap: false,
     isAir: false,
     blur: 20,
     opacity: 0.2,
@@ -35,6 +34,10 @@ export class DeviceMap extends React.Component {
       1.0: '#950019'
     }
   };
+
+  toggleHeatMap() {
+    this.setState({ showHeatMap: !this.state.showHeatMap })
+  }
 
   onBlurChange(value) {
     this.setState({ blur: value })
@@ -133,24 +136,34 @@ export class DeviceMap extends React.Component {
     });
 
     const renderHeatMap = () => {
-      let max = Math.max(Object.values(this.props.simulatedTraffic).map(val => val.count));
+      let max = 1;
+      if (this.isTrafficAvailable()) {
+        max = Math.max(Object.values(this.props.simulatedTraffic).map(val => val.count));
+      }
       return (
         <React.Fragment>
-          <HeatMap
-            fitBoundsOnLoad
-            fitBoundsOnUpdate
-            points={Object.values(this.props.simulatedTraffic).map(value => [value.lng, value.lat, value.count / max])}
-            longitudeExtractor={m => m[0]}
-            latitudeExtractor={m => m[1]}
-            intensityExtractor={m => parseFloat(m[2])}
-            blur={this.state.blur}
-            radius={15}
-            max={this.state.maximum}
-            minOpacity={this.state.opacity}
-            // maxZoom={}
-            // gradient={this.state.gradient}
-          />
+          {this.isTrafficAvailable() && (
+            this.state.showHeatMap ? (
+                <HeatMap
+                  fitBoundsOnLoad
+                  fitBoundsOnUpdate
+                  points={Object.values(this.props.simulatedTraffic).map(value => [value.lng, value.lat, value.count / max])}
+                  longitudeExtractor={m => m[0]}
+                  latitudeExtractor={m => m[1]}
+                  intensityExtractor={m => parseFloat(m[2])}
+                  blur={this.state.blur}
+                  radius={15}
+                  max={this.state.maximum}
+                  minOpacity={this.state.opacity}
+                  // maxZoom={}
+                  // gradient={this.state.gradient}
+                />
+              ) : sensorPolygons
+            )
+          }
           <Overlay
+            toggleHeatMap={this.toggleHeatMap.bind(this)}
+            showHeatMap={this.state.showHeatMap}
             blurChange={this.onBlurChange.bind(this)}
             radiusChange={this.onRadiusChange.bind(this)}
             opacityChange={this.onOpacityChange.bind(this)}
@@ -167,7 +180,7 @@ export class DeviceMap extends React.Component {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
-          {this.isTrafficAvailable() ? renderHeatMap() : sensorPolygons}
+          {renderHeatMap()}
         </Map>
       </div>
     );

@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-import Slider from '@material-ui/core/Slider';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import { Settings } from '@material-ui/icons';
-import Popover from '@material-ui/core/Popover';
+import { makeStyles, Slider, Typography, IconButton, Popover } from '@material-ui/core';
+import { Layers, LayersClear, Settings } from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
   settingsContainer: {
     position: 'fixed',
     zIndex: '1000 !important',
-    top: '20%',
+    // top: '20%',
+    bottom: '5%',
     left: '2%',
     backgroundColor: '#424242',
     width: '3rem',
-    borderRadius: '32px'
+    borderRadius: '32px',
   },
   overlayContainer: {
     width: '400px',
@@ -51,6 +48,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
     margin: '1rem',
     width: '90%'
+  },
+  popover: {
+    marginLeft: '1rem'
   }
 }));
 
@@ -146,7 +146,15 @@ export default function Overlay(props) {
   return (
     <div className={classes.settingsContainer}>
       <IconButton
-        disabled={props.air}
+        color="inherit"
+        aria-label="toggle heatmap"
+        edge="end"
+        onClick={props.toggleHeatMap}
+      >
+        {props.showHeatMap ? <LayersClear /> : <Layers />}
+      </IconButton>
+      <IconButton
+        disabled={!props.showHeatMap}
         color="inherit"
         aria-label="toggle traffic"
         edge="end"
@@ -155,6 +163,7 @@ export default function Overlay(props) {
         <Settings />
       </IconButton>
       <Popover
+        className={classes.popover}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
