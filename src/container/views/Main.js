@@ -36,16 +36,29 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+// const detailRouter = (
+//   <Switch>
+//     <Route exact path={`${process.env.PUBLIC_URL}/`} component={Welcome} />
+//     <Route exact path={`${process.env.PUBLIC_URL}/settings`} component={Settings} />
+//     <Route exact path={`${process.env.PUBLIC_URL}/settings/:boxId`} component={Settings} />
+//     <Route exact path={`${process.env.PUBLIC_URL}/detail`} component={Detail} />
+//     <Route exact path={`${process.env.PUBLIC_URL}/detail/:boxId`} component={Detail} />
+//     <Route exact path={`${process.env.PUBLIC_URL}/prediction`} component={Prediction} />
+//     <Route exact path={`${process.env.PUBLIC_URL}/prediction/:boxId`} component={Prediction} />
+//     <Route exact render={() => <Redirect to={`${process.env.PUBLIC_URL}/`} />} />
+//   </Switch>
+// );
+
 const detailRouter = (
   <Switch>
-    <Route exact path={`${process.env.PUBLIC_URL}/`} component={Welcome} />
-    <Route exact path={`${process.env.PUBLIC_URL}/settings`} component={Settings} />
-    <Route exact path={`${process.env.PUBLIC_URL}/settings/:boxId`} component={Settings} />
-    <Route exact path={`${process.env.PUBLIC_URL}/detail`} component={Detail} />
-    <Route exact path={`${process.env.PUBLIC_URL}/detail/:boxId`} component={Detail} />
-    <Route exact path={`${process.env.PUBLIC_URL}/prediction`} component={Prediction} />
-    <Route exact path={`${process.env.PUBLIC_URL}/prediction/:boxId`} component={Prediction} />
-    <Route exact render={() => <Redirect to={`${process.env.PUBLIC_URL}/`} />} />
+    <Route exact path={'/'} component={Welcome} />
+    <Route exact path={'/settings'} component={Settings} />
+    <Route exact path={'/settings/:boxId'} component={Settings} />
+    <Route exact path={'/detail'} component={Detail} />
+    <Route exact path={'/detail/:boxId'} component={Detail} />
+    <Route exact path={'/prediction'} component={Prediction} />
+    <Route exact path={'/prediction/:boxId'} component={Prediction} />
+    <Route exact render={() => <Redirect to={'/'} />} />
   </Switch>
 );
 

@@ -1,15 +1,20 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+// const nodeExternals = require('webpack-node-externals');
 
 const outputDirectory = 'dist';
 
 module.exports = {
   entry: ['babel-polyfill', './src/index.js'],
+  // externals: [ nodeExternals() ],
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
     publicPath: '/'
+  },
+  resolve: {
+    extensions: [ '.js', '.jsx', '.ts' ],
   },
   module: {
     rules: [
@@ -18,7 +23,6 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {presets:["@babel/preset-env", "@babel/preset-react"]}
-
       },
       {
         test: /\.css$/,

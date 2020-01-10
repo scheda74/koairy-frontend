@@ -30,7 +30,7 @@ COPY . .
 RUN npm set strict-ssl false
 
 RUN npm install webpack -g
-RUN npm install webpack-cli webpack-dev-server
+RUN npm install webpack-cli webpack-dev-server clean-webpack-plugin
 RUN npm install
 
 EXPOSE 3000
