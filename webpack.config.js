@@ -11,7 +11,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: '/koairy'
   },
   resolve: {
     extensions: [ '.js', '.jsx', '.ts' ],
@@ -39,7 +39,7 @@ module.exports = {
     port: 3000,
     open: true,
     proxy: {
-      '/api': 'http://localhost:8000'
+      '/api': 'http://localhost:8000/koairy/api'
     },
     historyApiFallback: true
   },
