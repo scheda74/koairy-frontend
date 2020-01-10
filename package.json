@@ -35,7 +35,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "svgr": "svgr -d src/Icons/ src/assets/icons"
+    "svgr": "svgr -d src/Icons/ src/assets/icons",
+    "client": "webpack-dev-server --mode development --host 0.0.0.0 --devtool inline-source-map --hot"
   },
   "eslintConfig": {
     "extends": "react-app"
