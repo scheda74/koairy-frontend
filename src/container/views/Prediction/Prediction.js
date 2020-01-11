@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   warningButton: {
 
@@ -107,7 +110,7 @@ function Prediction(props) {
             <Fade in={open}>
               <div className={classes.paper}>
                 <Typography align="center" variant="h5">Something went wrong!</Typography>
-                <Typography variant="subtitle1">{props.detail || props.error.message}</Typography>
+                <Typography variant="subtitle1">Server Response: {props.detail || props.error.message}</Typography>
                 <WarningButton className={classes.warningButton} onClick={() => toggleModal(false)}>Okay</WarningButton>
               </div>
             </Fade>
