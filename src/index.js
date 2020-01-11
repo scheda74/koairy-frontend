@@ -87,7 +87,7 @@ const target = document.getElementById('root');
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider theme={darkGreenTheme}>
-      <Router>
+      <Router basename={'/koairy'}>
         <App />
       </Router>
     </MuiThemeProvider>
