@@ -1,13 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const nodeExternals = require('webpack-node-externals');
 
 const outputDirectory = 'dist';
 
 module.exports = {
   entry: ['babel-polyfill', './src/index.js'],
-  // externals: [ nodeExternals() ],
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
@@ -35,13 +33,14 @@ module.exports = {
     ]
   },
   devServer: {
+    contentBase: path.join(__dirname, outputDirectory),
     disableHostCheck: true,
     port: 3000,
     open: true,
-    proxy: {
-      '/api': 'http://localhost:8000/koairy/api'
+    historyApiFallback: {
+      index: '/koairy/'
     },
-    historyApiFallback: true
+    publicPath: '/koairy'
   },
   plugins: [
     new CleanWebpackPlugin(),

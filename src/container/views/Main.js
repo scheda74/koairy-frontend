@@ -58,7 +58,7 @@ const detailRouter = (
     <Route exact path={'/detail/:boxId'} component={Detail} />
     <Route exact path={'/prediction'} component={Prediction} />
     <Route exact path={'/prediction/:boxId'} component={Prediction} />
-    <Route exact render={() => <Redirect to={'/'} />} />
+    <Route exact render={() => <Redirect to={'/koairy'} />} />
   </Switch>
 );
 
@@ -72,10 +72,8 @@ export default function Main(props) {
       </Card>
       <Divider />
       <Card raised={true} className={classes.detailCard}>
-        {/*<Router>*/}
           <DetailToolbar />
           {detailRouter}
-        {/*</Router>*/}
       </Card>
     </div>
   )

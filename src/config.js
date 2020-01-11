@@ -1,6 +1,7 @@
 
 
-export const apiUrl = 'http://127.0.0.1:8000';
+// export const apiUrl = 'http://127.0.0.1:8000';
+export const apiUrl = 'http://smart-mobility.ge57.spacenet.de';
 export const startSim = '/koairy/api/start/simulation';
 export const getCaqi = '/koairy/api/get/caqi';
 export const startPrediction = '/koairy/api/prediction';
