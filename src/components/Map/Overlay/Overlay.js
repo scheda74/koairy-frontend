@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles, Slider, Typography, IconButton, Popover } from '@material-ui/core';
 import { Layers, LayersClear, Settings } from '@material-ui/icons';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   settingsContainer: {
     position: 'fixed',
     zIndex: '1000 !important',
@@ -12,6 +12,12 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#424242',
     width: '3rem',
     borderRadius: '32px',
+    [theme.breakpoints.down('sm')]: {
+      top: '3%',
+      right: '1%',
+      left: 'unset',
+      bottom: 'unset'
+    }
   },
   overlayContainer: {
     width: '400px',

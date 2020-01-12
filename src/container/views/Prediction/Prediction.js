@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import connect from 'react-redux/es/connect/connect';
 import { Backdrop, CircularProgress, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
 import PredictionChart from '../../../components/Charts/PredictionChart';
 import { WarningButton } from '../../../styles/customComponents'
+import Snackbar from '@material-ui/core/Snackbar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +35,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    width: '600px',
+    height: '400px'
   },
   warningButton: {
 
@@ -43,10 +46,16 @@ const useStyles = makeStyles((theme) => ({
 
 function Prediction(props) {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [state, setState] = useState({
+    open: false,
+    snackBarOpen: false
+  });
   const { boxId } = useParams();
+  let history = useHistory();
 
-  const toggleModal = (modalState) => setOpen(modalState);
+  const toggleModal = (modalState) => setState({...state, open: modalState});
+
+  const handleSnackbarClose = () => setState({ ...state, snackBarOpen: !state.snackBarOpen });
 
   useEffect(() => toggleModal(props.didInvalidate), [props.didInvalidate]);
 
@@ -71,6 +80,7 @@ function Prediction(props) {
       let outputKey = response['key'];
       let simKey = outputKey === "no2" ? "NOx" : "PMx";
       let prediction = response['prediction'];
+
       return (
         <div key={outputKey} className={classes.chartContainer}>
           <Typography align='center' variant='caption'>Simulated and Predicted {outputKey.toUpperCase()}</Typography>
@@ -86,6 +96,13 @@ function Prediction(props) {
                   [simKey + "_simulated"]: prediction[key][simKey + "_simulated"] || 0,
                 }})}
           />
+          <Snackbar
+            anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+            autoHideDuration={4000}
+            open={state.snackBarOpen}
+            onClose={handleSnackbarClose}
+            message="You can now toggle a heat map showing simulated traffic..."
+          />
         </div>
       )
     });
@@ -95,26 +112,34 @@ function Prediction(props) {
       <div className={classes.container}>
         {props.isFetching && <CircularProgress style={{margin: '3rem'}} color="primary" />}
         {props.didInvalidate ? (
-          <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            className={classes.modal}
-            open={open}
-            onClose={() => toggleModal(false)}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500,
-            }}
-          >
-            <Fade in={open}>
-              <div className={classes.paper}>
-                <Typography align="center" variant="h5">Something went wrong!</Typography>
-                <Typography variant="subtitle1">Server Response: {props.detail || props.error.message}</Typography>
-                <WarningButton className={classes.warningButton} onClick={() => toggleModal(false)}>Okay</WarningButton>
-              </div>
-            </Fade>
-          </Modal>
+          <React.Fragment>
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              className={classes.modal}
+              open={state.open}
+              onClose={() => toggleModal(false)}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={state.open}>
+                <div className={classes.paper}>
+                  <Typography align="center" variant="h5">Something went wrong!</Typography>
+                  <Typography variant="subtitle1">Server Response: {props.detail || props.error.message}</Typography>
+                  <WarningButton className={classes.warningButton} onClick={() => toggleModal(false)}>Okay</WarningButton>
+                </div>
+              </Fade>
+            </Modal>
+            <Typography variant="overline">
+              Apparently something went wrong... Sorry...
+            </Typography>
+            <WarningButton onClick={() => history.push('/detail/')}>
+              Go Back
+            </WarningButton>
+          </React.Fragment>
         ) : ((boxId && props.prediction[boxId]) || props.prediction.full) && (typeof props.prediction.full.detail === 'undefined') && (
           predictionCharts())
         }

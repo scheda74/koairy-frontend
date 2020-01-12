@@ -56,8 +56,6 @@ export function fetchPrediction(params) {
 
     dispatch(requestPrediction());
 
-    // console.log(params)
-
     return fetch(apiUrl + startPrediction, { headers: header, method: 'POST', body: JSON.stringify(params) })
       .then(response => response.json(),
         error => dispatch(invalidatePrediction(params, error)))

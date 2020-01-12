@@ -8,35 +8,43 @@ import { useHistory, useParams } from 'react-router';
 import bremickerBoxes from '../../../assets/data/bremickerBoxes';
 import { airActions, predictionActions, trafficActions } from '../../../store/actions';
 import Button from '@material-ui/core/Button';
+import { WarningButton } from '../../../styles/customComponents';
 
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: '1rem',
+    overflow: 'hidden scroll',
+    [theme.breakpoints.down('sm')]: {
+      // flexWrap: 'wrap'
+    },
   },
   chartContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     marginTop: '1rem',
-    marginRight: '1rem'
+    marginRight: '1rem',
+    width: '100%'
   },
   buttonContainer: {
     display: 'flex',
-    // [theme.breakpoints.down('md')]: {
-    //   flexDirection: 'column',
-    // },
-    flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginBottom: '2rem'
+    margin: '2rem 0',
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'wrap'
+    },
   },
   button: {
-    margin: '0.5rem 1rem'
+    margin: '0.5rem 1rem',
+    width: '128px',
+    height: '70px'
   },
 }));
 
@@ -115,29 +123,46 @@ function Detail(props) {
     <div className={classes.container}>
       {boxId ? (
         <React.Fragment>
+          <Typography variant='h6' align='center'>
+            You have selected an area. You can now start its simulation and prediction or adjust settings...
+          </Typography>
           {bremickerChart()}
           <Divider />
           {airChart()}
         </React.Fragment>
         ) : (
-        <Typography align='center' variant='h6'>Select an area marked in the map to get more details!</Typography>
-      )}
+          <React.Fragment>
+            <Typography variant='h5' align='center'>You can now start a full city simulation and prediction...</Typography>
+
+          </React.Fragment>
+        )
+      }
       <div className={classes.buttonContainer}>
+        {boxId && (
+          <WarningButton
+            size='small'
+            className={classes.button}
+            // color='warning'
+            variant='contained'
+            onClick={() => history.push('/detail')}>Cancel
+          </WarningButton>
+        )}
         <Button
           size='small'
           className={classes.button}
           color='secondary'
           variant='contained'
-          onClick={() => history.push(settingsUrl)}>Adjust Prediction Settings
+          onClick={() => history.push(settingsUrl)}>Adjust {boxId ? 'Single' : ''} Prediction Settings
         </Button>
         <Button
           size='small'
           onClick={() => handlePredictionStart()}
           className={classes.button}
           color='primary'
-          variant='contained'>Start Prediction Using Default!
+          variant='contained'>Start {boxId ? 'A Single' : ''} Prediction Using Default
         </Button>
       </div>
+      {!boxId && (<Typography align='center' variant='h6'>... or select an area marked in the map to get more details!</Typography>)}
     </div>
   );
 }

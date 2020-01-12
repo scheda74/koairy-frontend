@@ -9,7 +9,10 @@ const useStyles = makeStyles((theme) => ({
   toolBar: {
     backgroundColor: theme.palette.primary.main,
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   }
 }))
 
