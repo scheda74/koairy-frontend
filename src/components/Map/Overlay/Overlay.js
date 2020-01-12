@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, Slider, Typography, IconButton, Popover } from '@material-ui/core';
+import { makeStyles, Slider, Typography, IconButton, Popover, Tooltip } from '@material-ui/core';
 import { Layers, LayersClear, Settings } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#424242',
     width: '3rem',
     borderRadius: '32px',
+    cursor: 'pointer',
     [theme.breakpoints.down('sm')]: {
       top: '3%',
       right: '1%',
@@ -57,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
   },
   popover: {
     marginLeft: '1rem'
+  },
+  tool: {
+    fontSize: '16px'
   }
 }));
 
@@ -150,41 +154,45 @@ export default function Overlay(props) {
 
 
   return (
-    <div className={classes.settingsContainer}>
-      <IconButton
-        disabled={!props.isTrafficAvailable}
-        color="inherit"
-        aria-label="toggle heatmap"
-        edge="end"
-        onClick={props.toggleHeatMap}
-      >
-        {props.showHeatMap ? <LayersClear /> : <Layers />}
-      </IconButton>
-      <IconButton
-        disabled={!props.showHeatMap}
-        color="inherit"
-        aria-label="toggle traffic"
-        edge="end"
-        onClick={handleClick}
-      >
-        <Settings />
-      </IconButton>
-      <Popover
-        className={classes.popover}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-      >
-        {sliders}
-      </Popover>
-    </div>
+    <Tooltip disableFocusListener
+             title="Here you can toggle and adjust a heat map showing simulated traffic"
+             classes={{ tooltip: classes.tool }}>
+      <div className={classes.settingsContainer}>
+          <IconButton
+            disabled={!props.isTrafficAvailable}
+            color="inherit"
+            aria-label="toggle heatmap"
+            edge="end"
+            onClick={props.toggleHeatMap}
+          >
+            {props.showHeatMap ? <LayersClear /> : <Layers />}
+          </IconButton>
+          <IconButton
+            disabled={!props.showHeatMap}
+            color="inherit"
+            aria-label="toggle traffic"
+            edge="end"
+            onClick={handleClick}
+          >
+            <Settings />
+          </IconButton>
+          <Popover
+            className={classes.popover}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+          >
+            {sliders}
+          </Popover>
+      </div>
+    </Tooltip>
   );
 }

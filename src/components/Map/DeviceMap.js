@@ -32,8 +32,20 @@ export class DeviceMap extends React.Component {
       0.5: '#edc20a',
       0.75: '#f29308',
       1.0: '#950019'
-    }
+    },
+    isTooltipActive: false
   };
+
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if (this.isTrafficAvailable()) {
+  //     this.handleTooltip()
+  //   }
+  // }
+  //
+  // handleTooltip() {
+  //   this.setState({...this.state, isTooltipActive: true});
+  //   setTimeout(() => this.setState({...this.state, isTooltipActive: false}), 5000)
+  // }
 
   toggleHeatMap() {
     this.setState({ showHeatMap: !this.state.showHeatMap })
@@ -160,6 +172,7 @@ export class DeviceMap extends React.Component {
           }
           <Overlay
             isTrafficAvailable={this.isTrafficAvailable()}
+            // isTooltipActive={this.state.isTooltipActive}
             toggleHeatMap={this.toggleHeatMap.bind(this)}
             showHeatMap={this.state.showHeatMap}
             blurChange={this.onBlurChange.bind(this)}
