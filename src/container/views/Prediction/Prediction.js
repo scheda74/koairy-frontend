@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import connect from 'react-redux/es/connect/connect';
-import { Backdrop, CircularProgress, Fade, makeStyles, Modal, Typography, Snackbar } from '@material-ui/core';
+import { Backdrop, CircularProgress, Fade, makeStyles, Modal, Snackbar, Typography } from '@material-ui/core';
 import PredictionChart from '../../../components/Charts/PredictionChart';
 import { WarningButton } from '../../../styles/customComponents'
 
@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     marginTop: '1rem',
-    marginRight: '1rem'
+    marginRight: '1rem',
+    width: '100%'
   },
   modal: {
     display: 'flex',
