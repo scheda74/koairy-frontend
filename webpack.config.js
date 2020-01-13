@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const outputDirectory = 'dist';
 
@@ -9,7 +8,7 @@ module.exports = {
   mode: 'development',
   entry: ['babel-polyfill', './src/index.js'],
   output: {
-    filename: '[name].bundle.js',
+    filename: 'bundle.js',
     path: path.join(__dirname, outputDirectory),
     publicPath: '/koairy'
   },
@@ -49,7 +48,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: './public/favicon.ico'
-    }),
-    new LodashModuleReplacementPlugin()
+    })
   ]
 };

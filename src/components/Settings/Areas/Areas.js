@@ -8,10 +8,6 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  textField: {
-    margin: '2rem',
-    width: '5rem'
-  },
   slider: {
     width: '150px'
   }

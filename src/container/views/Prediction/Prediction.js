@@ -59,12 +59,9 @@ function Prediction(props) {
   useEffect(() => toggleModal(props.didInvalidate), [props.didInvalidate]);
 
   const predictionCharts = () => {
-    if (props.didInvalidate) {
-      return [];
-    }
     let data = [];
     if (boxId && props.prediction[boxId]) {
-      data = props.prediction[boxId];
+      data = props.prediction[boxId].prediction;
     } else if (props.prediction.full) {
       if (props.prediction.full.error || props.prediction.full.detail) {
         data = []
@@ -72,6 +69,7 @@ function Prediction(props) {
         data = props.prediction.full;
       }
     }
+    console.log(data);
     return data.map(response => {
       let mea = response['mea'] || 'not defined';
       let outputKey = response['key'];
@@ -125,7 +123,7 @@ function Prediction(props) {
               <Fade in={state.open}>
                 <div className={classes.paper}>
                   <Typography align="center" variant="h5">Something went wrong!</Typography>
-                  <Typography variant="subtitle1">Server Response: {props.detail || props.error.message}</Typography>
+                  <Typography variant="subtitle1">Server Response: {props.detail || props.error.message || ""}</Typography>
                   <WarningButton className={classes.warningButton} onClick={() => toggleModal(false)}>Okay</WarningButton>
                 </div>
               </Fade>
@@ -137,7 +135,7 @@ function Prediction(props) {
               Go Back
             </WarningButton>
           </React.Fragment>
-        ) : ((boxId && props.prediction[boxId]) || props.prediction.full) && (typeof props.prediction.full.detail === 'undefined') && (
+        ) : ((boxId && props.prediction[boxId]) || (props.prediction.full && typeof props.prediction.full.detail === 'undefined')) && (
           predictionCharts())
         }
       </div>
@@ -151,8 +149,8 @@ const mapStateToProps = (state) => {
       isFetching: state.prediction.isFetching,
       outputKeys: state.prediction.outputKeys,
       didInvalidate: state.prediction.didInvalidate,
-      detail: state.prediction.detail,
-      error: state.prediction.error
+      detail: state.prediction && state.prediction.detail,
+      error: state.prediction && state.prediction.error
     }
 };
 

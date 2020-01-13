@@ -5,11 +5,11 @@ const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'center'
+    justifyContent: 'space-around'
   },
   textField: {
-    margin: '1rem',
-    width: '5rem'
+    margin: '0.5rem 0.75rem',
+    width: '3.5rem'
   },
   sliderContainer: {
     width: '350px',

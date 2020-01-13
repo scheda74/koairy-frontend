@@ -64,6 +64,7 @@ function Settings(props) {
 
   const handleReset = () => setState({...state, activeStep: 0});
 
+  const handleStepClick = (index) => setState({...state, activeStep: index});
 
   const handleDistChange = (event, vehicleClass) => {
     props.setSimulationParameters({
@@ -89,7 +90,7 @@ function Settings(props) {
 
   const handleWeightChange = (event, weightType, areaName) => {
     let weights = weightType === 'src' ? {...props.srcWeights} : {...props.dstWeights};
-    weights[areaName] = event.target.value / 100.0;
+    weights[areaName] = event.tareget.value / 100.0;
     props.setSimulationParameters({
       ...props,
       srcWeights: weightType === 'src' ? weights : props.srcWeights,
@@ -174,7 +175,7 @@ function Settings(props) {
       <Stepper activeStep={state.activeStep} orientation="vertical">
         {steps.map((label, index) => (
             <Step key={label}>
-              <StepLabel>{label}</StepLabel>
+              <StepLabel onClick={() => handleStepClick(index)} >{label}</StepLabel>
               <StepContent>
                 {getStepContent(index)}
                 <div className={classes.actionsContainer}>

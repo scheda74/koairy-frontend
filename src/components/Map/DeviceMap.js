@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Map, Polygon, Popup, TileLayer } from 'react-leaflet';
 import HeatMap from 'react-leaflet-heatmap-layer';
@@ -192,7 +192,7 @@ export class DeviceMap extends React.Component {
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           />
           {renderHeatMap()}
-          {!this.showHeatMap && sensorPolygons}
+          {!this.state.showHeatMap && sensorPolygons}
         </Map>
       </div>
     );
