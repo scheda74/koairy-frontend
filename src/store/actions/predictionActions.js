@@ -83,7 +83,6 @@ export function fetchSinglePrediction(params) {
 export function invalidatePrediction(params, error) {
   return {
     type: INVALIDATE_PREDICTION,
-    // params,
     error: error
   }
 }

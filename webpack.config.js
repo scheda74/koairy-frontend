@@ -1,14 +1,22 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const outputDirectory = 'dist';
 
 module.exports = {
+  mode: 'production',
   entry: ['babel-polyfill', './src/index.js'],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
   output: {
+    filename: '[name].bundle.js',
+    chunkFilename: '[id].[chunkhash].js',
     path: path.join(__dirname, outputDirectory),
-    filename: 'bundle.js',
     publicPath: '/koairy'
   },
   resolve: {
@@ -47,6 +55,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: './public/favicon.ico'
-    })
+    }),
+    new LodashModuleReplacementPlugin()
   ]
 };

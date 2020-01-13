@@ -13,7 +13,6 @@ const header = new Headers({
 });
 
 export function invalidateTraffic(response) {
-  console.log('invalidated')
   return {
     type: INVALIDATE_TRAFFIC,
     response
@@ -49,11 +48,7 @@ export function fetchTraffic(params) {
       "end_hour": state.simulation.endHour,
       "boxID": 672
     };
-    // return fetch('http://smart-mobility.ge57.spacenet.de/bremicker/measures', { headers: header })
-    //   .then(response => response.json(),
-    //     error => console.log('An error occurred', error))
-    //   .then(json => dispatch(receiveTraffic(params, json)))
-    //   .catch(error => console.log('An error occurred', error))
+
     return fetch(apiUrl + getTraining, { headers: header, method: 'POST', body: JSON.stringify(body) })
       .then(response => response.json(),
         error => dispatch(invalidateTraffic(error)))
@@ -64,7 +59,6 @@ export function fetchTraffic(params) {
 
 function shouldFetchTraffic(state, params) {
   const traffic = state.traffic.data;
-  console.log(traffic);
   if (!traffic) {
     return true
   } else if (traffic.isFetching) {
@@ -101,7 +95,6 @@ export function receiveCurrentBremicker(boxID, json) {
 
 export function fetchCurrentBremicker(boxID) {
   return async function(dispatch, getState) {
-    // console.log('Fetching bremicker data!')
 
     dispatch(requestTraffic(boxID));
     dispatch(setSelectedBox(boxID));

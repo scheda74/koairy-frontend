@@ -1,13 +1,11 @@
-import { CircularProgress, makeStyles, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
-import connect from 'react-redux/es/connect/connect';
-import BremickerLineChart from '../../../components/Charts/BremickerLineChart';
-import Divider from '@material-ui/core/Divider';
-import HawaDawaLineChart from '../../../components/Charts/HawaDawaLineChart';
 import { useHistory, useParams } from 'react-router';
+import connect from 'react-redux/es/connect/connect';
+import { CircularProgress, makeStyles, Typography, Divider, Button } from '@material-ui/core';
 import bremickerBoxes from '../../../assets/data/bremickerBoxes';
+import BremickerLineChart from '../../../components/Charts/BremickerLineChart';
+import HawaDawaLineChart from '../../../components/Charts/HawaDawaLineChart';
 import { airActions, predictionActions, trafficActions } from '../../../store/actions';
-import Button from '@material-ui/core/Button';
 import { WarningButton } from '../../../styles/customComponents';
 
 
@@ -83,8 +81,6 @@ function Detail(props) {
 
   const bremickerChart = () => {
     if (props.traffic[boxId]) {
-      console.log('bremicker data')
-      console.log(bremickerData());
       return (
         <div key='traffic' className={classes.chartContainer}>
           <Typography align='center' variant='caption'>Vehicles per hour</Typography>

@@ -22,9 +22,6 @@ export function airDidInvalidate(response) {
 export function receiveAir(json) {
   return {
     type: RECEIVE_LATEST_AIR,
-    // id: json.id,
-    // location: json.location,
-    // values: json.values,
     sensors: json,
     receivedAt: Date.now()
   }

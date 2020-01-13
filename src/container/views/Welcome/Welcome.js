@@ -1,9 +1,8 @@
-import { Button, Icon, makeStyles } from '@material-ui/core';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
+import { Button, Icon, makeStyles, Typography } from '@material-ui/core';
 import BambooIcon from '../../../Icons/Bamboo';
 import KoalaOutlinedIcon from '../../../Icons/KoalaOutlined';
-import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles(() => ({
@@ -37,7 +36,6 @@ export default function Welcome(props) {
       <div className={classes.textContainer}>
         <Typography variant="h4" align='center'>Welcome to Koairy!</Typography>
         <Typography style={{marginTop: '0.5rem'}} variant="subtitle1" align='center'>You can simulate emissions and predict air quality</Typography>
-        {/*<Button onClick={() => props.triggerToolbar()}>Toggle Toolbar</Button>*/}
         <Link to="/detail">
           <Button color="primary" variant="contained">Get Started</Button>
         </Link>

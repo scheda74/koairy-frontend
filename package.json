@@ -13,7 +13,6 @@
     "babel-loader": "^8.0.6",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.3.1",
-    "clean-webpack-plugin": "^3.0.0",
     "clsx": "^1.0.4",
     "date-fns": "^2.0.0-beta.5",
     "history": "^4.10.1",
@@ -43,7 +42,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "svgr": "svgr -d src/Icons/ src/assets/icons",
-    "client": "webpack-dev-server --mode development --host 0.0.0.0 --devtool inline-source-map --hot"
+    "client": "webpack-dev-server --host 0.0.0.0"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,6 +63,9 @@
     "@svgr/cli": "^4.3.3",
     "@types/react": "^16.9.4",
     "@types/react-dom": "^16.9.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "lodash-webpack-plugin": "^0.11.5",
     "redux-devtools": "^3.5.0"
   },
   "homepage": "http://smart-mobility.ge57.spacenet.de/koairy",

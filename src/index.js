@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as serviceWorker from './serviceWorker';
-import { applyMiddleware, compose, createStore } from 'redux';
-import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk'
 import { BrowserRouter as Router } from 'react-router-dom';
-import './index.css';
 import { MuiThemeProvider } from '@material-ui/core';
+import { applyMiddleware, compose, createStore } from 'redux';
+import { Provider } from 'react-redux';
 import { darkGreenTheme } from './styles/customTheme';
+import * as serviceWorker from './serviceWorker';
+import './index.css';
 
 import rootReducer from './store/reducers/rootReducer';
 
@@ -94,14 +94,6 @@ ReactDOM.render(
   </Provider>,
   target
 );
-
-// store
-//   .dispatch(fetchEmissionsIfNeeded())
-//   .then(() => console.log(store.getState()));
-//
-// store
-//   .dispatch(fetchTrafficIfNeeded(''))
-//   .then(() => console.log(store.getState()));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

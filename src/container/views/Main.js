@@ -1,11 +1,10 @@
-import { Card, Divider, makeStyles } from '@material-ui/core';
 import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { Card, Divider, makeStyles } from '@material-ui/core';
+
 import DetailToolbar from '../../components/DetailToolbar/DetailToolbar';
 import Settings from '../../components/Settings/Settings'
 import DeviceMap from '../../components/Map/DeviceMap';
-
-import { Redirect, Route, Switch } from 'react-router-dom';
-
 import Welcome from './Welcome/Welcome';
 import Detail from './Detail/Detail';
 import Prediction from './Prediction/Prediction';

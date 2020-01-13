@@ -18,17 +18,6 @@ const useStyles = makeStyles(() => ({
 export default function App() {
   const classes = useStyles();
 
-  // const router = (
-  //   <Switch>
-  //     <Route path={`${process.env.PUBLIC_URL}/`} component={Main} />
-  //     {/*<Route path={`${process.env.PUBLIC_URL}/prediction`} component={Prediction} />*/}
-  //     {/*<Route path={`${process.env.PUBLIC_URL}/map`} component={MapContainer} />*/}
-  //     {/*<Route path={`${process.env.PUBLIC_URL}/compare`} component={Comparison} />*/}
-  //     {/*<Route path={`${process.env.PUBLIC_URL}/analysis`} component={Analysis} />*/}
-  //     <Route render={() => <Redirect to={`${process.env.PUBLIC_URL}/`} />} />
-  //   </Switch>
-  // );
-
   return(
     <div className={classes.root}>
       <CssBaseline />

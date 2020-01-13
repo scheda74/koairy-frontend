@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-
 import { useHistory, useParams } from 'react-router';
 import connect from 'react-redux/es/connect/connect';
-import { Backdrop, CircularProgress, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
+import { Backdrop, CircularProgress, Fade, makeStyles, Modal, Typography, Snackbar } from '@material-ui/core';
 import PredictionChart from '../../../components/Charts/PredictionChart';
 import { WarningButton } from '../../../styles/customComponents'
-import Snackbar from '@material-ui/core/Snackbar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,12 +66,10 @@ function Prediction(props) {
       data = props.prediction[boxId];
     } else if (props.prediction.full) {
       if (props.prediction.full.error || props.prediction.full.detail) {
-        // console.log('im here')
         data = []
       } else {
         data = props.prediction.full;
       }
-      // console.log('data', data);
     }
     return data.map(response => {
       let mea = response['mea'] || 'not defined';
