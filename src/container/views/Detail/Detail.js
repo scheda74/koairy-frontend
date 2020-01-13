@@ -19,9 +19,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     padding: '1rem',
-    overflow: 'hidden scroll',
     [theme.breakpoints.down('sm')]: {
-      // flexWrap: 'wrap'
+      overflow: 'hidden scroll',
     },
   },
   chartContainer: {
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    margin: '2rem 0',
+    margin: '0.5rem 0',
     [theme.breakpoints.down('sm')]: {
       flexWrap: 'wrap'
     },
@@ -123,7 +122,7 @@ function Detail(props) {
     <div className={classes.container}>
       {boxId ? (
         <React.Fragment>
-          <Typography variant='h6' align='center'>
+          <Typography variant='body1' align='center'>
             You have selected an area. You can now start its simulation and prediction or adjust settings...
           </Typography>
           {bremickerChart()}

@@ -7,8 +7,8 @@ export default function PredictionChart(props) {
   // console.log('data', props.data);
   // console.log('names ', pollutantNames);
   return (
-    <ResponsiveContainer width="90%" height={280}>
-      <LineChart margin={{ top: 20, right: 30, left: 0, bottom: 0 }} data={props.data}>
+    <ResponsiveContainer width="90%" height={240}>
+      <LineChart margin={{ top: 0, right: 30, left: 0, bottom: 0 }} data={props.data}>
         <XAxis dataKey="date" />
         <YAxis dataKey={props.maxKey} />
         <Tooltip />
