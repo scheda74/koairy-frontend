@@ -8,14 +8,8 @@ const outputDirectory = 'dist';
 module.exports = {
   mode: 'production',
   entry: ['babel-polyfill', './src/index.js'],
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-  },
   output: {
     filename: '[name].bundle.js',
-    chunkFilename: '[id].[chunkhash].js',
     path: path.join(__dirname, outputDirectory),
     publicPath: '/koairy'
   },
