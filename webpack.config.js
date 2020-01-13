@@ -6,7 +6,7 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const outputDirectory = 'dist';
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: ['babel-polyfill', './src/index.js'],
   output: {
     filename: '[name].bundle.js',
