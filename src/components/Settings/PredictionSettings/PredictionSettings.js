@@ -14,7 +14,7 @@ import { KeyboardDatePicker, KeyboardTimePicker, MuiPickersUtilsProvider, } from
 import DateFnsUtils from '@date-io/date-fns';
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
     flexDirection: 'column'
@@ -68,7 +68,7 @@ export default function PredictionSettings(props) {
           />
           <KeyboardTimePicker
             margin="normal"
-            id="time-picker"
+            id="time-picker-start"
             label="Start Time picker"
             value={props.startHour}
             onChange={(date) => props.handleDateChange('startHour', date)}
@@ -78,7 +78,7 @@ export default function PredictionSettings(props) {
           />
           <KeyboardTimePicker
             margin="normal"
-            id="time-picker"
+            id="time-picker-end"
             label="End Time picker"
             value={props.endHour}
             onChange={(date) => props.handleDateChange('endHour', date)}

@@ -14,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
       display: 'none'
     }
   }
-}))
+}));
 
-export default function DetailToolbar(props) {
+export default function DetailToolbar() {
   const classes = useStyles();
   let history = useHistory();
   let toolbarActive = !useRouteMatch('/').isExact;
@@ -36,11 +36,6 @@ export default function DetailToolbar(props) {
             <Timeline />
           </IconButton>
         </Tooltip>
-        {/*<Tooltip title="Full City Prediction" placement="bottom">*/}
-          {/*<IconButton color="inherit" onClick={() => console.log('router here')}>*/}
-            {/*<MultilineChart />*/}
-          {/*</IconButton>*/}
-        {/*</Tooltip>*/}
         <Tooltip title="Adjust Prediction Settings" placement="bottom">
           <IconButton color="inherit" edge="end" onClick={() => handleNext('/settings')}>
             <Settings />
@@ -50,16 +45,3 @@ export default function DetailToolbar(props) {
     </Slide>
   )
 }
-//
-// const mapStateToProps = state => {
-//     return {
-//       trigger: state.isToolbarActive
-//     }
-// };
-//
-//
-// // export default withRouter(
-// export default connect(
-//     mapStateToProps
-//   )(DetailToolbar)
-// // );

@@ -1,20 +1,14 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-// import Slider from '@material-ui/core/Slider';
-// import InputAdornment from '@material-ui/core/InputAdornment';
-import Area from './Area/Area';
-import Divider from '@material-ui/core/Divider';
+import { Divider, makeStyles, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+import Area from './Area/Area';
+
+const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    // justifyContent: 'center'
   },
   textField: {
-    // marginLeft: theme.spacing(1),
-    // marginRight: theme.spacing(1),
     margin: '2rem',
     width: '5rem'
   },

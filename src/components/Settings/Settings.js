@@ -1,14 +1,14 @@
+import React from 'react';
+import { useHistory, useParams } from 'react-router';
+import connect from 'react-redux/es/connect/connect';
+import { predictionActions } from '../../store/actions';
 import { Button, makeStyles, Paper, Step, StepContent, StepLabel, Stepper, Typography } from '@material-ui/core';
+import { WarningButton } from '../../styles/customComponents';
 import General from './General/General';
 import Areas from './Areas/Areas';
 import Vehicles from './Vehicles/Vehicles';
 import WeatherScenarios from './WeatherScenarios/WeatherScenarios';
 import PredictionSettings from './PredictionSettings/PredictionSettings';
-import React from 'react';
-import { predictionActions } from '../../store/actions';
-import connect from 'react-redux/es/connect/connect';
-import { useHistory, useParams } from 'react-router';
-import { WarningButton } from '../../styles/customComponents';
 
 
 const useStyles = makeStyles(theme => ({
@@ -47,7 +47,7 @@ function Settings(props) {
     activeStep: 0
   });
 
-  let history = useHistory()
+  let history = useHistory();
   const { boxId } = useParams();
   const predictionUrl = boxId ? "/prediction/" + boxId : "/prediction";
 
@@ -61,8 +61,6 @@ function Settings(props) {
   const handleNext = () => setState({...state, activeStep: state.activeStep + 1});
 
   const handleBack = () => setState({...state, activeStep: state.activeStep - 1});
-
-  const handleDefault = () => setState({...state, activeStep: steps.length});
 
   const handleReset = () => setState({...state, activeStep: 0});
 
@@ -78,7 +76,6 @@ function Settings(props) {
     let newDate = new Date();
     if (name === 'startDate' || name === 'endDate') {
       newDate = date.toISOString().substr(0, 10);
-      // console.log(newDate)
     } else {
       newDate = date.toLocaleString('DE-de', {hour: '2-digit', minute: '2-digit'})
     }
@@ -86,7 +83,7 @@ function Settings(props) {
   };
 
   const formatTimeToDate = time => {
-    let [hour, minute] = time.split(':')
+    let [hour, minute] = time.split(':');
     return new Date().setHours(hour, minute, 0, 0);
   };
 

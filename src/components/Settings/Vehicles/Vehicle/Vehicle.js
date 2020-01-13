@@ -1,18 +1,13 @@
 import React from 'react';
-import { makeStyles, TextField } from '@material-ui/core';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import { InputAdornment, makeStyles, TextField } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
-    // flexDirection: 'column',
     flexWrap: 'wrap',
     justifyContent: 'center'
   },
   textField: {
-    // marginLeft: theme.spacing(1),
-    // marginRight: theme.spacing(1),
-    // flexBasis: '25%',
     margin: '1rem',
     width: '5rem'
   },
@@ -21,24 +16,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function valueText(value) {
-  return `${value}%`;
-}
-
 export default function Vehicle(props) {
   const classes = useStyles();
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
-      {/*{sliders}*/}
       {Object.keys(props.vehicles).map(vehicleName => {
         let splitted = vehicleName.split('_');
         let formattedName = splitted[splitted.length - 2]
           .replace('D', 'DIESEL')
-          .replace('G', 'BENZIN') + ' ' + splitted.pop()
-
-          // .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-          // .join(' ');
+          .replace('G', 'BENZIN') + ' ' + splitted.pop();
 
         return <TextField
           className={classes.textField}
