@@ -96,7 +96,7 @@ export default function PredictionSettings(props) {
                 id: 'model-select'
               }}
             >
-              <MenuItem value='lstm'>Long Short Term Memory</MenuItem>
+              {/*<MenuItem value='lstm'>Long Short Term Memory</MenuItem>*/}
               <MenuItem value='lin-reg'>Linear Regression</MenuItem>
               <MenuItem value='mlp'>Multi-Layer-Perceptron Regressor</MenuItem>
             </Select>
