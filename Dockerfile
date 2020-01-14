@@ -30,7 +30,7 @@ COPY . .
 RUN npm set strict-ssl false
 
 RUN npm install webpack -g
-RUN npm install
+RUN npm install --silent
 
 EXPOSE 3000
 EXPOSE 5000

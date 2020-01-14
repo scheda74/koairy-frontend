@@ -59,12 +59,27 @@ function Prediction(props) {
   useEffect(() => toggleModal(props.didInvalidate), [props.didInvalidate]);
 
   const predictionCharts = () => {
+
     let data = [];
     if (boxId && props.prediction[boxId]) {
-      data = props.prediction[boxId].prediction;
+      if (props.prediction[boxId].detail || props.prediction[boxId].error) {
+        return (
+          <React.Fragment>
+            <Typography align="center" variant="h5">Something went wrong!</Typography>
+            <WarningButton className={classes.warningButton} onClick={() => history.push('/detail')}>Okay</WarningButton>
+          </React.Fragment>
+        )
+      } else {
+        data = props.prediction[boxId].prediction;
+      }
     } else if (props.prediction.full) {
       if (props.prediction.full.error || props.prediction.full.detail) {
-        data = []
+        return (
+          <React.Fragment>
+            <Typography align="center" variant="h5">Something went wrong!</Typography>
+            <WarningButton className={classes.warningButton} onClick={() => history.push('/detail')}>Okay</WarningButton>
+          </React.Fragment>
+        )
       } else {
         data = props.prediction.full;
       }
@@ -103,40 +118,56 @@ function Prediction(props) {
     });
   };
 
+  if (props.isFetching) {
+    return (
+      <div className={classes.container}>
+        <CircularProgress style={{margin: '3rem'}} color="primary" />
+      </div>
+    )
+  }
+
+  if (props.didInvalidate) {
+    return (
+      <div className={classes.container}>
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={classes.modal}
+            open={state.open}
+            onClose={() => toggleModal(false)}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={state.open}>
+              <div className={classes.paper}>
+                <Typography align="center" variant="h5">Something went wrong!</Typography>
+                <Typography variant="subtitle1">Server Response: {props.detail || props.error.message || ""}</Typography>
+                <WarningButton className={classes.warningButton} onClick={() => toggleModal(false)}>Okay</WarningButton>
+              </div>
+            </Fade>
+          </Modal>
+          <Typography variant="overline">
+            Apparently something went wrong... Sorry...
+          </Typography>
+          <WarningButton onClick={() => history.push('/detail/')}>
+            Go Back
+          </WarningButton>
+        </div>
+    )
+  }
+
   return (
       <div className={classes.container}>
-        {props.isFetching && <CircularProgress style={{margin: '3rem'}} color="primary" />}
-        {props.didInvalidate ? (
-          <React.Fragment>
-            <Modal
-              aria-labelledby="transition-modal-title"
-              aria-describedby="transition-modal-description"
-              className={classes.modal}
-              open={state.open}
-              onClose={() => toggleModal(false)}
-              closeAfterTransition
-              BackdropComponent={Backdrop}
-              BackdropProps={{
-                timeout: 500,
-              }}
-            >
-              <Fade in={state.open}>
-                <div className={classes.paper}>
-                  <Typography align="center" variant="h5">Something went wrong!</Typography>
-                  <Typography variant="subtitle1">Server Response: {props.detail || props.error.message || ""}</Typography>
-                  <WarningButton className={classes.warningButton} onClick={() => toggleModal(false)}>Okay</WarningButton>
-                </div>
-              </Fade>
-            </Modal>
-            <Typography variant="overline">
-              Apparently something went wrong... Sorry...
-            </Typography>
-            <WarningButton onClick={() => history.push('/detail/')}>
-              Go Back
-            </WarningButton>
-          </React.Fragment>
-        ) : ((boxId && props.prediction[boxId]) || (props.prediction.full && typeof props.prediction.full.detail === 'undefined')) && (
-          predictionCharts())
+        {((boxId && props.prediction[boxId]) || (props.prediction.full && typeof props.prediction.full.detail === 'undefined')) ?
+          predictionCharts() : (
+            <React.Fragment>
+              <Typography align="center" variant="h5">Something went wrong!</Typography>
+              <WarningButton className={classes.warningButton} onClick={() => history.push('/detail')}>Okay</WarningButton>
+            </React.Fragment>
+          )
         }
       </div>
   )
