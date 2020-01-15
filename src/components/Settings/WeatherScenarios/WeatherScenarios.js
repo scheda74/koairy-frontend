@@ -7,8 +7,6 @@ import {
   FormLabel,
   InputAdornment,
   makeStyles,
-  MenuItem,
-  Select,
   TextField,
   Typography
 } from '@material-ui/core';
@@ -51,23 +49,23 @@ export default function WeatherScenarios(props) {
       <Typography align='center' variant="overline" className={classes.heading}>Meteorology</Typography>
       <Divider />
       <FormGroup className={classes.formContainer}>
-        <FormControl className={classes.formControl}>
-          <FormLabel component="legend">Sun Level</FormLabel>
-          <Select
-            value={state.sun}
-            onChange={handleChange('sun')}
-            inputProps={{
-              name: 'sun',
-              id: 'sun-select',
-            }}
-          >
-            <MenuItem value='strong'>Strong</MenuItem>
-            <MenuItem value='mild'>Mild</MenuItem>
-            <MenuItem value='cloudy'>Cloudy</MenuItem>
-            <MenuItem value='night'>Night</MenuItem>
-          </Select>
-          <FormHelperText>Please select a sun level</FormHelperText>
-        </FormControl>
+        {/*<FormControl className={classes.formControl}>*/}
+        {/*  <FormLabel component="legend">Sun Level</FormLabel>*/}
+        {/*  <Select*/}
+        {/*    value={state.sun}*/}
+        {/*    onChange={handleChange('sun')}*/}
+        {/*    inputProps={{*/}
+        {/*      name: 'sun',*/}
+        {/*      id: 'sun-select',*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    <MenuItem value='strong'>Strong</MenuItem>*/}
+        {/*    <MenuItem value='mild'>Mild</MenuItem>*/}
+        {/*    <MenuItem value='cloudy'>Cloudy</MenuItem>*/}
+        {/*    <MenuItem value='night'>Night</MenuItem>*/}
+        {/*  </Select>*/}
+        {/*  <FormHelperText>Please select a sun level</FormHelperText>*/}
+        {/*</FormControl>*/}
         <FormControl className={classes.formControl}>
           <FormLabel component="legend">Temperature</FormLabel>
           <TextField
@@ -83,22 +81,22 @@ export default function WeatherScenarios(props) {
             margin="none" />
           <FormHelperText>Please specify a temperature</FormHelperText>
         </FormControl>
-        <FormControl className={classes.formControl}>
-          <FormLabel component="legend">Wind Level</FormLabel>
-          <Select
-            value={state.sun}
-            onChange={handleChange('wind')}
-            inputProps={{
-              name: 'wind',
-              id: 'wind-select'
-            }}
-          >
-            <MenuItem value='strong'>Strong</MenuItem>
-            <MenuItem value='mild'>Mild</MenuItem>
-            <MenuItem value='still'>Still</MenuItem>
-          </Select>
-          <FormHelperText>Please select a wind level</FormHelperText>
-        </FormControl>
+        {/*<FormControl className={classes.formControl}>*/}
+        {/*  <FormLabel component="legend">Wind Level</FormLabel>*/}
+        {/*  <Select*/}
+        {/*    value={state.sun}*/}
+        {/*    onChange={handleChange('wind')}*/}
+        {/*    inputProps={{*/}
+        {/*      name: 'wind',*/}
+        {/*      id: 'wind-select'*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    <MenuItem value='strong'>Strong</MenuItem>*/}
+        {/*    <MenuItem value='mild'>Mild</MenuItem>*/}
+        {/*    <MenuItem value='still'>Still</MenuItem>*/}
+        {/*  </Select>*/}
+        {/*  <FormHelperText>Please select a wind level</FormHelperText>*/}
+        {/*</FormControl>*/}
         <FormControl className={classes.formControl}>
           <FormLabel component="legend">Relative Humidity</FormLabel>
           <TextField
