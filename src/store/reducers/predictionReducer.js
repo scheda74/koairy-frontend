@@ -17,6 +17,7 @@ export function prediction(
       console.log(action);
       return Object.assign({}, state, {
         isFetching: false,
+        didInvalidate: false,
         // weatherScenario: action.weatherScenario,
         inputKeys: action.inputKeys,
         vehicleDistribution: action.vehicleDistribution,
@@ -36,6 +37,7 @@ export function prediction(
       console.log(action);
       return Object.assign({}, state, {
         isFetching: false,
+        didInvalidate: false,
         [action.boxID]: {
           // weatherScenario: action.weatherScenario,
           vehicleDistribution: action.vehicleDistribution,
@@ -58,6 +60,7 @@ export function prediction(
       console.log("prediction received", action);
       return Object.assign({}, state, {
         isFetching: false,
+        didInvalidate: false,
         full: action.prediction,
         traffic: action.traffic,
         lastUpdated: action.receivedAt
@@ -66,6 +69,7 @@ export function prediction(
       console.log('prediction received: ', action)
       return Object.assign({}, state, {
         isFetching: false,
+        didInvalidate: false,
         [action.boxID]: action.prediction,
         // single: action.prediction,
         traffic: action.traffic,
